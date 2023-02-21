@@ -2,7 +2,7 @@
  ============================================================================
  Name        : main.cpp
  Author      : Mariusz Mikulski
- Date	     : 21 Feb 2023
+ Date	     : 21 Feb 2
  Version     : 1
  Copyright   : Your copyright notice (� 2021. All Rights Reserved.)
  Description : write description of file.
@@ -45,6 +45,8 @@ int main(void)
 
   GpioPinConfig(LED_1_PORT, LED_1_PIN, gpio_output_PP_PU_LS);
   GpioPinConfig(LED_2_PORT, LED_2_PIN, gpio_output_PP_PU_LS);
+
+  HMI::init();
 
   __DSB();
   __ISB();

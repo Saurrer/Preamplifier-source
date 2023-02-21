@@ -28,7 +28,8 @@ void SystemStartup(void)
 {
   RCC->AHBENR |=  RCC_AHBENR_GPIOAEN ;
 
-  RCC->APB1ENR |= RCC_APB1ENR_TIM7EN;		//delay
+  RCC->APB1ENR |= RCC_APB1ENR_TIM7EN	|	/** delay */
+		  RCC_APB1ENR_TIM2EN	;	/** timer used by knob */
 
   //RCC->APB1ENR |= RCC_APB1ENR_USART2EN;	//logs
 

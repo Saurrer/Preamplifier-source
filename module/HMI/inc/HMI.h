@@ -21,12 +21,17 @@
 
 /* Includes ----------------------------------------------------------------------*/
 
+#include "../knob/inc/knob.h"
+
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
 
 namespace HMI
 {
 
+  extern KNOB * pKnob ;
+
+  extern void init();
 
 } // namespace HMI
 

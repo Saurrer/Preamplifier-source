@@ -24,6 +24,7 @@
 /* Private typedef ---------------------------------------------------------------*/
 namespace HMI
 {
+  KNOB * pKnob;
 
 } // namespace HMI
 

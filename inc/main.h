@@ -28,9 +28,14 @@
 
 #include "../startup/inc/SystemStartup.h"
 
-//utils
-#include <Utils/delay/inc/delay.h>
+/* stm32 */
 #include <STM32/gpio/inc/gpio.h>
+
+/* utils */
+#include <Utils/delay/inc/delay.h>
+
+/* modules */
+#include "../module/module.h"
 
 /*
 +=============================================================================+

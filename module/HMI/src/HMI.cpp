@@ -39,6 +39,13 @@ namespace HMI
 */
 
 /* Private functions -------------------------------------------------------------*/
+void HMI::init()
+{
+  using namespace HMI;
 
+  pKnob = new (KNOB);
+  pKnob->init(TIM2);
+
+}
 
 /*-------------------------------END OF FILE--------------------------------------*/

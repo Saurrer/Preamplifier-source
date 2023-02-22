@@ -62,6 +62,8 @@ int main(void)
     {
       GPIOA->ODR ^= GPIO_ODR_9;
       delay_ms(100);
+
+      HMI::pKnob->button.read();
     }
 }
 

@@ -39,6 +39,7 @@
 /* Private functions -------------------------------------------------------------*/
 void HMI::KNOB::init(TIM_TypeDef * __restrict__ pu32TIM)
 {
+  this->button.init(KNOB_BUTTON_PORT, KNOB_BUTTON_PIN);
   GpioPinConfig(ENCODER_PORT_A, ENCODER_PIN_A, gpio_AF2_OD_MS);
   GpioPinConfig(ENCODER_PORT_B, ENCODER_PIN_B, gpio_AF2_OD_MS);
 

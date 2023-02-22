@@ -20,13 +20,17 @@
 #define _KNOB_H_
 
 /* Includes ----------------------------------------------------------------------*/
-
+#include "../button/inc/button.h"
 /* Exported define ---------------------------------------------------------------*/
 #define ENCODER_PORT_A		GPIOA
 #define ENCODER_PIN_A		PA0
 
 #define ENCODER_PORT_B		GPIOA
 #define ENCODER_PIN_B		PA1
+
+#define KNOB_BUTTON_PORT	BUTTON_PORT
+#define KNOB_BUTTON_PIN		BUTTON_PIN
+
 
 /* Exported types ----------------------------------------------------------------*/
 
@@ -37,10 +41,12 @@ namespace HMI
   {
 
   public:
-    void init(TIM_TypeDef * __restrict__ pu32TIM);
+    BUTTON button;
+
+    void init(TIM_TypeDef * __restrict__ pu32TIM);	/**<  */
 
   private:
-    volatile uint32_t * position;
+    volatile uint32_t * position;			/**<  */
 
     enum direction_t : int8_t
     {
@@ -49,9 +55,9 @@ namespace HMI
       RIGHT 	= -1,
     };
 
-    direction_t dir;
+    direction_t dir;					/**<  */
 
-    uint8_t flag_context;
+    uint8_t flag_context;				/**<  */
   };
 
 }  // namespace HMI

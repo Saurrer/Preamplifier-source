@@ -1,12 +1,18 @@
-/*
- ============================================================================
- Name        : main.cpp
- Author      : Mariusz Mikulski
- Date	     : 21 Feb 2
- Version     : 1
- Copyright   : Your copyright notice (� 2021. All Rights Reserved.)
- Description : write description of file.
- ============================================================================
+/** @file main.cpp
+*
+* @author
+* Mariusz Mikulski	\n
+* Company: 	\n
+* Departament:	\n
+* @date		Feb 19, 2023
+* @version 	1.0.0
+* @copyright 	© 2023. All Rights Reserved.
+*
+* @brief brief description of main.cpp.
+*
+* @page main.cpp
+* @details Detail description of main.cpp.
+*
 */
 
 /*
@@ -56,6 +62,8 @@ int main(void)
     {
       GPIOA->ODR ^= GPIO_ODR_9;
       delay_ms(100);
+
+      HMI::pKnob->button.read();
     }
 }
 

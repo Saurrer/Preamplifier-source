@@ -1,66 +1,63 @@
-/** @file knob.h
+/** @file button.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 21, 2023
+* @date		Feb 22, 2023
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of encoder.h.
+* @brief brief description of button.h.
 *
-* @page encoder.h
-* @details Detail description of encoder.h.
+* @page button.h
+* @details Detail description of button.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _KNOB_H_
-#define _KNOB_H_
+#ifndef _BUTTON_H_
+#define _BUTTON_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include "../button/inc/button.h"
+#include <STM32/gpio/inc/gpio.h>
 /* Exported define ---------------------------------------------------------------*/
-#define ENCODER_PORT_A		GPIOA
-#define ENCODER_PIN_A		PA0
 
-#define ENCODER_PORT_B		GPIOA
-#define ENCODER_PIN_B		PA1
-
-#define KNOB_BUTTON_PORT	BUTTON_PORT
-#define KNOB_BUTTON_PIN		BUTTON_PIN
-
-
+#define BUTTON_PORT		GPIOA
+#define BUTTON_PIN		PA3
 /* Exported types ----------------------------------------------------------------*/
 
 namespace HMI
 {
 
-  class KNOB
+  class BUTTON
   {
 
   public:
-    BUTTON button;
 
-    void init(TIM_TypeDef * __restrict__ pu32TIM);	/**<  */
-
-  private:
-    volatile uint32_t * position;			/**<  */
-
-    enum direction_t : int8_t
+    enum : uint8_t
     {
-      LEFT	= 1,
-      NO_MOVE	= 0,
-      RIGHT 	= -1,
+      BUTTON_OFF 		= 0,
+      BUTTON_ON			= 1,
+      BUTTON_SINGLE_PRESS 	= 2,
+      BUTTON_DOUBLE_PRESS 	= 3,
+      BUTTON_LONG_PRESS		= 4,
+      BUTTON_NOT_INITIALIZED	= 255,
     };
 
-    direction_t dir;					/**<  */
+    void init(GPIO_TypeDef * __restrict button_port, GpioPin button_pin);
+    uint8_t getStatus(void);
+    void read(void);
 
-    uint8_t flag_context;				/**<  */
+  private:
+    uint8_t status;		/**< Line description of somevariable */
+    uint8_t keylock {0};	/**< useb by read function */
+
   };
 
+
 }  // namespace HMI
+
 
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -76,6 +73,6 @@ namespace HMI
 
 
 
-#endif /* _KNOB_H_ */
+#endif /* _BUTTON_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

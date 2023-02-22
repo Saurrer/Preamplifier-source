@@ -20,36 +20,44 @@
 #define _BUTTON_H_
 
 /* Includes ----------------------------------------------------------------------*/
-
+#include <STM32/gpio/inc/gpio.h>
 /* Exported define ---------------------------------------------------------------*/
 
 #define BUTTON_PORT		GPIOA
 #define BUTTON_PIN		PA3
 /* Exported types ----------------------------------------------------------------*/
-class BUTTON //switch
+
+namespace HMI
 {
 
-public:
-
-  enum : uint8_t
+  class BUTTON
   {
-    BUTTON_OFF 			= 0,
-    BUTTON_ON			= 1,
-    BUTTON_SINGLE_PRESS 	= 2,
-    BUTTON_DOUBLE_PRESS 	= 3,
-    BUTTON_LONG_PRESS		= 4,
-    BUTTON_NOT_INITIALIZED	= 255,
+
+  public:
+
+    enum : uint8_t
+    {
+      BUTTON_OFF 		= 0,
+      BUTTON_ON			= 1,
+      BUTTON_SINGLE_PRESS 	= 2,
+      BUTTON_DOUBLE_PRESS 	= 3,
+      BUTTON_LONG_PRESS		= 4,
+      BUTTON_NOT_INITIALIZED	= 255,
+    };
+
+    void init(GPIO_TypeDef * __restrict button_port, GpioPin button_pin);
+    uint8_t getStatus(void);
+    void read(void);
+
+  private:
+    uint8_t status;		/**< Line description of somevariable */
+    uint8_t keylock {0};	/**< useb by read function */
+
   };
 
-  BUTTON(GPIO_TypeDef * const __restrict button_port, GpioPin button_pin);
-  uint8_t getStatus(void);
-  void read(void);
 
-private:
-  uint8_t status;		/**< Line description of somevariable */
-  uint8_t keylock {0};		/**< useb by read function */
+}  // namespace HMI
 
-};
 
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/

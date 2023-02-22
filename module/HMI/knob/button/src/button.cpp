@@ -21,7 +21,6 @@
 #include <cmsis_gcc.h>
 #include <stm32f091xc.h>
 
-#include <STM32/gpio/inc/gpio.h>
 #include "../inc/button.h"
 
 /* Private typedef ---------------------------------------------------------------*/
@@ -36,26 +35,12 @@
   Input Data:
   Action:
 */
-BUTTON::BUTTON(GPIO_TypeDef * const __restrict button_port, GpioPin button_pin);
-
-/*
-  Function:
-  Input Data:
-  Action:
-*/
-uint8_t BUTTON::getStatus(void);
-
-/*
-  Function:
-  Input Data:
-  Action:
-*/
-void BUTTON::read(void);
 
 /* Private functions -------------------------------------------------------------*/
-BUTTON::BUTTON(GPIO_TypeDef * const __restrict button_port, GpioPin button_pin)
-:status{BUTTON_NOT_INITIALIZED}
+void HMI::BUTTON::init(GPIO_TypeDef * __restrict button_port, GpioPin button_pin)
 {
+  status = BUTTON_NOT_INITIALIZED;
+
   GpioPinConfig(button_port, button_pin, gpio_input_floating);
 
   if(!(button_port->IDR & BUTTON_PIN))  { status = BUTTON_ON; }
@@ -63,13 +48,13 @@ BUTTON::BUTTON(GPIO_TypeDef * const __restrict button_port, GpioPin button_pin)
 
 }
 
-uint8_t BUTTON::getStatus(void) { return status; }
+uint8_t HMI::BUTTON::getStatus(void) { return status; }
 
-void BUTTON::read(void)
+void HMI::BUTTON::read(void)
 {
   uint32_t cnt1, cnt2;
-  cnt1 = 200000;		//doświadczalnie
-  cnt2 = 100000;		//doświadczalnie
+  cnt1 = 200000;		/**< experimental result */
+  cnt2 = 100000;		/**< experimental result */
 
   if( !(keylock) && !(BUTTON_PORT->IDR & BUTTON_PIN))
      {

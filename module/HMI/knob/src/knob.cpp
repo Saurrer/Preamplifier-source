@@ -8,10 +8,10 @@
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of encoder.cpp.
+* @brief brief description of knob.cpp.
 *
-* @page encoder.cpp
-* @details Detail description of encoder.cpp.
+* @page knob.cpp
+* @details Detail description of knob.cpp.
 *
 */
 
@@ -22,8 +22,6 @@
 #include <stm32f091xc.h>
 
 #include "../inc/knob.h"
-#include <STM32/gpio/inc/gpio.h>
-
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 

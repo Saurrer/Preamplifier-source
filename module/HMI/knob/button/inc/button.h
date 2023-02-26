@@ -20,7 +20,9 @@
 #define _BUTTON_H_
 
 /* Includes ----------------------------------------------------------------------*/
+
 #include <STM32/gpio/inc/gpio.h>
+
 /* Exported define ---------------------------------------------------------------*/
 
 #define BUTTON_PORT		GPIOA
@@ -45,7 +47,7 @@ namespace HMI
       BUTTON_NOT_INITIALIZED	= 255,
     };
 
-    void init(GPIO_TypeDef * __restrict button_port, GpioPin button_pin);
+    void init(GPIO_TypeDef * button_port, GpioPin button_pin);
     uint8_t getStatus(void);
     void read(void);
 

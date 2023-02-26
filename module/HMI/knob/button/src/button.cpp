@@ -22,7 +22,6 @@
 #include <stm32f091xc.h>
 
 #include "../inc/button.h"
-
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 
@@ -37,7 +36,7 @@
 */
 
 /* Private functions -------------------------------------------------------------*/
-void HMI::BUTTON::init(GPIO_TypeDef * __restrict button_port, GpioPin button_pin)
+void HMI::BUTTON::init(GPIO_TypeDef * button_port, GpioPin button_pin)
 {
   status = BUTTON_NOT_INITIALIZED;
 

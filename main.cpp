@@ -22,7 +22,6 @@
 */
 
 #include "inc/main.h"
-
 /*
 +=============================================================================+
 */
@@ -43,6 +42,7 @@ const char * build_date __attribute__((section(".rodata.compile_data"))) = __DAT
 extern "C" void SysTick_Handler(void)
 {
   GPIOA->ODR ^= GPIO_ODR_10;
+  GPIOA->ODR ^= GPIO_ODR_9;
 }
 
 int main(void)
@@ -60,9 +60,6 @@ int main(void)
   SysTick_Config(8000000/2);
   for(;;)/*---------------------------------------- INFINITE LOOP ----------------------------------------------*/
     {
-      GPIOA->ODR ^= GPIO_ODR_9;
-      delay_ms(100);
-
       HMI::pKnob->button.read();
     }
 }

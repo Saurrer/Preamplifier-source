@@ -40,7 +40,6 @@ public:
   void reset();
 
 private:
-  static int8_t init_flag ;					 	/**< Line description of somevariable */
   void resetBuffer();
   void AddDataToBuffer(volatile uint8_t (*buffer)[8], uint32_t GRB_data);
 

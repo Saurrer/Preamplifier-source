@@ -38,7 +38,6 @@
 #define WS2812B_LED_COUNT							(5U)
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
-int8_t WS2812B::init_flag {0};
 
 volatile uint8_t led_table[WS2812B_LED_COUNT][8];
 uint8_t WS2812B_UART_BUFFER_DEFAULT_VALUE = 0x92;
@@ -87,16 +86,13 @@ WS2812B::DMA_mem_conf(DMA_Channel_TypeDef * pDMA_Channel)
 void
 WS2812B::Init(void)
 {
-  if(init_flag == 0)
-    {
-      DMA_peripheral_conf(DMA2_Channel1);
-      DMA_mem_conf(DMA1_Channel7);
 
-      resetBuffer();
+  DMA_peripheral_conf(DMA2_Channel1);
+  DMA_mem_conf(DMA1_Channel7);
 
-      UART_Init(USART2);
-      init_flag = 1;
-    }
+  resetBuffer();
+
+  UART_Init(USART2);
 
 }
 

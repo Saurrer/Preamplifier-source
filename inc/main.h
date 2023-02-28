@@ -37,8 +37,6 @@
 /* modules */
 #include "../module/module.h"
 
-#include "../module/HMI/knob/led/interface/WS2812B/inc/ws2812b.h"
-
 /*
 +=============================================================================+
 */

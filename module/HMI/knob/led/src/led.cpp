@@ -54,7 +54,6 @@ HMI::LED::LED()
 void
 HMI::LED::setColour(LED::color col, RGB_DATATYPE val)
 {
-  uint32_t grb_data = 0;
 
   switch(col)
   {
@@ -69,17 +68,11 @@ HMI::LED::setColour(LED::color col, RGB_DATATYPE val)
 	 break;
   }
 
-  grb_data =   (rgb.green << 16U);
-  grb_data |=  (rgb.red   << 8U);
-  grb_data |=  (rgb.blue  << 0U);
-
-  interface.send(grb_data);
 }
 
 void
 HMI::LED::reset(LED::color col)
 {
-  uint32_t temp_rgb_colour = 0;
 
   switch(col)
   {
@@ -91,6 +84,12 @@ HMI::LED::reset(LED::color col)
 	    rgb.blue  = RGB_DEFAULT; break;
   }
 
-  interface.send(temp_rgb_colour);
+}
+
+void
+HMI::LED::send()
+{
+  interface.build(&rgb);
+  interface.send();
 }
 /*-------------------------------END OF FILE--------------------------------------*/

@@ -50,6 +50,7 @@ namespace HMI
     LED();
     void setColour(LED::color col, RGB_DATATYPE val);
     void reset(LED::color col);
+    void send();
 
   private:
     static int8_t init_flag;

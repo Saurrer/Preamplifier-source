@@ -47,7 +47,7 @@ void SystemStartup(void)
 		  RCC_APB1ENR_USART2EN	|	/** ws2812b interface */
 		  RCC_APB1ENR_TIM2EN	;	/** timer used by knob */
 
-  //RCC->APB1ENR |= RCC_APB1ENR_USART2EN;	//logs
+  RCC->CFGR3 |= (1U << RCC_CFGR3_USART2SW_Pos);	/** set usart2 clock to sys clk */
 
   set_external_hse();
 
@@ -93,7 +93,6 @@ void set_external_hse(void)
   RCC->CFGR |= (2U << RCC_CFGR_SW_Pos);		/** switch sys clk source to PLL clk*/
   while(!((RCC->CFGR & RCC_CFGR_SWS) == RCC_CFGR_SWS_PLL));
 
-  RCC->CFGR3 |= (1U << RCC_CFGR3_USART2SW_Pos);	/** set usart2 clock to sys clk */
 }
 
 

@@ -20,8 +20,10 @@
 #define _WS2812B_H_
 
 /* Includes ----------------------------------------------------------------------*/
-
+#include <colour/inc/colour.h>
 /* Exported define ---------------------------------------------------------------*/
+#define WS2812B_LED_COUNT							(6U)
+#define WS2812B_FRAME_LENGTH							(8U)
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -36,12 +38,13 @@ class WS2812B
 
 public:
   void Init();
-  void send(uint32_t grb_data);
+  void build(colour::RGB * rgb);
+  void send();
   void reset();
 
 private:
-  void resetBuffer();
-  void AddDataToBuffer(volatile uint8_t (*buffer)[8], uint32_t GRB_data);
+  void resetFrameBuffer();
+  void updateFrameBufferWithData(volatile uint8_t (*buffer)[WS2812B_FRAME_LENGTH], uint32_t GRB_data);
 
   void DMA_mem_conf(DMA_Channel_TypeDef * pDMA_Channel);		/**< Line description of somevariable */
   void DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel);	 	/**< Line description of somevariable */

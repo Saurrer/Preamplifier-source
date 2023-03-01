@@ -22,10 +22,10 @@
 */
 
 #include "inc/main.h"
+#include "config.h"
 /*
 +=============================================================================+
 */
-#define CPU_FREQUENCY			(48000000U)
 
 /*
  * GPIO pin
@@ -42,6 +42,7 @@ extern "C" void SysTick_Handler(void)
   GPIOA->ODR ^= GPIO_ODR_10;
 }
 
+
 int main(void)
 {
   delay_init();
@@ -57,6 +58,7 @@ int main(void)
   SysTick_Config(CPU_FREQUENCY/8/2);
   SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
 
+
   for(;;)/*---------------------------------------- INFINITE LOOP ----------------------------------------------*/
     {
       HMI::pKnob->button.read();
@@ -64,41 +66,39 @@ int main(void)
       if(flag == 1)		/**< red */
 	{
 	  HMI::pLed->setColour(HMI::LED::color::red, 128);
-
 	  flag = 0;
 	}
       else if(flag == 2)	/**< green */
       	{
 	  HMI::pLed->setColour(HMI::LED::color::green, 128);
-
 	  flag = 0;
       	}
       else if(flag == 3)	/**< blue */
       	{
 	  HMI::pLed->setColour(HMI::LED::color::blue, 128);
-
       	  flag = 0;
       	}
       else if(flag == 4)	/**< white */
       	{
-/*
 	  HMI::pLed->setColour(HMI::LED::color::red, 128);
 	  HMI::pLed->setColour(HMI::LED::color::green, 128);
 	  HMI::pLed->setColour(HMI::LED::color::blue, 128);
-*/
 
 	  flag = 0;
       	}
       else if(flag == 5)	/**< black */
       	{
-/*
 	  HMI::pLed->reset(HMI::LED::color::red);
 	  HMI::pLed->reset(HMI::LED::color::green);
 	  HMI::pLed->reset(HMI::LED::color::blue);
-*/
-
       	  flag = 0;
       	}
+      else if(flag == 6)	/**< send */
+	{
+	  HMI::pLed->send();
+	  flag = 0;
+	}
+
 /*
       else if (flag == 6)	*<
 	{

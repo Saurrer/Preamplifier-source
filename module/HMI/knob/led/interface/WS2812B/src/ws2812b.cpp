@@ -21,6 +21,8 @@
 #include <cmsis_gcc.h>
 #include <stm32f091xc.h>
 
+#include "../../../inc/led.h"	/**< export LED_COUNT val */
+
 #include "../inc/ws2812b.h"
 #include <STM32/dma/inc/dma.h>
 #include <STM32/uart/inc/uart.h>

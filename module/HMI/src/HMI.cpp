@@ -26,6 +26,7 @@ namespace HMI
 {
   KNOB * pKnob;
 
+  LED * pLed;
 } // namespace HMI
 
 /* Private define ----------------------------------------------------------------*/
@@ -45,6 +46,8 @@ void HMI::init()
 
   pKnob = new (KNOB);
   pKnob->init(TIM2);
+
+  pLed = new (LED);
 
 }
 

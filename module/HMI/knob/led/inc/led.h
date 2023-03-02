@@ -1,42 +1,30 @@
-/** @file HMI.h
+/** @file led.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 21, 2023
+* @date		Feb 28, 2023
 * @version 	1.0.0
-* @copyright 	© 2022. All Rights Reserved.
+* @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of HMI.h.
+* @brief brief description of led.h.
 *
-* @page HMI.h
-* @details Detail description of HMI.h.
+* @page led.h
+* @details Detail description of led.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _HMI_H_
-#define _HMI_H_
+#ifndef _LED_H_
+#define _LED_H_
 
 /* Includes ----------------------------------------------------------------------*/
 
-#include "../knob/inc/knob.h"
-#include "../knob/led/inc/led.h"
-
+#include <colour/inc/colour.h>
+#include "../interface/WS2812B/inc/ws2812b.h"
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
-
-namespace HMI
-{
-
-  extern KNOB * pKnob ;
-  extern LED * pLed;
-
-  extern void init();
-
-} // namespace HMI
-
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
@@ -45,12 +33,41 @@ namespace HMI
 */
 
 /* Exported Object types ---------------------------------------------------------*/
+
+namespace HMI
+{
+
+  class LED
+  {
+
+  public:
+
+    enum class color : uint8_t
+    { red	= 0, green = 1, blue = 2 };
+
+    colour::RGB rgb;
+
+    LED();
+    void setColour(LED::color col, RGB_DATATYPE val);
+    void reset(LED::color col);
+    void send();
+
+  private:
+    static int8_t init_flag;
+    void reset_init_flag() { init_flag = 0; }
+
+    static WS2812B interface;
+
+  };
+
+}  // namespace HMI
+
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/
 
 
 
-#endif /* _HMI_H_ */
+#endif /* _LED_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

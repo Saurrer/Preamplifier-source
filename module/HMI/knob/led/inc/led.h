@@ -24,6 +24,7 @@
 #include <colour/inc/colour.h>
 #include "../interface/WS2812B/inc/ws2812b.h"
 /* Exported define ---------------------------------------------------------------*/
+#define LED_COUNT								(6U)
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -43,7 +44,7 @@ namespace HMI
   public:
 
     enum class color : uint8_t
-    { red	= 0, green = 1, blue = 2 };
+    { red = 0, green = 1, blue = 2 };
 
     colour::RGB rgb;
 

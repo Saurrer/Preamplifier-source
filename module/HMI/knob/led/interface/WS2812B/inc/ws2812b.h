@@ -20,9 +20,10 @@
 #define _WS2812B_H_
 
 /* Includes ----------------------------------------------------------------------*/
+#include "../../../inc/led.h"
 #include <colour/inc/colour.h>
 /* Exported define ---------------------------------------------------------------*/
-#define WS2812B_LED_COUNT							(6U)
+#define WS2812B_LED_COUNT							(LED_COUNT)
 #define WS2812B_FRAME_LENGTH							(8U)
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/

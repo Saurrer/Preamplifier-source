@@ -24,6 +24,9 @@
 #include "../knob/inc/knob.h"
 #include "../knob/led/inc/led.h"
 
+#include "../menu/inc/menu.h"
+#include "../menu/lcd/inc/lcd.h"
+
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
 
@@ -32,6 +35,9 @@ namespace HMI
 
   extern KNOB * pKnob ;
   extern LED * pLed;
+
+  extern MENU * pMenu;
+  extern LCD * pLcd;
 
   extern void init();
 

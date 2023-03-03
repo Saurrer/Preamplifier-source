@@ -27,6 +27,10 @@ namespace HMI
   KNOB * pKnob;
 
   LED * pLed;
+
+
+  MENU * pMenu;
+  LCD * pLcd;
 } // namespace HMI
 
 /* Private define ----------------------------------------------------------------*/
@@ -49,6 +53,9 @@ void HMI::init()
 
   pLed = new (LED);
 
+  pMenu = new (MENU);
+  pLcd = new (LCD);
+  pLcd->init();
 }
 
 /*-------------------------------END OF FILE--------------------------------------*/

@@ -65,6 +65,12 @@ NODE HMI::MENU::menu_2 = {.Name = MENU_MAIN_2, .pNext = &menu_0, &menu_1, NULL, 
 */
 
 /* Private functions -------------------------------------------------------------*/
+
+HMI::MENU::MENU(void)
+{
+  pCurrentNode = &menu_0;
+}
+
 int8_t
 HMI::MENU::gotoNext(void)
 {

@@ -40,6 +40,8 @@ const char * build_date __attribute__((section(".rodata.compile_data"))) = __DAT
 extern "C" void SysTick_Handler(void)
 {
   GPIOA->ODR ^= GPIO_ODR_10;
+
+  HMI::pLcd->refresh();
 }
 
 
@@ -55,7 +57,7 @@ int main(void)
   __ISB();
 
   uint8_t flag = 0;
-  SysTick_Config(CPU_FREQUENCY/8/2);
+  SysTick_Config(CPU_FREQUENCY/8/10);
   SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
 
 

@@ -41,19 +41,19 @@
  * @param[in] x operand 1
  *
  */
-void HD44780::send_half_byte(uint8_t data)
+void HD44780::send_half_byte(uint8_t data)	// do poprawy - dla zapisu i odczytu
 {
-  if(data & (1<<0)) LCD_DATA_PORT->ODR |= GPIO_ODR_5;
-  else LCD_DATA_PORT->ODR &= ~GPIO_ODR_5;
+  if(data & (1<<0)) LCD_D4_PORT->ODR |= LCD_D4_PIN;
+  else 		    LCD_D4_PORT->ODR &= ~LCD_D4_PIN;
 
-  if(data & (1<<1)) LCD_DATA_PORT->ODR |= GPIO_ODR_6;
-  else LCD_DATA_PORT->ODR &= ~GPIO_ODR_6;
+  if(data & (1<<1)) LCD_D5_PORT->ODR |= LCD_D5_PIN;
+  else 		    LCD_D5_PORT->ODR &= ~LCD_D5_PIN;
 
-  if(data & (1<<2)) LCD_DATA_PORT->ODR |= GPIO_ODR_7;
-  else LCD_DATA_PORT->ODR &= ~GPIO_ODR_7;
+  if(data & (1<<2)) LCD_D6_PORT->ODR |= LCD_D6_PIN;
+  else 		    LCD_D6_PORT->ODR &= ~LCD_D6_PIN;
 
-  if(data & (1<<3)) LCD_DATA_PORT->ODR |= GPIO_ODR_8;
-  else LCD_DATA_PORT->ODR &= ~GPIO_ODR_8;
+  if(data & (1<<3)) LCD_D7_PORT->ODR |= LCD_D7_PIN;
+  else 		    LCD_D7_PORT->ODR &= ~LCD_D7_PIN;
 }
 
 /**
@@ -67,6 +67,7 @@ void HD44780::send_half_byte(uint8_t data)
 void HD44780::send_byte(unsigned char _data)
 {
   changeBusDirection(bus_direction::output);
+
 #if USE_RW == 1
   LCD_RW_CLR;
 #endif
@@ -110,7 +111,7 @@ void HD44780::send_cmd(uint8_t cmd)
 void HD44780::send_data(uint8_t data)
 {
   LCD_RS_SET;
-  hd44780_send_byte(data);
+  send_byte(data);
 }
 
 /**
@@ -123,10 +124,10 @@ uint8_t HD44780::read_half_byte(void)
 {
   uint8_t data = 0;
 
-  if(LCD_DATA_PORT->IDR & GPIO_IDR_5) data |= (1<<0);
-  if(LCD_DATA_PORT->IDR & GPIO_IDR_6) data |= (1<<1);
-  if(LCD_DATA_PORT->IDR & GPIO_IDR_7) data |= (1<<2);
-  if(LCD_DATA_PORT->IDR & GPIO_IDR_8) data |= (1<<3);
+  if(LCD_D4_PORT->IDR & LCD_D4_PIN) data |= (1<<0);
+  if(LCD_D5_PORT->IDR & LCD_D5_PIN) data |= (1<<1);
+  if(LCD_D6_PORT->IDR & LCD_D6_PIN) data |= (1<<2);
+  if(LCD_D7_PORT->IDR & LCD_D7_PIN) data |= (1<<3);
 
   return data;
 }

@@ -40,6 +40,7 @@ void set_external_hse(void);
 void SystemStartup(void)
 {
   RCC->AHBENR |=  RCC_AHBENR_GPIOAEN 	|
+		  RCC_AHBENR_GPIOBEN 	|	/** hd44780 interface */
 		  RCC_AHBENR_DMA1EN	|	/** ws2812b interface */
 		  RCC_AHBENR_DMA2EN  	;	/** ws2812b interface */
 

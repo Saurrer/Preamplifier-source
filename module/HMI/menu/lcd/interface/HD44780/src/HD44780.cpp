@@ -137,6 +137,7 @@ uint8_t HD44780::read_half_byte(void)
  *
  * @details
  *
+ * @return
  */
 uint8_t HD44780::read_byte(void)
 {
@@ -159,6 +160,7 @@ uint8_t HD44780::read_byte(void)
  *
  * @details
  *
+ * @return
  */
 uint8_t HD44780::read_BF(void)
 {
@@ -173,6 +175,7 @@ uint8_t HD44780::read_BF(void)
  *
  * @param[in] x operand 1
  *
+ * @return
  */
 void HD44780::changeBusDirection(bus_direction dir)
 {

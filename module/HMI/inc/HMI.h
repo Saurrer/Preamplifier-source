@@ -28,6 +28,7 @@
 #include "../menu/lcd/inc/lcd.h"
 
 /* Exported define ---------------------------------------------------------------*/
+#define SCREEN_CURSOR_SIGN				">"
 /* Exported types ----------------------------------------------------------------*/
 
 namespace HMI
@@ -40,6 +41,8 @@ namespace HMI
   extern LCD * pLcd;
 
   extern void init();
+  extern void scrollMenu(void);
+  extern void jumpSubMenu(void);
 
 } // namespace HMI
 

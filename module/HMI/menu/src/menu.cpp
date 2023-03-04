@@ -66,11 +66,26 @@ NODE HMI::MENU::menu_2 = {.Name = MENU_MAIN_2, .pNext = &menu_0, &menu_1, NULL, 
 
 /* Private functions -------------------------------------------------------------*/
 
+/**
+ * @fn HMI::MENU::MENU(void)
+ *
+ * @details
+ *
+ *
+ */
 HMI::MENU::MENU(void)
 {
   pCurrentNode = &menu_0;
 }
 
+
+/**
+ * @fn int8_t HMI::MENU::gotoNext(void)
+ *
+ * @details
+ *
+ * @return
+ */
 int8_t
 HMI::MENU::gotoNext(void)
 {
@@ -82,6 +97,13 @@ HMI::MENU::gotoNext(void)
     }
 }
 
+/**
+ * @fn int8_t HMI::MENU::gotoPrevious(void)
+ *
+ * @details
+ *
+ * @return
+ */
 int8_t
 HMI::MENU::gotoPrevious(void)
 {
@@ -93,6 +115,13 @@ HMI::MENU::gotoPrevious(void)
     }
 }
 
+/**
+ * @fn int8_t HMI::MENU::gotoParent(void)
+ *
+ * @details
+ *
+ * @return
+ */
 int8_t
 HMI::MENU::gotoParent(void)
 {
@@ -104,6 +133,13 @@ HMI::MENU::gotoParent(void)
     }
 }
 
+/**
+ * @fn int8_t HMI::MENU::gotoChild(void)
+ *
+ * @details
+ *
+ * @return
+ */
 int8_t
 HMI::MENU::gotoChild(void)
 {
@@ -115,6 +151,13 @@ HMI::MENU::gotoChild(void)
     }
 }
 
+/**
+ * @fn int8_t HMI::MENU::exeFunction(void)
+ *
+ * @details
+ *
+ * @return
+ */
 int8_t
 HMI::MENU::exeFunction(void)
 {

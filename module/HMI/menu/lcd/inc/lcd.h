@@ -43,7 +43,7 @@ namespace HMI
     void init();
 
     void locate(uint8_t x, uint8_t y);
-    void clear_buffer();
+    void clearBuffer();
     void refresh();
     void send_char(char c);
     void print(const char *s);

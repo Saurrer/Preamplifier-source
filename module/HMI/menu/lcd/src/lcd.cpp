@@ -109,7 +109,7 @@ void HMI::LCD::send_char(char c)
  * @details
  *
  */
-void HMI::LCD::clear_buffer(void)
+void HMI::LCD::clearBuffer(void)
 {
   uint8_t i, j;
 

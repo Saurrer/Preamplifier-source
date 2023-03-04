@@ -240,58 +240,6 @@
 
 /* Exported functions ----------------------------------------------------------- */
 
-/**
-* @brief Brief description of function
-*/
-extern void hd44780_init(void);
-
-/**
-* @brief Brief description of function
-*/
-extern void hd44780_cls(void);
-
-/**
-* @brief Brief description of function
-*/
-extern void hd44780_locate(uint8_t , uint8_t );
-
-/**
-* @brief Brief description of function
-*/
-extern void hd44780_home(void);
-
-/**
-* @brief Brief description of function
-*/
-extern void hd44780_cursor_on(void);
-extern void hd44780_cursor_off(void);
-
-/**
-* @brief Brief description of function
-*/
-extern void hd44780_blink_on(void);
-extern void hd44780_blink_off(void);
-
-/**
-* @brief Brief description of function
-*/
-extern void hd44780_send_byte(unsigned char );
-extern void hd44780_send_cmd(uint8_t);
-/**
-* @brief Brief description of function
-*/
-extern uint8_t hd44780_read_byte(void);
-extern uint8_t hd44780_read_BF(void);
-
-/**
-* @brief Brief description of function
-*/
-extern void send_data(uint8_t );
-extern void send_string(char * );
-extern void send_int(int );
-extern void send_hex(int );
-
-
 /* Exported Object types ---------------------------------------------------------*/
 class HD44780
 {

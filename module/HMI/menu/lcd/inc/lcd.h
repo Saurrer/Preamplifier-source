@@ -1,29 +1,27 @@
-/** @file ws2812b.h
+/** @file lcd.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 25, 2023
+* @date		Mar 2, 2023
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of ws2812b.h.
+* @brief brief description of lcd.h.
 *
-* @page ws2812b.h
-* @details Detail description of ws2812b.h.
+* @page lcd.h
+* @details Detail description of lcd.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _WS2812B_H_
-#define _WS2812B_H_
+#ifndef _LCD_H_
+#define _LCD_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include <colour/inc/colour.h>
+#include "../interface/HD44780/inc/HD44780.h"
 /* Exported define ---------------------------------------------------------------*/
-#define WS2812B_LED_COUNT							(LED_COUNT)
-#define WS2812B_FRAME_LENGTH							(8U)
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -33,27 +31,41 @@
 */
 
 /* Exported Object types ---------------------------------------------------------*/
-class WS2812B
+namespace HMI
 {
 
-public:
-  void Init();
-  void build(colour::RGB * rgb);
-  void send();
-  void reset();
+  class LCD
+  {
 
-private:
-  void resetFrameBuffer();
-  void updateFrameBufferWithData(volatile uint8_t (*buffer)[WS2812B_FRAME_LENGTH], uint32_t GRB_data);
+  public:
 
-  void DMA_mem_conf(DMA_Channel_TypeDef * pDMA_Channel);		/**< configration for DMI source/destination */
-  void DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel);	 	/**< configration for DMI source/destination */
-};
+    uint8_t pointer_x, pointer_y;
+
+    void init();
+
+    void locate(uint8_t row, uint8_t column);
+    void clearBuffer();					/**< fill buffer with space sign */
+    void print(const char *s);				/**< write data to buffer */
+    void refreshDisplay();				/**< compare buffer with lcd data */
+
+  private:
+    static uint8_t init_flag;
+
+    static char buffer_lcd_new[LCD_ROWS][LCD_COLUMNS];	/**<  */
+    static char buffer_lcd_old[LCD_ROWS][LCD_COLUMNS];	/**< buffer representing currently data on lcd screen */
+
+    void send_char(char c);
+    static HD44780 interface;				/**< HD44780 communication interface */
+  };
+
+}  // namespace HMI
+
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/
 
 
-#endif /* _WS2812B_H_ */
+
+#endif /* _LCD_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

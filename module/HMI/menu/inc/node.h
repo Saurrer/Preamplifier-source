@@ -1,30 +1,30 @@
-/** @file ws2812b.h
+/** @file node.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 25, 2023
+* @date		Mar 2, 2023
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of ws2812b.h.
+* @brief brief description of node.h.
 *
-* @page ws2812b.h
-* @details Detail description of ws2812b.h.
+* @page node.h
+* @details Detail description of node.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _WS2812B_H_
-#define _WS2812B_H_
+#ifndef _NODE_H_
+#define _NODE_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include <colour/inc/colour.h>
+
 /* Exported define ---------------------------------------------------------------*/
-#define WS2812B_LED_COUNT							(LED_COUNT)
-#define WS2812B_FRAME_LENGTH							(8U)
 /* Exported types ----------------------------------------------------------------*/
+typedef struct node_t NODE;
+
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
@@ -33,27 +33,23 @@
 */
 
 /* Exported Object types ---------------------------------------------------------*/
-class WS2812B
+struct node_t
 {
 
-public:
-  void Init();
-  void build(colour::RGB * rgb);
-  void send();
-  void reset();
+  const char * Name;		/**< node name */
 
-private:
-  void resetFrameBuffer();
-  void updateFrameBufferWithData(volatile uint8_t (*buffer)[WS2812B_FRAME_LENGTH], uint32_t GRB_data);
+  NODE * pNext;
+  NODE * pPrevious;
+  NODE * pParent;
+  NODE * pChild;
 
-  void DMA_mem_conf(DMA_Channel_TypeDef * pDMA_Channel);		/**< configration for DMI source/destination */
-  void DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel);	 	/**< configration for DMI source/destination */
+  void(*function)(void);
+
 };
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/
 
-
-#endif /* _WS2812B_H_ */
+#endif /* _NODE_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

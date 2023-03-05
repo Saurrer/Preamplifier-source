@@ -22,9 +22,17 @@
 #include <stm32f091xc.h>
 
 #include "../inc/button.h"
+
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
+#define TEST 0
 
+#if (TEST == 1)
+  #include <utils/test_io/inc/test_io.h>
+#endif
+
+#define BUTTON_LONG_PRESS_DELAY_1		(350000U) /**< experimental result */
+#define BUTTON_DOUBLE_PRESS_DELAY_2		(200000U) /**< experimental result */
 
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
@@ -36,6 +44,13 @@
 */
 
 /* Private functions -------------------------------------------------------------*/
+
+/**
+ * @fn void HMI::BUTTON::init(GPIO_TypeDef * button_port, GpioPin button_pin)
+ *
+ * @details
+ *
+ */
 void HMI::BUTTON::init(GPIO_TypeDef * button_port, GpioPin button_pin)
 {
   status = BUTTON_NOT_INITIALIZED;
@@ -45,51 +60,78 @@ void HMI::BUTTON::init(GPIO_TypeDef * button_port, GpioPin button_pin)
   if(!(button_port->IDR & BUTTON_PIN))  { status = BUTTON_ON; }
   else 					{ status = BUTTON_OFF; }
 
+#if (TEST == 1)
+  init_test_io();
+#endif
 }
 
+/**
+ * @fn uint8_t HMI::BUTTON::getStatus(void)
+ *
+ * @details
+ *
+ * @return
+ */
 uint8_t HMI::BUTTON::getStatus(void) { return status; }
 
+/**
+ * @fn void HMI::BUTTON::read(void)
+ *
+ * @details
+ *
+ * @return
+ */
 void HMI::BUTTON::read(void)
 {
-  uint32_t cnt1, cnt2;
-  cnt1 = 200000;		/**< experimental result */
-  cnt2 = 100000;		/**< experimental result */
+  int32_t cnt1, cnt2;
+  cnt1 = BUTTON_LONG_PRESS_DELAY_1;
+  cnt2 = BUTTON_DOUBLE_PRESS_DELAY_2;
 
   if( !(keylock) && !(BUTTON_PORT->IDR & BUTTON_PIN))
      {
       keylock = 1;
 
-      while(cnt1--)
+      while(cnt1--)					/**< long press */
 	{
 	  if(BUTTON_PORT->IDR & BUTTON_PIN)
 	    {
-	      while(cnt2--)
+	      while(cnt2--)				/**< double press */
 		{
 		  if(!(BUTTON_PORT->IDR & BUTTON_PIN))
 		    {
-		      //double press
 		      status = BUTTON_DOUBLE_PRESS;
-		      //LED_GREEN_PORT->ODR ^= LED_GREEN_PIN;
+
+#if (TEST == 1)
+		      TEST_IO_1_PORT->ODR ^= TEST_IO_1_PIN;
+#endif
 		      return;
 		    }
 		}
+
 	      status = BUTTON_SINGLE_PRESS;
-	      //LED_RED_PORT->ODR ^= LED_RED_PIN;
+
+#if (TEST == 1)
+	      TEST_IO_2_PORT->ODR ^= TEST_IO_2_PIN;
+#endif
 	      return;
 	    }
 	}
 
 	//long press
 	status = BUTTON_LONG_PRESS;
-
-	//LED_YELLOW_PORT->ODR ^= LED_YELLOW_PIN;
+#if (TEST == 1)
+	TEST_IO_3_PORT->ODR ^= TEST_IO_3_PIN;
+#endif
      }
     else if (keylock && (BUTTON_PORT->IDR & BUTTON_PIN))
       {
 	keylock++;
 	status = BUTTON_OFF;
-	//LED_GREEN_LOW;
-	//LED_YELLOW_LOW;
+#if (TEST == 1)
+	TEST_IO_1_CLEAR;	/**< double press */
+	TEST_IO_3_CLEAR;	/**< long press */
+#endif
+
       }
 }
 /*-------------------------------END OF FILE--------------------------------------*/

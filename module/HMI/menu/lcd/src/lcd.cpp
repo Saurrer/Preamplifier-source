@@ -18,6 +18,7 @@
 #include <stdint.h>
 
 #include "../inc/lcd.h"
+#include <Utils/delay/inc/delay.h>
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define LCD_FIRST_TIME_INIT_INTERFACE		(0U)
@@ -62,6 +63,10 @@ void HMI::LCD::init(void)
   print("Init");
   locate(1, 1);
   print("Preamplifier");
+
+  refreshDisplay();
+
+  delay_ms(10000);
 }
 
 /**
@@ -142,7 +147,7 @@ void HMI::LCD::refreshDisplay(void)
 
 	      locate_flag = 1;
 	    }
-	  else	/**< no diff found  between new_buffer and buffer representing lcd screen */
+	  else	/**< no diff found between new_buffer and buffer representing lcd screen */
 	    {
 	      locate_flag = 0;
 	    }

@@ -28,7 +28,8 @@
 #include "../menu/lcd/inc/lcd.h"
 
 /* Exported define ---------------------------------------------------------------*/
-#define SCREEN_CURSOR_SIGN				">"
+#define HMI_CURSOR_SIGN 		">"
+#define HMI_SPACE_SIGN 			" "
 /* Exported types ----------------------------------------------------------------*/
 
 namespace HMI

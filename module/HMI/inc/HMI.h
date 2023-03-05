@@ -40,9 +40,42 @@ namespace HMI
   extern MENU * pMenu;
   extern LCD * pLcd;
 
+  class CURSOR
+  {
+
+  public:
+    enum
+    {
+      CURSOR_UNDERFLOW	= -1,
+      CURSOR_IN_SCOPE	= 0,
+      CURSOR_OVERFLOW	= 1,
+    };
+
+    void init(int8_t min, int8_t max);
+
+    int8_t get();
+    int8_t set(int8_t val);
+
+    int8_t getFlag();
+    //void resetFlag();
+
+    CURSOR& operator++();
+    CURSOR& operator--();
+
+  private:
+    int8_t min;
+    int8_t max;
+    int8_t current_position;
+    int8_t limit_status_flag;
+
+  };
+  extern CURSOR * pCursor;
+
   extern void init();
   extern void scrollMenu(void);
   extern void jumpSubMenu(void);
+  extern void refreshScreen();
+  extern void refreshCursor(void);
 
 } // namespace HMI
 

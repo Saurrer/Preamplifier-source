@@ -31,8 +31,8 @@
   #include <utils/test_io/inc/test_io.h>
 #endif
 
-#define BUTTON_READ_FUNCTION_DELAY_1		(500000U) /**< experimental result */
-#define BUTTON_READ_FUNCTION_DELAY_2		(300000U) /**< experimental result */
+#define BUTTON_LONG_PRESS_DELAY_1		(350000U) /**< experimental result */
+#define BUTTON_DOUBLE_PRESS_DELAY_2		(200000U) /**< experimental result */
 
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
@@ -84,14 +84,14 @@ uint8_t HMI::BUTTON::getStatus(void) { return status; }
 void HMI::BUTTON::read(void)
 {
   int32_t cnt1, cnt2;
-  cnt1 = BUTTON_READ_FUNCTION_DELAY_1;
-  cnt2 = BUTTON_READ_FUNCTION_DELAY_2;
+  cnt1 = BUTTON_LONG_PRESS_DELAY_1;
+  cnt2 = BUTTON_DOUBLE_PRESS_DELAY_2;
 
   if( !(keylock) && !(BUTTON_PORT->IDR & BUTTON_PIN))
      {
       keylock = 1;
 
-      while(cnt1--)					/**< single press */
+      while(cnt1--)					/**< long press */
 	{
 	  if(BUTTON_PORT->IDR & BUTTON_PIN)
 	    {
@@ -107,6 +107,7 @@ void HMI::BUTTON::read(void)
 		      return;
 		    }
 		}
+
 	      status = BUTTON_SINGLE_PRESS;
 
 #if (TEST == 1)

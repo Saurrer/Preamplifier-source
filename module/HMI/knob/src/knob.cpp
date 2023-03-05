@@ -50,7 +50,7 @@ void HMI::KNOB::init(TIM_TypeDef * __restrict__ pu32TIM)
   GpioPinConfig(ENCODER_PORT_B, ENCODER_PIN_B, gpio_AF2_OD_MS);
 
   position = &pu32TIM->CNT;		//count's up by 2 -- probably it count 2 edges
-  dir = direction::NO_MOVE;
+  direction = NO_MOVE;
   flag_context = 0;
 
   pu32TIM->CR1 |= (1U << TIM_CR1_CKD_Pos); 	/** Clock division. */
@@ -96,12 +96,12 @@ int8_t HMI::KNOB::readDirection(void)
 
   temp_data = (int32_t) ( ((*position) >> 1) - temp_data);
 
-  if(temp_data > 0) 	 { dir = direction::LEFT; }
-  else if(temp_data < 0) { dir = direction::RIGHT;}
-  else			 { dir = direction::NO_MOVE; }
+  if(temp_data > 0) 	 { direction = LEFT; }
+  else if(temp_data < 0) { direction = RIGHT;}
+  else			 { direction = NO_MOVE; }
 
   temp_data = ((*position) >> 1);				/** div2 | save current encoder value before leave */
 
-  return (int8_t) dir;
+  return direction;
 }
 /*-------------------------------END OF FILE--------------------------------------*/

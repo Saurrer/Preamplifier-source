@@ -45,7 +45,7 @@ namespace HMI
   public:
     BUTTON button;
 
-    enum class direction : int8_t
+    enum : int8_t
     { NO_MOVE	= 0, RIGHT = -1, LEFT = 1, };
 
     void init(TIM_TypeDef * __restrict__ pu32TIM);	/**<  */
@@ -54,7 +54,7 @@ namespace HMI
   private:
     volatile uint32_t * position;			/**<  */
 
-    direction dir;					/**<  */
+    int8_t direction;					/**<  */
 
     uint8_t flag_context;				/**<  */
   };

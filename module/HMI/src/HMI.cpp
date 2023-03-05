@@ -43,7 +43,8 @@ namespace HMI
   Input Data:
   Action:
 */
-
+void refreshScreen(void);
+void refreshCursor(void);
 /* Private functions -------------------------------------------------------------*/
 
 /**
@@ -78,7 +79,7 @@ void HMI::scrollMenu(void)
   switch(pKnob->readDirection())
   {
 
-    case (1):	//movedown
+    case HMI::KNOB::LEFT:	/**< moveDown */
 
 /*
 	    pSP->increment_position();
@@ -88,7 +89,7 @@ void HMI::scrollMenu(void)
 
 		if(pMenu->gotoNext())
 		  {
-
+		    refreshScreen();
 /*
 		    refreshScreen(1);
 		    pSP->set_position(1);
@@ -107,7 +108,7 @@ void HMI::scrollMenu(void)
 
 	      break;
 
-    case (-1):	//moveup
+    case HMI::KNOB::RIGHT:	/**< moveUp */
 
 /*
 	    pSP->decrement_position();
@@ -117,7 +118,7 @@ void HMI::scrollMenu(void)
 
 		if(pMenu->gotoPrevious())
 		  {
-
+		    refreshScreen();
 /*
 		    refreshScreen(-1);
 		    pSP->set_position(0);
@@ -160,6 +161,7 @@ void HMI::jumpSubMenu(void)
     case HMI::BUTTON::BUTTON_SINGLE_PRESS:	/**< BUTTON_SINGLE_PRESS */
 	    if(pMenu->gotoChild())
 	      {
+		refreshScreen();
 /*
 		refreshScreen(-1);
 		pSP->set_position(0);
@@ -172,7 +174,7 @@ void HMI::jumpSubMenu(void)
     case HMI::BUTTON::BUTTON_DOUBLE_PRESS:	/**< BUTTON_DOUBLE_PRESS */
 	    if(pMenu->gotoParent())
 	      {
-
+		refreshScreen();
 /*
 		refreshScreen(-1);
 		pSP->set_position(0);
@@ -190,6 +192,26 @@ void HMI::jumpSubMenu(void)
 	      }
 	      break;
     }
+}
+
+
+void refreshScreen(void)
+{
+  using namespace HMI;
+
+  pLcd->clearBuffer();
+  pLcd->locate(0, 1);
+  pLcd->print(pMenu->pCurrentNode->Name);
+  pLcd->locate(1, 1);
+  pLcd->print(pMenu->pCurrentNode->pNext->Name);
+
+}
+
+void refreshCursor(void)
+{
+  using namespace HMI;
+
+
 }
 
 /*-------------------------------END OF FILE--------------------------------------*/

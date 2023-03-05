@@ -29,7 +29,6 @@
 /**
 * @brief Brief description of function
 */
-extern void FunctionName(void);
 
 /* Exported Object types ---------------------------------------------------------*/
 namespace HMI
@@ -40,21 +39,23 @@ namespace HMI
 
   public:
 
+    uint8_t pointer_x, pointer_y;
+
     void init();
 
     void locate(uint8_t x, uint8_t y);
-    void clearBuffer();
-    void refresh();
-    void send_char(char c);
-    void print(const char *s);
+    void clearBuffer();					/**< fill buffer with space sign */
+    void print(const char *s);				/**< write data to buffer */
+    void refreshDisplay();				/**< compare buffer with lcd data */
 
   private:
     static uint8_t init_flag;
-    uint8_t pointer_x, pointer_y;
-    static HD44780 interface;				/**< HD44780 communication interface */
 
-    char buffer_lcd_new[LCD_ROWS][LCD_COLUMNS];
+    static char buffer_lcd_new[LCD_ROWS][LCD_COLUMNS];	/**<  */
     static char buffer_lcd_old[LCD_ROWS][LCD_COLUMNS];	/**< buffer representing currently data on lcd screen */
+
+    void send_char(char c);
+    static HD44780 interface;				/**< HD44780 communication interface */
   };
 
 }  // namespace HMI

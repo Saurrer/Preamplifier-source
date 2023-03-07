@@ -59,13 +59,17 @@ Preamplifier::init(void)
 {
   source = new(INPUT);
 
-  source->changeSource(3);
+  /* init LMC1992N configuration */
+  source->changeSource(INPUT::minijack);
   source->fd_left_rear.setValue(LMC1992N_FADER_MAX);
   source->fd_right_rear.setValue(LMC1992N_FADER_MAX);
   source->fd_left_front.setValue(LMC1992N_FADER_MAX);
   source->fd_right_front.setValue(LMC1992N_FADER_MAX);
 
   source->volume.setValue(LMC1992N_VOLUME_MAX);
+
+  source->treble.setValue(LMC1992N_TONE_FLAT);
+  source->bass.setValue(LMC1992N_TONE_FLAT);
 }
 
 Preamplifier::INPUT::INPUT()

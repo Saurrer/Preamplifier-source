@@ -31,8 +31,8 @@
   #include <utils/test_io/inc/test_io.h>
 #endif
 
-#define BUTTON_LONG_PRESS_DELAY_1		(350000U) /**< experimental result */
-#define BUTTON_DOUBLE_PRESS_DELAY_2		(200000U) /**< experimental result */
+#define BUTTON_LONG_PRESS_DELAY_1		(500000U) /**< experimental result */
+#define BUTTON_DOUBLE_PRESS_DELAY_2		(300000U) /**< experimental result */
 
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/

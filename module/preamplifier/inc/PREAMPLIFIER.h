@@ -30,7 +30,7 @@ namespace Preamplifier
 
   public:
     enum
-    { INPUT_OPEN = 0, INPUT_1, INPUT_2, INPUT_3, INPUT_4 };
+    { INPUT_OPEN = 0, RCA_1, RCA_2, minijack, microSD };
 
     INPUT();
 

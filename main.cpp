@@ -58,6 +58,7 @@ int main(void)
   init_test_io();
 
   HMI::init();
+  Preamplifier::init();
 
   __DSB();
   __ISB();

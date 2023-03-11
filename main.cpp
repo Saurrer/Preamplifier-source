@@ -32,9 +32,6 @@
 /*
  * GPIO pin
  */
-#define LCD_BRIGHTNESS_PORT	GPIOB
-#define LCD_BRIGHTNESS_PIN	PB1
-
 
 const char * build_time __attribute__((section(".rodata.compile_data"))) = __TIME__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 const char * build_date __attribute__((section(".rodata.compile_data"))) = __DATE__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera

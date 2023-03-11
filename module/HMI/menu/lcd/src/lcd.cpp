@@ -113,11 +113,27 @@ void HMI::LCD::clearBuffer(void)
  * @param[in] x operand 1
  *
  */
-void HMI::LCD::print(const char *s)
+void HMI::LCD::print(const char * s)
 {
   while(*s)
     {
       send_char(*s++);
+    }
+}
+
+/**
+ * @fn void HMI::LCD::print(uint8_t data)
+ *
+ * @details
+ *
+ * @param[in] x operand 1
+ *
+ */
+void HMI::LCD::print(char c)
+{
+  while(c)
+    {
+      send_char(c);
     }
 }
 

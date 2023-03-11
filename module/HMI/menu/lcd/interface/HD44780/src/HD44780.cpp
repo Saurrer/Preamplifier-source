@@ -205,6 +205,9 @@ void HD44780::init(void)
 {
   delay_init();
 
+  GpioPinConfig(LCD_BRIGHTNESS_PORT, LCD_BRIGHTNESS_PIN, gpio_output_PP_PU_LS);
+  LCD_BRIGHTNESS_PORT->BSRR|= GPIO_BSRR_BS_1;
+
   GpioPinConfig(LCD_RS_PORT, LCD_RS_PIN, gpio_output_PP_PU_HS);
   GpioPinConfig(LCD_RW_PORT, LCD_RW_PIN, gpio_output_PP_PU_HS);
   GpioPinConfig(LCD_E_PORT, LCD_E_PIN, gpio_output_PP_PU_HS);

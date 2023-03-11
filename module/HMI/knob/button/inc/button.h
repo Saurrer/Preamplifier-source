@@ -49,6 +49,7 @@ namespace HMI
 
     void init(GPIO_TypeDef * button_port, GpioPin button_pin);
     uint8_t getStatus(void);
+    void clearStatus(void);
     void read(void);
 
   private:

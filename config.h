@@ -23,20 +23,27 @@
 #define CPU_FREQUENCY				(48000000U)
 
 
-/* Exported types ----------------------------------------------------------------*/
-//extern uint16_t somevariable; /**< Line description of somevariable */
-/* Exported constants ------------------------------------------------------------*/
-/* Exported macro ----------------------------------------------------------------*/
-/* Exported functions ----------------------------------------------------------- */
-/**
-* @brief Brief description of function
-*/
+/* MENU 0 names */
+#define MENU_0_NAME				"menu_0"
+#define SUB_MENU_0_1_NAME			"submenu_0_1"
+#define SUB_MENU_0_2_NAME			"submenu_0_2"
+#define SUB_MENU_0_3_NAME			"submenu_0_3"
 
-/* Exported Object types ---------------------------------------------------------*/
-/* Exported Object constants -----------------------------------------------------*/
-/* Exported Object macro ---------------------------------------------------------*/
-/* Exported Object functions -----------------------------------------------------*/
+/* MENU 1 names */
+#define MENU_1_NAME				"Preamplifier"
+#define SUB_MENU_1_1_NAME			"Input"
+#define SUB_MENU_1_2_NAME			"Bass"
+#define SUB_MENU_1_3_NAME			"Treble"
+#define SUB_MENU_1_4_NAME			"Volume"
+#define SUB_MENU_1_5_NAME			"Fader RF"
+#define SUB_MENU_1_6_NAME			"Fader LF"
+#define SUB_MENU_1_7_NAME			"Fader RR"
+#define SUB_MENU_1_8_NAME			"Fader LR"
 
+/* MENU 2 names */
+#define MENU_2_NAME				"menu_2"
+#define SUB_MENU_2_1_NAME			"submenu_2_1"
+#define SUB_MENU_2_2_NAME			"submenu_2_2"
 
 
 #endif /* _CONFIG_H_ */

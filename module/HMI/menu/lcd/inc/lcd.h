@@ -46,6 +46,7 @@ namespace HMI
     void locate(uint8_t row, uint8_t column);
     void clearBuffer();					/**< fill buffer with space sign */
     void print(const char *s);				/**< write data to buffer */
+    void print(char c);
     void refreshDisplay();				/**< compare buffer with lcd data */
 
   private:

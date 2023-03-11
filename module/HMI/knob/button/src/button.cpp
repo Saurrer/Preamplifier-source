@@ -51,11 +51,12 @@
  * @details
  *
  */
-void HMI::BUTTON::init(GPIO_TypeDef * button_port, GpioPin button_pin)
+void
+HMI::BUTTON::init(GPIO_TypeDef * button_port, GpioPin button_pin)
 {
   status = BUTTON_NOT_INITIALIZED;
 
-  GpioPinConfig(button_port, button_pin, gpio_input_floating);
+  GpioPinConfig(button_port, button_pin, gpio_input_PU);
 
   if(!(button_port->IDR & BUTTON_PIN))  { status = BUTTON_ON; }
   else 					{ status = BUTTON_OFF; }
@@ -72,7 +73,26 @@ void HMI::BUTTON::init(GPIO_TypeDef * button_port, GpioPin button_pin)
  *
  * @return
  */
-uint8_t HMI::BUTTON::getStatus(void) { return status; }
+uint8_t
+HMI::BUTTON::getStatus(void)
+{
+  read();
+  return status;
+}
+
+/**
+ * @fn void HMI::BUTTON::clearStatus(void)
+ *
+ * @details
+ *
+ * @return
+ */
+void
+HMI::BUTTON::clearStatus(void)
+{
+  status = 0;
+}
+
 
 /**
  * @fn void HMI::BUTTON::read(void)
@@ -81,7 +101,8 @@ uint8_t HMI::BUTTON::getStatus(void) { return status; }
  *
  * @return
  */
-void HMI::BUTTON::read(void)
+void
+HMI::BUTTON::read(void)
 {
   int32_t cnt1, cnt2;
   cnt1 = BUTTON_LONG_PRESS_DELAY_1;

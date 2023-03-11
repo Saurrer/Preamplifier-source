@@ -32,9 +32,6 @@
 /*
  * GPIO pin
  */
-#define LCD_BRIGHTNESS_PORT	GPIOB
-#define LCD_BRIGHTNESS_PIN	PB1
-
 
 const char * build_time __attribute__((section(".rodata.compile_data"))) = __TIME__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 const char * build_date __attribute__((section(".rodata.compile_data"))) = __DATE__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
@@ -49,16 +46,11 @@ extern "C" void SysTick_Handler(void)
 
 int main(void)
 {
-
   delay_init();
 
-  GpioPinConfig(LCD_BRIGHTNESS_PORT, LCD_BRIGHTNESS_PIN, gpio_output_PP_PU_LS);
-  LCD_BRIGHTNESS_PORT->BSRR|= GPIO_BSRR_BS_1;
+  module::init();
 
   init_test_io();
-
-  HMI::init();
-  Preamplifier::init();
 
   __DSB();
   __ISB();

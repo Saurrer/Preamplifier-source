@@ -16,15 +16,17 @@
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _PREAMPLIFIER_H_
-#define _PREAMPLIFIER_H_
+#ifndef _PREAMP_H_
+#define _PREAMP_H_
 
 /* Includes ----------------------------------------------------------------------*/
 #include "../LMC1992N/inc/lmc1992n.h"
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
-namespace Preamplifier
+namespace preamp
 {
+
+
   class INPUT
   {
 
@@ -51,10 +53,26 @@ namespace Preamplifier
     static input_t source;
   };
 
+  enum
+  {
+    LMC1992_INPUT 	= 0,
+    LMC1992_BASS 	= 1,
+    LMC1992_TREBLE 	= 2,
+    LMC1992_VOLUME 	= 3,
+    LMC1992_FADER_RF 	= 4,
+    LMC1992_FADER_LF 	= 5,
+    LMC1992_FADER_RR 	= 6,
+    LMC1992_FADER_LR 	= 7
+  };
+
+  extern char * FunctionNameTable[LMC1992N_FUNCTION_COUNT];
+
+  //extern char* FunctionNameTable[];
   extern void init(void);
   extern INPUT * source;
 
 }  // namespace Preamplifier
+
 
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -68,6 +86,6 @@ namespace Preamplifier
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/
 
-#endif /* _PREAMPLIFIER_H_ */
+#endif /* _PREAMP_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

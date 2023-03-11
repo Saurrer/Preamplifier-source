@@ -101,6 +101,6 @@ LMC1992_FUNCTION::operator--()
 }
 
 uint8_t
-LMC1992_FUNCTION::getAddress() { return value; }
+LMC1992_FUNCTION::getAddress() { return address; }
 
 /*-------------------------------END OF FILE--------------------------------------*/

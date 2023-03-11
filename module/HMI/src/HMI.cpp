@@ -116,7 +116,6 @@ void HMI::scrollMenu(void)
  */
 void HMI::jumpSubMenu(void)
 {
-  pKnob->button.read();
 
   switch(pKnob->button.getStatus())
   {

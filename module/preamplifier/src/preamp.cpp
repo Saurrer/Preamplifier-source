@@ -16,7 +16,7 @@
 */
 /* Includes ----------------------------------------------------------------------*/
 
-#include "../inc/PREAMPLIFIER.h"
+#include "../inc/preamp.h"
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define PREAMPLIFIER_VOLUME_DEFAULT_VALUE			(LMC1992_VOLUME_MID)
@@ -26,18 +26,19 @@
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
 
-namespace Preamplifier
+namespace preamp
 {
-  const char * FunctionNameTable[LMC1992N_FUNCTION_COUNT] =
+
+  char * FunctionNameTable[LMC1992N_FUNCTION_COUNT] =
   {
-      "Input",
-      "Bass",
-      "Treble",
-      "Volume",
-      "Fader FR",
-      "Fader FL",
-      "Fader RR",
-      "Fader RL",
+      "Input",		//0
+      "Bass",		//1
+      "Treble",		//2
+      "Volume",		//3
+      "Fader RF",	//4
+      "Fader LF",	//5
+      "Fader RR",	//6
+      "Fader LR",	//7
   };
 
   input_t INPUT::source {LMC1992N_INPUT_SELECT_ADDRESS, LMC1992N_INPUT_SELECT_MIN, LMC1992N_INPUT_SELECT_MAX, INPUT_OPEN};
@@ -55,7 +56,7 @@ namespace Preamplifier
 
 /* Private functions -------------------------------------------------------------*/
 void
-Preamplifier::init(void)
+preamp::init(void)
 {
   source = new(INPUT);
 
@@ -72,14 +73,14 @@ Preamplifier::init(void)
   source->bass.setValue(LMC1992N_TONE_FLAT);
 }
 
-Preamplifier::INPUT::INPUT()
+preamp::INPUT::INPUT()
 {
 
 }
 
 int8_t
-Preamplifier::INPUT::getSource() { return source.getValue(); }
+preamp::INPUT::getSource() { return source.getValue(); }
 
 void
-Preamplifier::INPUT::changeSource(int8_t val) { source.setValue(val); }
+preamp::INPUT::changeSource(int8_t val) { source.setValue(val); }
 /*-------------------------------END OF FILE--------------------------------------*/

@@ -28,14 +28,15 @@
 
 #include "../startup/inc/SystemStartup.h"
 
+/* modules */
+#include "../module/module.h"
+
 /* stm32 */
 #include <STM32/gpio/inc/gpio.h>
 
 /* utils */
 #include <Utils/delay/inc/delay.h>
 
-/* modules */
-#include "../module/module.h"
 
 /*
 +=============================================================================+

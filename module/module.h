@@ -20,9 +20,13 @@
 #define _MODULE_H_
 
 /* Includes ----------------------------------------------------------------------*/
+#include <stdint.h>
+
+#include <cmsis_gcc.h>
+#include <stm32f091xc.h>
 
 #include "HMI/inc/HMI.h"
-#include "Preamplifier/inc/PREAMPLIFIER.h"
+#include "preamplifier/inc/preamp.h"
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
@@ -32,6 +36,13 @@
 * @brief Brief description of function
 */
 /* Exported Object types ---------------------------------------------------------*/
+
+namespace module
+{
+
+  extern void init(void);
+}  // namespace module
+
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/

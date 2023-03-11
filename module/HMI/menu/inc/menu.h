@@ -21,10 +21,8 @@
 
 /* Includes ----------------------------------------------------------------------*/
 #include "node.h"
+
 /* Exported define ---------------------------------------------------------------*/
-#define MENU_MAIN_0		"menu_0"
-#define MENU_MAIN_1		"menu_1"
-#define MENU_MAIN_2		"menu_2"
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -53,6 +51,7 @@ namespace HMI
     int8_t exeFunction(void);
 
   private:
+
     static NODE menu_0;
         static NODE sub_menu_0_1;
         static NODE sub_menu_0_2;

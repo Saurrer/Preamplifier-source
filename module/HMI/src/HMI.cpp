@@ -151,7 +151,14 @@ void HMI::jumpSubMenu(void)
 
       if(pMenu->exeFunction())
 	{
-	/*pMenu->pCurrentNode->function();*/
+	pMenu->pCurrentNode->function();
+
+	pCursor->set(0);
+	pLcd->clearBuffer();
+	pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->Name);
+	pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->Name);
+
+	refreshCursor();
 	}
       break;
     }

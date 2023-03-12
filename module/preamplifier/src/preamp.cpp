@@ -25,6 +25,7 @@
 
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
+//input_t preamp::INPUT::source = {LMC1992N_INPUT_SELECT_ADDRESS, LMC1992N_INPUT_SELECT_MIN, LMC1992N_INPUT_SELECT_MAX, INPUT_OPEN};
 
 namespace preamp
 {

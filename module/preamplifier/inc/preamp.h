@@ -50,7 +50,7 @@ namespace preamp
     tone_t bass		   {LMC1992N_BASS_ADDRESS, LMC1992N_TONE_MIN, LMC1992N_TONE_MAX, LMC1992N_TONE_FLAT};
 
   private:
-    static input_t source;
+    input_t source	   {LMC1992N_INPUT_SELECT_ADDRESS, LMC1992N_INPUT_SELECT_MIN, LMC1992N_INPUT_SELECT_MAX, INPUT_OPEN};
   };
 
   enum

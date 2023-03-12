@@ -29,12 +29,14 @@
 +=============================================================================+
 */
 
-/*
- * GPIO pin
- */
-
 const char * build_time __attribute__((section(".rodata.compile_data"))) = __TIME__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 const char * build_date __attribute__((section(".rodata.compile_data"))) = __DATE__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
+
+/* probka audio */
+extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start[];
+extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end[];
+
+uint8_t * pAudioSample = _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start;
 
 extern "C" void SysTick_Handler(void)
 {
@@ -46,6 +48,7 @@ extern "C" void SysTick_Handler(void)
 
 int main(void)
 {
+  uint16_t sample_size = (_binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start)/(sizeof(uint8_t));
   delay_init();
 
   module::init();

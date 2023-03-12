@@ -41,9 +41,9 @@ namespace preamp
       "Fader LR",	//7
   };
 
-  input_t INPUT::source {LMC1992N_INPUT_SELECT_ADDRESS, LMC1992N_INPUT_SELECT_MIN, LMC1992N_INPUT_SELECT_MAX, INPUT_OPEN};
+  //input_t INPUT::source {LMC1992N_INPUT_SELECT_ADDRESS, LMC1992N_INPUT_SELECT_MIN, LMC1992N_INPUT_SELECT_MAX, INPUT_OPEN};
 
-  INPUT * source;
+  INPUT * pSource;
 
 }  // namespace Preamplifier
 
@@ -58,19 +58,19 @@ namespace preamp
 void
 preamp::init(void)
 {
-  source = new(INPUT);
+  pSource = new(INPUT);
 
   /* init LMC1992N configuration */
-  source->changeSource(INPUT::minijack);
-  source->fd_left_rear.setValue(LMC1992N_FADER_MAX);
-  source->fd_right_rear.setValue(LMC1992N_FADER_MAX);
-  source->fd_left_front.setValue(LMC1992N_FADER_MAX);
-  source->fd_right_front.setValue(LMC1992N_FADER_MAX);
+  pSource->changeSource(INPUT::minijack);
+  pSource->fd_left_rear.setValue(LMC1992N_FADER_MAX);
+  pSource->fd_right_rear.setValue(LMC1992N_FADER_MAX);
+  pSource->fd_left_front.setValue(LMC1992N_FADER_MAX);
+  pSource->fd_right_front.setValue(LMC1992N_FADER_MAX);
 
-  source->volume.setValue(LMC1992N_VOLUME_MAX);
+  pSource->volume.setValue(LMC1992N_VOLUME_MAX);
 
-  source->treble.setValue(LMC1992N_TONE_FLAT);
-  source->bass.setValue(LMC1992N_TONE_FLAT);
+  pSource->treble.setValue(LMC1992N_TONE_FLAT);
+  pSource->bass.setValue(LMC1992N_TONE_FLAT);
 }
 
 preamp::INPUT::INPUT()

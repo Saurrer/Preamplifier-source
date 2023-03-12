@@ -69,7 +69,7 @@ namespace preamp
 
   //extern char* FunctionNameTable[];
   extern void init(void);
-  extern INPUT * source;
+  extern INPUT * pSource;
 
 }  // namespace Preamplifier
 

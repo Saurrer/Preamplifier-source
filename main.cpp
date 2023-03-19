@@ -67,8 +67,8 @@ int main(void)
 
       if(flag == 1)
 	{
-	  TIM15->CR1 |= TIM_CR1_CEN;
 	  TIM1->CR1 |= TIM_CR1_CEN;
+	  TIM15->CR1 |= TIM_CR1_CEN;
 
 	  flag = 0;
 	}

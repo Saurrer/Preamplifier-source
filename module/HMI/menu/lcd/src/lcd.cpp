@@ -54,6 +54,8 @@ void HMI::LCD::init(void)
       interface.init();
       interface.cls();
 
+      bright.init();
+
       init_flag = 1;
     }
 
@@ -196,4 +198,5 @@ void HMI::LCD::send_char(char c)
 	}
     }
 }
+
 /*-------------------------------END OF FILE--------------------------------------*/

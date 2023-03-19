@@ -46,10 +46,12 @@ void SystemStartup(void)
 
   RCC->APB1ENR |= RCC_APB1ENR_TIM7EN	|	/** delay */
 		  RCC_APB1ENR_USART2EN	|	/** ws2812b interface */
+		  RCC_APB1ENR_TIM14EN	|	/** lcd brightness output */
 		  RCC_APB1ENR_TIM2EN	;	/** timer used by knob */
 
   RCC->APB2ENR |= RCC_APB2ENR_TIM1EN 	|
-		  RCC_APB2ENR_TIM15EN	; 	/** audio timers */
+		  RCC_APB2ENR_TIM15EN	| 	/** audio timers */
+		  RCC_APB2ENR_TIM16EN	;
 
   RCC->CFGR3 |= (1U << RCC_CFGR3_USART2SW_Pos);	/** set usart2 clock to sys clk */
 

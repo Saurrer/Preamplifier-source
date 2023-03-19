@@ -1,33 +1,37 @@
-/** @file lcd.h
+/** @file brightness.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Mar 2, 2023
+* @date		Mar 18, 2023
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of lcd.h.
+* @brief brief description of brightness.h.
 *
-* @page lcd.h
-* @details Detail description of lcd.h.
+* @page brightness.h
+* @details Detail description of brightness.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _LCD_H_
-#define _LCD_H_
+#ifndef _INC_BRIGHTNESS_H_
+#define _INC_BRIGHTNESS_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include "../interface/HD44780/inc/HD44780.h"
-#include "brightness.h"
-/* Exported define ---------------------------------------------------------------*/
 
+/* Exported define ---------------------------------------------------------------*/
+#define LCD_BRIGHTNESS_PORT				GPIOB
+#define LCD_BRIGHTNESS_PIN				PB1
+
+#define LCD_BRIGHTNESS_TIMER				TIM14
+#define LCD_BRIGHTNESS_RESOLUTION			UINT8_MAX
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
+
 /**
 * @brief Brief description of function
 */
@@ -36,31 +40,20 @@
 namespace HMI
 {
 
-  class LCD
+  class BRIGHTNESS
   {
 
   public:
+    void init(void);
 
-    uint8_t pointer_x, pointer_y;
+    void enableBrightness();
+    void disableBrightness();
 
-    void init();
+    void setBrightness(uint8_t val);
 
-    void locate(uint8_t row, uint8_t column);
-    void print(const char *s);				/**< write string to buffer */
-    void print(char c);					/**< write character to buffer */
-
-    void clearBuffer();					/**< fill buffer with space sign */
-    void refreshDisplay();				/**< compare buffer with lcd data */
-
-    BRIGHTNESS bright;
   private:
     static uint8_t init_flag;
 
-    static char buffer_lcd_new[LCD_ROWS][LCD_COLUMNS];	/**<  */
-    static char buffer_lcd_old[LCD_ROWS][LCD_COLUMNS];	/**< buffer representing currently data on lcd screen */
-
-    void send_char(char c);
-    static HD44780 interface;				/**< HD44780 communication interface */
   };
 
 }  // namespace HMI
@@ -71,6 +64,6 @@ namespace HMI
 
 
 
-#endif /* _LCD_H_ */
+#endif /* _INC_BRIGHTNESS_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

@@ -23,9 +23,6 @@
 
 /* Exported define ---------------------------------------------------------------*/
 
-#define LCD_BRIGHTNESS_PORT				GPIOB
-#define LCD_BRIGHTNESS_PIN				PB1
-
 /* DISPLAY CONFIGURATION */
 #define LCD_ROWS 					2
 #define LCD_COLUMNS 					16

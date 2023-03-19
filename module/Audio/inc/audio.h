@@ -32,6 +32,9 @@
 extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start[];
 extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end[];
 
+//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_start[];
+//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_end[];
+
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
@@ -56,7 +59,6 @@ public:
   volatile uint32_t index;
 
 private:
-
 };
 
 extern AUDIO * pAudio;

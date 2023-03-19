@@ -21,7 +21,9 @@
 
 /* Includes ----------------------------------------------------------------------*/
 #include "../interface/HD44780/inc/HD44780.h"
+#include "brightness.h"
 /* Exported define ---------------------------------------------------------------*/
+
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -44,11 +46,13 @@ namespace HMI
     void init();
 
     void locate(uint8_t row, uint8_t column);
+    void print(const char *s);				/**< write string to buffer */
+    void print(char c);					/**< write character to buffer */
+
     void clearBuffer();					/**< fill buffer with space sign */
-    void print(const char *s);				/**< write data to buffer */
-    void print(char c);
     void refreshDisplay();				/**< compare buffer with lcd data */
 
+    BRIGHTNESS bright;
   private:
     static uint8_t init_flag;
 

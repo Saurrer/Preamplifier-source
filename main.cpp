@@ -29,10 +29,6 @@
 +=============================================================================+
 */
 
-/*
- * GPIO pin
- */
-
 const char * build_time __attribute__((section(".rodata.compile_data"))) = __TIME__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 const char * build_date __attribute__((section(".rodata.compile_data"))) = __DATE__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 
@@ -44,11 +40,16 @@ extern "C" void SysTick_Handler(void)
 }
 
 
+
 int main(void)
 {
   delay_init();
 
   module::init();
+
+  pAudio = new(AUDIO);
+
+  pAudio->init();
 
   init_test_io();
 
@@ -64,6 +65,33 @@ int main(void)
       HMI::scrollMenu();
       HMI::jumpSubMenu();
 
+      if(flag == 1)
+	{
+	  TIM1->CR1 |= TIM_CR1_CEN;
+	  TIM15->CR1 |= TIM_CR1_CEN;
+
+	  flag = 0;
+	}
+      else if (flag == 2)
+	{
+	  pAudio->resetIndex();
+	  pAudio->setSampleSize();
+
+	  __DSB();
+	  __ISB();
+
+	  flag = 0;
+	}
+      else if (flag == 3)
+	{
+	  preamp::pSource->changeSource(preamp::INPUT::minijack);
+	  flag = 0;
+	}
+      else if (flag == 4)
+	{
+	  preamp::pSource->changeSource(preamp::INPUT::microSD);
+	  flag = 0;
+	}
 
 /*
       if(flag == 1)		*< red

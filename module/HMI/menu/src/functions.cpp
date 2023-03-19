@@ -56,7 +56,7 @@ void
 HMI::changeFader_LR()
 {
 
-  LMC1992_FUNCTION & function = preamp::source->fd_left_rear;
+  LMC1992_FUNCTION & function = preamp::pSource->fd_left_rear;
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
@@ -86,7 +86,7 @@ void
 HMI::changeFader_RR()
 {
 
-  LMC1992_FUNCTION & function = preamp::source->fd_right_rear;
+  LMC1992_FUNCTION & function = preamp::pSource->fd_right_rear;
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
@@ -116,7 +116,7 @@ void
 HMI::changeFader_LF()
 {
 
-  LMC1992_FUNCTION & function = preamp::source->fd_left_front;
+  LMC1992_FUNCTION & function = preamp::pSource->fd_left_front;
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
@@ -146,7 +146,7 @@ void
 HMI::changeFader_RF()
 {
 
-  LMC1992_FUNCTION & function = preamp::source->fd_right_front;
+  LMC1992_FUNCTION & function = preamp::pSource->fd_right_front;
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
@@ -176,7 +176,7 @@ void
 HMI::changeVolume()
 {
 
-  LMC1992_FUNCTION & function = preamp::source->volume;
+  LMC1992_FUNCTION & function = preamp::pSource->volume;
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
@@ -206,7 +206,7 @@ void
 HMI::changeTreble()
 {
 
-  LMC1992_FUNCTION & function = preamp::source->treble;
+  LMC1992_FUNCTION & function = preamp::pSource->treble;
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
@@ -237,7 +237,7 @@ void
 HMI::changeBass()
 {
 
-  LMC1992_FUNCTION & function = preamp::source->bass;
+  LMC1992_FUNCTION & function = preamp::pSource->bass;
 
   pLcd->clearBuffer();
 

@@ -1,49 +1,67 @@
-/** @file module.h
+/** @file audio.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 19, 2023
+* @date		Mar 12, 2023
 * @version 	1.0.0
-* @copyright 	© 2022. All Rights Reserved.
+* @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of module.h.
+* @brief brief description of audio.h.
 *
-* @page module.h
-* @details Detail description of module.h.
+* @page audio.h
+* @details Detail description of audio.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _MODULE_H_
-#define _MODULE_H_
+#ifndef _AUDIO_H_
+#define _AUDIO_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include <stdint.h>
-
-#include <cmsis_gcc.h>
-#include <stm32f091xc.h>
-
-#include "HMI/inc/HMI.h"
-#include "preamplifier/inc/preamp.h"
-#include "Audio/inc/audio.h"
 
 /* Exported define ---------------------------------------------------------------*/
+#define AUDIO_PWM_PORT		GPIOA
+#define AUDIO_PWM_PIN		PA8
+
+#define AUDIO_TIMER_1		TIM1
+#define AUDIO_TIMER_2		TIM15
+
 /* Exported types ----------------------------------------------------------------*/
+extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start[];
+extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end[];
+
+//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_start[];
+//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_end[];
+
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
+
 /**
 * @brief Brief description of function
 */
-/* Exported Object types ---------------------------------------------------------*/
 
-namespace module
+
+
+/* Exported Object types ---------------------------------------------------------*/
+class AUDIO
 {
 
-  extern void init(void);
-}  // namespace module
+public:
+
+  void init(void);
+
+  void setSampleSize();
+  void resetIndex();
+  uint32_t sample_size;
+  volatile uint32_t index;
+
+private:
+};
+
+extern AUDIO * pAudio;
 
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
@@ -51,6 +69,6 @@ namespace module
 
 
 
-#endif /* _MODULE_H_ */
+#endif /* _AUDIO_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

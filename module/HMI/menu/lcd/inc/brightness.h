@@ -1,49 +1,62 @@
-/** @file module.h
+/** @file brightness.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 19, 2023
+* @date		Mar 18, 2023
 * @version 	1.0.0
-* @copyright 	© 2022. All Rights Reserved.
+* @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of module.h.
+* @brief brief description of brightness.h.
 *
-* @page module.h
-* @details Detail description of module.h.
+* @page brightness.h
+* @details Detail description of brightness.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _MODULE_H_
-#define _MODULE_H_
+#ifndef _INC_BRIGHTNESS_H_
+#define _INC_BRIGHTNESS_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include <stdint.h>
-
-#include <cmsis_gcc.h>
-#include <stm32f091xc.h>
-
-#include "HMI/inc/HMI.h"
-#include "preamplifier/inc/preamp.h"
-#include "Audio/inc/audio.h"
 
 /* Exported define ---------------------------------------------------------------*/
+#define LCD_BRIGHTNESS_PORT				GPIOB
+#define LCD_BRIGHTNESS_PIN				PB1
+
+#define LCD_BRIGHTNESS_TIMER				TIM14
+#define LCD_BRIGHTNESS_RESOLUTION			UINT8_MAX
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
+
 /**
 * @brief Brief description of function
 */
-/* Exported Object types ---------------------------------------------------------*/
 
-namespace module
+/* Exported Object types ---------------------------------------------------------*/
+namespace HMI
 {
 
-  extern void init(void);
-}  // namespace module
+  class BRIGHTNESS
+  {
+
+  public:
+    void init(void);
+
+    void enableBrightness();
+    void disableBrightness();
+
+    void setBrightness(uint8_t val);
+
+  private:
+    static uint8_t init_flag;
+
+  };
+
+}  // namespace HMI
 
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
@@ -51,6 +64,6 @@ namespace module
 
 
 
-#endif /* _MODULE_H_ */
+#endif /* _INC_BRIGHTNESS_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

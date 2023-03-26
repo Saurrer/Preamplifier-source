@@ -23,8 +23,9 @@
 
 #include "inc/main.h"
 
-#include "config.h"			/** project configuration */
 #include <Utils/test_io/inc/test_io.h>
+
+#include "project_config.h"			/** project configuration */
 /*
 +=============================================================================+
 */
@@ -49,11 +50,22 @@ int main(void)
   delay_init();
 
   module::init();
-
+  SD_init();
   init_test_io();
 
   __DSB();
   __ISB();
+
+  const char * tekst_1 = "Hello World\n";
+  const char * tekst_2 = "kij w oko\n";
+  const char * tekst_3 = "build date: ";
+  const char * tekst_4 = "build time: ";
+
+  FRESULT fr;
+  FATFS fatfs;
+  FIL file;
+  UINT buf;
+
 
   uint8_t flag = 0;
   SysTick_Config(CPU_FREQUENCY/8/10);
@@ -64,6 +76,51 @@ int main(void)
       HMI::scrollMenu();
       HMI::jumpSubMenu();
 
+
+      if(flag == 1)
+	{
+	  fr = f_mount(&fatfs, "", 1);
+	  if(fr == FR_OK)
+	    {
+
+	      fr = f_open(&file, "plik_testowy_6.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
+
+	      if(fr == FR_OK)
+	        {
+
+	          //Todo - sprawdzic kodowanie znakow
+
+		    f_write(&file, tekst_1, sizeof(tekst_1), &buf);
+		    f_write(&file, tekst_2, sizeof(tekst_2), &buf);
+
+		    f_write(&file, tekst_3, sizeof(tekst_3), &buf);
+		    f_write(&file, build_date, sizeof(build_date), &buf);
+
+		    f_write(&file, tekst_4, sizeof(tekst_4), &buf);
+		    f_write(&file, build_time, sizeof(build_time), &buf);
+
+
+
+		    f_puts(tekst_1, &file);
+
+		    f_puts(tekst_3, &file);
+		    f_puts(build_date, &file);
+		    f_puts("\n", &file);
+		    f_puts(tekst_4, &file);
+		    f_puts(build_time, &file);
+
+
+	        }
+
+	      f_sync(&file);
+	      f_close(&file);
+
+	    }
+
+	  f_mount(0, "", 1);
+
+	  flag = 0;
+	}
 
 /*
       if(flag == 1)		*< red

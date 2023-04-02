@@ -18,10 +18,11 @@
 #include <stdint.h>
 
 #include "../inc/menu.h"
+
+#include "../../../../project_config.h"		/**< user config file */
 #include "../../../preamplifier/inc/preamp.h"
 #include "../inc/functions.h"
 
-#include "../../../../config.h"		/**< user config file */
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define NULL 				(0)

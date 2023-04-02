@@ -46,8 +46,6 @@ private:
   void resetFrameBuffer();
   void updateFrameBufferWithData(volatile uint8_t (*buffer)[WS2812B_FRAME_LENGTH], uint32_t GRB_data);
 
-  void DMA_mem_conf(DMA_Channel_TypeDef * pDMA_Channel);		/**< configration for DMI source/destination */
-  void DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel);	 	/**< configration for DMI source/destination */
 };
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/

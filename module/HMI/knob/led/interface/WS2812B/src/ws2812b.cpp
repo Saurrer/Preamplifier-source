@@ -49,9 +49,11 @@ uint8_t WS2812B_UART_BUFFER_DEFAULT_VALUE = 0x92;				//default buffer value for 
   Action:
 */
 
+static void DMA_memory_conf(DMA_Channel_TypeDef * pDMA_Channel);	/**< configration for DMI source/destination */
+static void DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel);	/**< configration for DMI source/destination */
 /* Private functions -------------------------------------------------------------*/
 void
-WS2812B::DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel)
+DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel)
 {
   /*
    * DMA2_Channel1
@@ -70,7 +72,7 @@ WS2812B::DMA_peripheral_conf(DMA_Channel_TypeDef * pDMA_Channel)
 }
 
 void
-WS2812B::DMA_mem_conf(DMA_Channel_TypeDef * pDMA_Channel)
+DMA_memory_conf(DMA_Channel_TypeDef * pDMA_Channel)
 {
   /*
    * DMA1_Channel7
@@ -93,7 +95,7 @@ WS2812B::Init(void)
 {
 
   DMA_peripheral_conf(DMA2_Channel1);		/**< Init dma for uart transmission */
-  DMA_mem_conf(DMA1_Channel7);			/**< init dma for M2M transfer */
+  DMA_memory_conf(DMA1_Channel7);			/**< init dma for M2M transfer */
 
   __NVIC_EnableIRQ(DMA1_Ch2_3_DMA2_Ch1_2_IRQn);
   __NVIC_EnableIRQ(DMA1_Ch4_7_DMA2_Ch3_5_IRQn);

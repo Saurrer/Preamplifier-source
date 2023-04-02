@@ -30,15 +30,6 @@
 +=============================================================================+
 */
 void fillbuffer(uint8_t * buf, uint16_t buf_size, uint8_t dumbdata);
-<<<<<<< HEAD
-=======
-
-uint8_t test_buffer_1 [1024];
-uint8_t test_buffer_2 [512];
->>>>>>> microSD
-
-SD_CardStatus status;
-uint8_t result;
 
 const char * build_time = __TIME__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 const char * build_date = __DATE__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
@@ -65,14 +56,11 @@ int main(void)
   delay_init();
 
   module::init();
-<<<<<<< HEAD
 
   pAudio = new(AUDIO);
 
   pAudio->init();
 
-=======
->>>>>>> microSD
   init_test_io();
 
   __DSB();
@@ -112,8 +100,6 @@ int main(void)
       if(flag == 2)
 	{
 	  readOCR_reg(pOCR);
-<<<<<<< HEAD
-=======
 
 	  flag = 0;
 	}
@@ -164,7 +150,7 @@ int main(void)
 	  fr = f_mount(&fatfs, "", 1);
 	  if(fr == FR_OK)
 	    {
-	      fr = f_open(&file, "plik_testowy_10.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
+	      fr = f_open(&file, "plik_testowy_11.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
 
 	      if(fr == FR_OK)
 	        {
@@ -198,95 +184,6 @@ int main(void)
 
 	  flag = 0;
 	}
-
-
->>>>>>> microSD
-
-	  flag = 0;
-	}
-      else if(flag == 3)
-	{
-	  readCID_reg(pCID);
-
-	  flag = 0;
-	}
-      else if(flag == 4)
-	{
-	  readCSD_reg(pCSD);
-
-	  flag = 0;
-	}
-      else if(flag == 5)
-	{
-	  check(pCSD);
-	  flag = 0;
-	}
-      else if(flag == 6)
-	{
-	  status = (SD_CardStatus) disk_initialize(0);
-	  flag = 0;
-	}
-      else if(flag == 7)	//write
-	{
-	  result = SD_disk_write(test_buffer_2, 1, 1);
-	  flag = 0;
-	}
-      else if(flag == 8)	//read
-	{
-	  result = SD_disk_read(test_buffer_1, 1, 1);
-	  flag = 0;
-	}
-      else if(flag == 9)
-	{
-	  fillbuffer(test_buffer_1, 1024, 0xbb);
-	  flag = 0;
-	}
-      else if(flag == 10)
-      	{
-	  fillbuffer(test_buffer_2, 512, 0xaa);
-      	  flag = 0;
-      	}
-      else if(flag == 11)
-	{
-	  fr = f_mount(&fatfs, "", 1);
-	  if(fr == FR_OK)
-	    {
-	      fr = f_open(&file, "plik_testowy_10.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
-
-	      if(fr == FR_OK)
-	        {
-		  f_puts(tekst_1, &file);
-
-		  f_puts(tekst_3, &file);
-		  f_puts(build_date, &file);
-		  f_puts("\n", &file);
-		  f_puts(tekst_4, &file);
-		  f_puts(build_time, &file);
-
-		  /*
-
-		  fr = f_write(&file, tekst_1, sizeof(tekst_1), &buf);
-		  fr = f_write(&file, tekst_2, sizeof(tekst_2), &buf);
-
-		  fr = f_write(&file, tekst_3, sizeof(tekst_3), &buf);
-		  fr = f_write(&file, build_date, sizeof(build_date), &buf);
-
-		  fr = f_write(&file, tekst_4, sizeof(tekst_4), &buf);
-		  fr = f_write(&file, build_time, sizeof(build_time), &buf);
-*/
-	        }
-
-	      fr = f_sync(&file);
-	      fr = f_close(&file);
-
-	    }
-
-	  fr = f_mount(0, "", 1);
-
-	  flag = 0;
-	}
-
-
 
       if(flag == 15)
 	{

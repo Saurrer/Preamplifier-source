@@ -49,7 +49,6 @@ void SystemStartup(void)
 		  RCC_APB1ENR_TIM14EN	|	/** lcd brightness output */
 		  RCC_APB1ENR_TIM2EN	;	/** timer used by knob */
 
-<<<<<<< HEAD
 
   RCC->APB2ENR |= RCC_APB2ENR_TIM1EN 	|
 		  RCC_APB2ENR_TIM15EN	| 	/** audio timers */
@@ -57,10 +56,6 @@ void SystemStartup(void)
 		  RCC_APB2ENR_SPI1EN	;	/** sd card */;
 
   //RCC->APB2ENR |= RCC_APB2ENR_DBGMCUEN;	/** enable DEBUG support */
-=======
-  RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;		/** sd card */
-  //RCC->APB2ENR |= RCC_APB2ENR_DBGMCUEN;		/** enable DEBUG support */
->>>>>>> microSD
 
   RCC->CFGR3 |= (1U << RCC_CFGR3_USART2SW_Pos);	/** set usart2 clock to sys clk */
 

@@ -8,10 +8,10 @@
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of config.h.
+* @brief brief description of project_config.h.
 *
 * @page config.h
-* @details Detail description of config.h.
+* @details Detail description of project_config.h.
 *
 */
 

@@ -49,6 +49,7 @@ void SystemStartup(void)
 		  RCC_APB1ENR_TIM2EN	;	/** timer used by knob */
 
   RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;		/** sd card */
+  //RCC->APB2ENR |= RCC_APB2ENR_DBGMCUEN;		/** enable DEBUG support */
 
   RCC->CFGR3 |= (1U << RCC_CFGR3_USART2SW_Pos);	/** set usart2 clock to sys clk */
 

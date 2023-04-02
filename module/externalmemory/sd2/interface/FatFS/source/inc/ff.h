@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------/
-/  FatFs - Generic FAT Filesystem module  R0.14b                              /
+/  FatFs - Generic FAT Filesystem module  R0.15                               /
 /-----------------------------------------------------------------------------/
 /
-/ Copyright (C) 2021, ChaN, all right reserved.
+/ Copyright (C) 2022, ChaN, all right reserved.
 /
 / FatFs module is an open source software. Redistribution and use of FatFs in
 / source and binary forms, with or without modification, are permitted provided
@@ -20,7 +20,11 @@
 
 
 #ifndef FF_DEFINED
-#define FF_DEFINED	86631	/* Revision ID */
+#define FF_DEFINED	80286	/* Revision ID */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "ffconf.h"		/* FatFs configuration options */
 
@@ -127,10 +131,11 @@ extern const char* VolumeStr[FF_VOLUMES];	/* User defied volume ID */
 
 typedef struct {
 	BYTE	fs_type;		/* Filesystem type (0:not mounted) */
-	BYTE	pdrv;			/* Associated physical drive */
+	BYTE	pdrv;			/* Volume hosting physical drive */
+	BYTE	ldrv;			/* Logical drive number (used only when FF_FS_REENTRANT) */
 	BYTE	n_fats;			/* Number of FATs (1 or 2) */
-	BYTE	wflag;			/* win[] flag (b0:dirty) */
-	BYTE	fsi_flag;		/* FSINFO flags (b7:disabled, b0:dirty) */
+	BYTE	wflag;			/* win[] status (b0:dirty) */
+	BYTE	fsi_flag;		/* FSINFO status (b7:disabled, b0:dirty) */
 	WORD	id;				/* Volume mount ID */
 	WORD	n_rootdir;		/* Number of root directory entries (FAT12/16) */
 	WORD	csize;			/* Cluster size [sectors] */
@@ -142,9 +147,6 @@ typedef struct {
 #endif
 #if FF_FS_EXFAT
 	BYTE*	dirbuf;			/* Directory entry block scratchpad buffer for exFAT */
-#endif
-#if FF_FS_REENTRANT
-	FF_SYNC_t	sobj;		/* Identifier of sync object */
 #endif
 #if !FF_FS_READONLY
 	DWORD	last_clst;		/* Last allocated cluster */
@@ -159,10 +161,10 @@ typedef struct {
 #endif
 #endif
 	DWORD	n_fatent;		/* Number of FAT entries (number of clusters + 2) */
-	DWORD	fsize;			/* Size of an FAT [sectors] */
+	DWORD	fsize;			/* Number of sectors per FAT */
 	LBA_t	volbase;		/* Volume base sector */
 	LBA_t	fatbase;		/* FAT base sector */
-	LBA_t	dirbase;		/* Root directory base sector/cluster */
+	LBA_t	dirbase;		/* Root directory base sector (FAT12/16) or cluster (FAT32/exFAT) */
 	LBA_t	database;		/* Data base sector */
 #if FF_FS_EXFAT
 	LBA_t	bitbase;		/* Allocation bitmap base sector */
@@ -177,7 +179,7 @@ typedef struct {
 
 typedef struct {
 	FATFS*	fs;				/* Pointer to the hosting volume of this object */
-	WORD	id;				/* Hosting volume mount ID */
+	WORD	id;				/* Hosting volume's mount ID */
 	BYTE	attr;			/* Object attribute */
 	BYTE	stat;			/* Object chain status (b1-0: =0:not contiguous, =2:contiguous, =3:fragmented in this session, b2:sub-directory stretched) */
 	DWORD	sclust;			/* Object data start cluster (0:no cluster or root directory) */
@@ -246,7 +248,7 @@ typedef struct {
 	WORD	ftime;			/* Modified time */
 	BYTE	fattrib;		/* File attribute */
 #if FF_USE_LFN
-	TCHAR	altname[FF_SFN_BUF + 1];/* Altenative file name */
+	TCHAR	altname[FF_SFN_BUF + 1];/* Alternative file name */
 	TCHAR	fname[FF_LFN_BUF + 1];	/* Primary file name */
 #else
 	TCHAR	fname[12 + 1];	/* File name */
@@ -294,47 +296,47 @@ typedef enum {
 
 
 
+
 /*--------------------------------------------------------------*/
-/* FatFs module application interface                           */
+/* FatFs Module Application Interface                           */
+/*--------------------------------------------------------------*/
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+FRESULT f_open (FIL* fp, const TCHAR* path, BYTE mode);				/* Open or create a file */
+FRESULT f_close (FIL* fp);											/* Close an open file object */
+FRESULT f_read (FIL* fp, void* buff, UINT btr, UINT* br);			/* Read data from the file */
+FRESULT f_write (FIL* fp, const void* buff, UINT btw, UINT* bw);	/* Write data to the file */
+FRESULT f_lseek (FIL* fp, FSIZE_t ofs);								/* Move file pointer of the file object */
+FRESULT f_truncate (FIL* fp);										/* Truncate the file */
+FRESULT f_sync (FIL* fp);											/* Flush cached data of the writing file */
+FRESULT f_opendir (DIR* dp, const TCHAR* path);						/* Open a directory */
+FRESULT f_closedir (DIR* dp);										/* Close an open directory */
+FRESULT f_readdir (DIR* dp, FILINFO* fno);							/* Read a directory item */
+FRESULT f_findfirst (DIR* dp, FILINFO* fno, const TCHAR* path, const TCHAR* pattern);	/* Find first file */
+FRESULT f_findnext (DIR* dp, FILINFO* fno);							/* Find next file */
+FRESULT f_mkdir (const TCHAR* path);								/* Create a sub directory */
+FRESULT f_unlink (const TCHAR* path);								/* Delete an existing file or directory */
+FRESULT f_rename (const TCHAR* path_old, const TCHAR* path_new);	/* Rename/Move a file or directory */
+FRESULT f_stat (const TCHAR* path, FILINFO* fno);					/* Get file status */
+FRESULT f_chmod (const TCHAR* path, BYTE attr, BYTE mask);			/* Change attribute of a file/dir */
+FRESULT f_utime (const TCHAR* path, const FILINFO* fno);			/* Change timestamp of a file/dir */
+FRESULT f_chdir (const TCHAR* path);								/* Change current directory */
+FRESULT f_chdrive (const TCHAR* path);								/* Change current drive */
+FRESULT f_getcwd (TCHAR* buff, UINT len);							/* Get current directory */
+FRESULT f_getfree (const TCHAR* path, DWORD* nclst, FATFS** fatfs);	/* Get number of free clusters on the drive */
+FRESULT f_getlabel (const TCHAR* path, TCHAR* label, DWORD* vsn);	/* Get volume label */
+FRESULT f_setlabel (const TCHAR* label);							/* Set volume label */
+FRESULT f_forward (FIL* fp, UINT(*func)(const BYTE*,UINT), UINT btf, UINT* bf);	/* Forward data to the stream */
+FRESULT f_expand (FIL* fp, FSIZE_t fsz, BYTE opt);					/* Allocate a contiguous block to the file */
+FRESULT f_mount (FATFS* fs, const TCHAR* path, BYTE opt);			/* Mount/Unmount a logical drive */
+FRESULT f_mkfs (const TCHAR* path, const MKFS_PARM* opt, void* work, UINT len);	/* Create a FAT volume */
+FRESULT f_fdisk (BYTE pdrv, const LBA_t ptbl[], void* work);		/* Divide a physical drive into some partitions */
+FRESULT f_setcp (WORD cp);											/* Set current code page */
+int f_putc (TCHAR c, FIL* fp);										/* Put a character to the file */
+int f_puts (const TCHAR* str, FIL* cp);								/* Put a string to the file */
+int f_printf (FIL* fp, const TCHAR* str, ...);						/* Put a formatted string to the file */
+TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from the file */
 
-extern FRESULT f_open (FIL* fp, const TCHAR* path, BYTE mode);				/* Open or create a file */
-extern FRESULT f_close (FIL* fp);											/* Close an open file object */
-extern FRESULT f_read (FIL* fp, void* buff, UINT btr, UINT* br);			/* Read data from the file */
-extern FRESULT f_write (FIL* fp, const void* buff, UINT btw, UINT* bw);	/* Write data to the file */
-extern FRESULT f_lseek (FIL* fp, FSIZE_t ofs);								/* Move file pointer of the file object */
-extern FRESULT f_truncate (FIL* fp);										/* Truncate the file */
-extern FRESULT f_sync (FIL* fp);											/* Flush cached data of the writing file */
-extern FRESULT f_opendir (DIR* dp, const TCHAR* path);						/* Open a directory */
-extern FRESULT f_closedir (DIR* dp);										/* Close an open directory */
-extern FRESULT f_readdir (DIR* dp, FILINFO* fno);							/* Read a directory item */
-extern FRESULT f_findfirst (DIR* dp, FILINFO* fno, const TCHAR* path, const TCHAR* pattern);	/* Find first file */
-extern FRESULT f_findnext (DIR* dp, FILINFO* fno);							/* Find next file */
-extern FRESULT f_mkdir (const TCHAR* path);								/* Create a sub directory */
-extern FRESULT f_unlink (const TCHAR* path);								/* Delete an existing file or directory */
-extern FRESULT f_rename (const TCHAR* path_old, const TCHAR* path_new);	/* Rename/Move a file or directory */
-extern FRESULT f_stat (const TCHAR* path, FILINFO* fno);					/* Get file status */
-extern FRESULT f_chmod (const TCHAR* path, BYTE attr, BYTE mask);			/* Change attribute of a file/dir */
-extern FRESULT f_utime (const TCHAR* path, const FILINFO* fno);			/* Change timestamp of a file/dir */
-extern FRESULT f_chdir (const TCHAR* path);								/* Change current directory */
-extern FRESULT f_chdrive (const TCHAR* path);								/* Change current drive */
-extern FRESULT f_getcwd (TCHAR* buff, UINT len);							/* Get current directory */
-extern FRESULT f_getfree (const TCHAR* path, DWORD* nclst, FATFS** fatfs);	/* Get number of free clusters on the drive */
-extern FRESULT f_getlabel (const TCHAR* path, TCHAR* label, DWORD* vsn);	/* Get volume label */
-extern FRESULT f_setlabel (const TCHAR* label);							/* Set volume label */
-extern FRESULT f_forward (FIL* fp, UINT(*func)(const BYTE*,UINT), UINT btf, UINT* bf);	/* Forward data to the stream */
-extern FRESULT f_expand (FIL* fp, FSIZE_t fsz, BYTE opt);					/* Allocate a contiguous block to the file */
-extern FRESULT f_mount (FATFS* fs, const TCHAR* path, BYTE opt);			/* Mount/Unmount a logical drive */
-extern FRESULT f_mkfs (const TCHAR* path, const MKFS_PARM* opt, void* work, UINT len);	/* Create a FAT volume */
-extern FRESULT f_fdisk (BYTE pdrv, const DWORD ptbl[], void* work);		/* Divide a physical drive into some partitions */
-extern FRESULT f_setcp (WORD cp);											/* Set current code page */
-extern int f_putc (TCHAR c, FIL* fp);										/* Put a character to the file */
-extern int f_puts (const TCHAR* str, FIL* cp);								/* Put a string to the file */
-extern int f_printf (FIL* fp, const TCHAR* str, ...);		///* Put a formatted string to the file */
-extern TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from the file */
+/* Some API fucntions are implemented as macro */
 
 #define f_eof(fp) ((int)((fp)->fptr == (fp)->obj.objsize))
 #define f_error(fp) ((fp)->err)
@@ -343,47 +345,49 @@ extern TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from 
 #define f_rewind(fp) f_lseek((fp), 0)
 #define f_rewinddir(dp) f_readdir((dp), 0)
 #define f_rmdir(path) f_unlink(path)
-//#define f_unmount(path) f_mount(0, path, 0)
+#define f_unmount(path) f_mount(0, path, 0)
 
-#ifdef __cplusplus
-}
-#endif
 
 
 
 /*--------------------------------------------------------------*/
-/* Additional user defined functions                            */
+/* Additional Functions                                         */
+/*--------------------------------------------------------------*/
 
-/* RTC function */
+/* RTC function (provided by user) */
 #if !FF_FS_READONLY && !FF_FS_NORTC
-DWORD get_fattime (void);
+DWORD get_fattime (void);	/* Get current time */
 #endif
 
-/* LFN support functions */
-#if FF_USE_LFN >= 1						/* Code conversion (defined in unicode.c) */
+
+/* LFN support functions (defined in ffunicode.c) */
+
+#if FF_USE_LFN >= 1
 WCHAR ff_oem2uni (WCHAR oem, WORD cp);	/* OEM code to Unicode conversion */
 WCHAR ff_uni2oem (DWORD uni, WORD cp);	/* Unicode to OEM code conversion */
 DWORD ff_wtoupper (DWORD uni);			/* Unicode upper-case conversion */
 #endif
-#if FF_USE_LFN == 3						/* Dynamic memory allocation */
-void* ff_memalloc (UINT msize);			/* Allocate memory block */
-void ff_memfree (void* mblock);			/* Free memory block */
-#endif
 
-/* Sync functions */
-#if FF_FS_REENTRANT
-int ff_cre_syncobj (BYTE vol, FF_SYNC_t* sobj);	/* Create a sync object */
-int ff_req_grant (FF_SYNC_t sobj);		/* Lock sync object */
-void ff_rel_grant (FF_SYNC_t sobj);		/* Unlock sync object */
-int ff_del_syncobj (FF_SYNC_t sobj);	/* Delete a sync object */
+
+/* O/S dependent functions (samples available in ffsystem.c) */
+
+#if FF_USE_LFN == 3		/* Dynamic memory allocation */
+void* ff_memalloc (UINT msize);		/* Allocate memory block */
+void ff_memfree (void* mblock);		/* Free memory block */
+#endif
+#if FF_FS_REENTRANT	/* Sync functions */
+int ff_mutex_create (int vol);		/* Create a sync object */
+void ff_mutex_delete (int vol);		/* Delete a sync object */
+int ff_mutex_take (int vol);		/* Lock sync object */
+void ff_mutex_give (int vol);		/* Unlock sync object */
 #endif
 
 
 
 
 /*--------------------------------------------------------------*/
-/* Flags and offset address                                     */
-
+/* Flags and Offset Address                                     */
+/*--------------------------------------------------------------*/
 
 /* File access mode and open method flags (3rd argument of f_open) */
 #define	FA_READ				0x01
@@ -417,5 +421,9 @@ int ff_del_syncobj (FF_SYNC_t sobj);	/* Delete a sync object */
 #define AM_DIR	0x10	/* Directory */
 #define AM_ARC	0x20	/* Archive */
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* FF_DEFINED */

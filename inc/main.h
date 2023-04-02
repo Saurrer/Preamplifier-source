@@ -37,6 +37,8 @@
 /* utils */
 #include <Utils/delay/inc/delay.h>
 
+#include <stdlib.h>
+#include <stdio.h>
 
 #include <string.h>
 

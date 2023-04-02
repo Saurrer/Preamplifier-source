@@ -1,4 +1,4 @@
-/** @file config.h
+/** @file project_config.h
 *
 * @author 		
 * Mariusz Mikulski	\n
@@ -8,20 +8,20 @@
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of config.h.
+* @brief brief description of project_config.h.
 *
 * @page config.h
-* @details Detail description of config.h.
+* @details Detail description of project_config.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef _PROJECT_CONFIG_H_
+#define _PROJECT_CONFIG_H_
 
 /* Exported define ---------------------------------------------------------------*/
 #define CPU_FREQUENCY				(48000000U)
-
+#define PERIPHERAL_FREQUENCY			(24000000U)
 
 /* MENU 0 names */
 #define MENU_0_NAME				"menu_0"
@@ -46,6 +46,6 @@
 #define SUB_MENU_2_2_NAME			"submenu_2_2"
 
 
-#endif /* _CONFIG_H_ */
+#endif /* _PROJECT_CONFIG_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

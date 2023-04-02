@@ -37,6 +37,14 @@
 /* utils */
 #include <Utils/delay/inc/delay.h>
 
+#include <stdlib.h>
+#include <stdio.h>
+
+#include <string.h>
+
+#include "../module/externalmemory/SD2/interface/FatFS/source/inc/ff.h"
+#include "../module/externalmemory/SD2/interface/FatFS/source/inc/diskio.h"
+#include "../module/externalmemory/SD2/inc/SDv2.h"
 
 /*
 +=============================================================================+

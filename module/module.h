@@ -27,7 +27,7 @@
 
 #include "HMI/inc/HMI.h"
 #include "preamplifier/inc/preamp.h"
-#include "Audio/inc/audio.h"
+#include "Audio/inc/player.h"
 
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/

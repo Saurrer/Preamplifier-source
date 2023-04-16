@@ -46,22 +46,32 @@ extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end[];
 
 
 /* Exported Object types ---------------------------------------------------------*/
-class AUDIO
+class MUSIC_PLAYER
 {
 
 public:
 
   void init(void);
 
-  void setSampleSize();
-  void resetIndex();
-  uint32_t sample_size;
-  volatile uint32_t index;
+  uint8_t setPointer2AudioData(void * pointer2data);
+  void setFileSize(uint32_t val);
+  void resetFileSize();
+
+  void setFileIndex(uint32_t val);
+  void resetFileIndex();
+
+  void enableMusic();
+  void disableMusic();
+
+  uint8_t * pdata;
+  uint32_t file_size;
+  volatile uint32_t file_index;
 
 private:
+
 };
 
-extern AUDIO * pAudio;
+extern MUSIC_PLAYER * pPlayer;
 
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/

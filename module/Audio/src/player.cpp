@@ -1,4 +1,4 @@
-/** @file audio.cpp
+/** @file player.cpp
 *
 * @author 		
 * Mariusz Mikulski	\n
@@ -8,10 +8,10 @@
 * @version 	1.0.0
 * @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of audio.cpp.
+* @brief brief description of player.cpp.
 *
-* @page audio.cpp
-* @details Detail description of audio.cpp.
+* @page player.cpp
+* @details Detail description of player.cpp.
 *
 */
 /* Includes ----------------------------------------------------------------------*/
@@ -20,12 +20,12 @@
 #include <cmsis_gcc.h>
 #include <stm32f091xc.h>
 
-#include "../inc/audio.h"
+#include "../inc/player.h"
 #include <stm32/gpio/inc/gpio.h>
 #include <STM32/timer/inc/timer.h>
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
-
+#define TIM15_IRQHandler playMusic	/**< alias to timer interrupt function */
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
 /* probka audio */
@@ -39,10 +39,11 @@ uint8_t * pAudioSample = _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start
   Input Data:
   Action:
 */
-AUDIO * pAudio = new(AUDIO);
+MUSIC_PLAYER * pPlayer = new(MUSIC_PLAYER);
 
 /* Private functions -------------------------------------------------------------*/
-void AUDIO::init(void)
+void
+MUSIC_PLAYER::init(void)
 {
   GpioPinConfig(AUDIO_PWM_PORT, AUDIO_PWM_PIN, gpio_AF2_PP_HS);
 
@@ -64,9 +65,11 @@ void AUDIO::init(void)
   AUDIO_TIMER_1->CCER |= TIM_CCER_CC1E;
   TIM_setAutoReloadReg(AUDIO_TIMER_1, UINT8_MAX);	/**< 185 0000 Hz | ~5.4us */
 
-  sample_size = (_binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start)/(sizeof(uint8_t));
+  file_size = 0;
+  file_index = 0;
+
+  //file_size = (_binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start)/(sizeof(uint8_t));
   //sample_size = (_binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_start)/(sizeof(uint16_t));
-  index = 0;
 
   AUDIO_TIMER_1->BDTR |= TIM_BDTR_MOE;
 
@@ -75,31 +78,47 @@ void AUDIO::init(void)
 
   /* Global Interrupt */
   //__NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
-  __NVIC_EnableIRQ(TIM15_IRQn);
+  __NVIC_EnableIRQ(TIM15_IRQn);			/**< playMusic */
 
 }
 
-void AUDIO::setSampleSize()
+void
+MUSIC_PLAYER::setFileSize(uint32_t val)
 {
-  sample_size = (_binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start)/(sizeof(uint8_t));
+  file_size = val;
+  //sample_size = (_binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start)/(sizeof(uint8_t));
   //sample_size = (_binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_start)/(sizeof(uint16_t));
 }
 
-void AUDIO::resetIndex()
+void
+MUSIC_PLAYER::resetFileSize()
 {
-  index = 0;
+  file_size = 0;
 }
 
-extern "C" void TIM15_IRQHandler(void)
+void
+MUSIC_PLAYER::setFileIndex(uint32_t val)
+{
+  file_index = val;
+}
+
+void
+MUSIC_PLAYER::resetFileIndex()
+{
+  file_index = 0;
+}
+
+
+extern "C" void playMusic(void)
 {
   if(AUDIO_TIMER_2->SR & TIM_SR_UIF)
     {
       AUDIO_TIMER_2->SR &= ~TIM_SR_UIF;	/**< reset flag */
 
-      AUDIO_TIMER_1->CCR1 = *(pAudioSample + pAudio->index++);
-      pAudio->sample_size--;
+      AUDIO_TIMER_1->CCR1 = *(pPlayer->pdata + pPlayer->file_index++);
+      pPlayer->file_size--;
 
-      if(pAudio->sample_size == 0)
+      if(pPlayer->file_size == 0)
 	{
 	  TIM_Disable(AUDIO_TIMER_1);
 	  TIM_Disable(AUDIO_TIMER_2);
@@ -107,5 +126,29 @@ extern "C" void TIM15_IRQHandler(void)
     }
 }
 
+uint8_t
+MUSIC_PLAYER::setPointer2AudioData(void * pointer2data)
+{
+  if(pointer2data)
+    {
+      pdata = (uint8_t *) pointer2data;
+      return 0;
+    }
+  else { return 1; }
+}
+
+void
+MUSIC_PLAYER::enableMusic(void)
+{
+  TIM_Enable(AUDIO_TIMER_1);
+  TIM_Enable(AUDIO_TIMER_2);
+}
+
+void
+MUSIC_PLAYER::disableMusic(void)
+{
+  TIM_Disable(AUDIO_TIMER_1);
+  TIM_Disable(AUDIO_TIMER_2);
+}
 
 /*-------------------------------END OF FILE--------------------------------------*/

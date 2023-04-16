@@ -57,9 +57,9 @@ int main(void)
 
   module::init();
 
-  pAudio = new(AUDIO);
+  pPlayer = new(MUSIC_PLAYER);
 
-  pAudio->init();
+  pPlayer->init();
 
   init_test_io();
 

@@ -18,6 +18,7 @@
 #include "../inc/playlist.h"
 
 #include <string.h>
+
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define FILE_NAME_DOT	'.'
@@ -40,6 +41,8 @@ const char * PLAYLIST::file_extension[1] =
 static bool find_dot_in_file_name(const void *s, size_t len);
 static bool find_wav_files(const void *s, size_t len);
 
+char PLAYLIST::file_name_list[64][64] {0};
+
 PLAYLIST::PLAYLIST()
 :count(0)
 {
@@ -56,10 +59,13 @@ PLAYLIST::init(DIR * dir)
 {
   uint8_t i,j;
   FRESULT res;
-  FILINFO * fno;
+  FILINFO fno;
 
   count = 0;
 
+  /*
+   * clearing buffer before reading files in directory
+   */
   for(i = 0; i < PLAYLIST_CONFIG_MAX_FILES_COUNT; i++)
     {
       for(j = 0; j < PLAYLIST_CONFIG_MAX_FILES_COUNT; j++)
@@ -70,18 +76,24 @@ PLAYLIST::init(DIR * dir)
 
   if(dir == NULL) { return PLAYLIST_STATUS_WRONG_DIRECTORY_GIVEN; }
 
-  res = f_readdir(dir, fno);
-  while(res == FR_OK)	//f_readdir(dir, fno) != NULL
+  while(1)
     {
-      addFileName(fno->fname, strlen(fno->fname));
-      res = f_readdir(dir, fno);
+      res = f_readdir(dir, &fno);
+      if(res != FR_OK || fno.fname[0] == 0) { break; }
+      if(fno.fname[0] == '.') { continue; }
+
+      addFileName(fno.fname, strlen(fno.fname));
+
+//      if(fno.fattrib & AM_DIR)  { /*katalog*/}
+//      else 			{/*plik*/}
+
     }
 
   return PLAYLIST_STATUS_OK;
 }
 
 int8_t
-PLAYLIST::addFileName(const char * pFileName, size_t filename_len)
+PLAYLIST::addFileName(const char * pFileName, uint8_t filename_len)
 {
   if(isFull()) { return PLAYLIST_STATUS_MAX_FILES; }
 
@@ -127,7 +139,6 @@ PLAYLIST::isFull() { return count == PLAYLIST_CONFIG_MAX_FILES_COUNT; }
 bool
 find_dot_in_file_name(const void *s, size_t len)
 {
-  //char * pos = strchr(s,FILE_NAME_DOT);
   char * pos = (char *) memchr(s, FILE_NAME_DOT, len);
   return (pos == (char *)0) ? false : true;
 }

@@ -62,7 +62,7 @@ public:
 
   int8_t init(DIR * dir);
 
-  int8_t addFileName(const char * pFileName, size_t filename_len);
+  int8_t addFileName(const char * pFileName, uint8_t filename_len);
   int8_t getFileName(char * pFileName, uint8_t position_on_list);
 
   uint8_t isEmpty();
@@ -75,7 +75,8 @@ public:
 
   //ToDo - zrobic wskaznik do tablicy dwuwymiarowej
   //uint32_t ** wskaznik_do_wskaznika = &tablica_wskaznikow;
-  char file_name_list[64][64] {0};
+  //char file_name_list[64][64];
+  static char file_name_list[][64];
 
   uint8_t count;
 private:

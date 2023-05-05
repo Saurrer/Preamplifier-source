@@ -24,7 +24,7 @@
 #define PERIPHERAL_FREQUENCY			(24000000U)
 
 /* MENU 0 names */
-#define MENU_0_NAME				"menu_0"
+#define MENU_0_NAME				"Music"
 #define SUB_MENU_0_1_NAME			"submenu_0_1"
 #define SUB_MENU_0_2_NAME			"submenu_0_2"
 #define SUB_MENU_0_3_NAME			"submenu_0_3"
@@ -41,7 +41,7 @@
 #define SUB_MENU_1_8_NAME			"Fader LR"
 
 /* MENU 2 names */
-#define MENU_2_NAME				"menu_2"
+#define MENU_2_NAME				"Setttings"
 #define SUB_MENU_2_1_NAME			"submenu_2_1"
 #define SUB_MENU_2_2_NAME			"submenu_2_2"
 

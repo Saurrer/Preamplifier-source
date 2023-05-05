@@ -25,43 +25,28 @@
 
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
-#define NULL 				(0)
+#define NULL 				(0U)
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
 
-NODE HMI::MENU::menu_0 = { .Name = MENU_0_NAME,
-			   .pNext = &menu_1, .pPrevious = &menu_2, .pParent = NULL, .pChild = &sub_menu_0_1, .function = NULL};
-    NODE HMI::MENU::sub_menu_0_1 = { .Name = SUB_MENU_0_1_NAME,
-				     .pNext = &sub_menu_0_2, .pPrevious = &sub_menu_0_3, .pParent = &menu_0, .pChild = NULL, .function = NULL};
-    NODE HMI::MENU::sub_menu_0_2 = { .Name = SUB_MENU_0_2_NAME,
-				     .pNext = &sub_menu_0_3, .pPrevious = &sub_menu_0_1, .pParent = &menu_0, .pChild = NULL, .function = NULL};
-    NODE HMI::MENU::sub_menu_0_3 = { .Name = SUB_MENU_0_3_NAME,
-				     .pNext = &sub_menu_0_1, .pPrevious = &sub_menu_0_2, .pParent = &menu_0, .pChild = NULL, .function = NULL};
+HMI::NODE HMI::MENU::menu_0;
+  HMI::NODE HMI::MENU::sub_menu_0_1;
+  HMI::NODE HMI::MENU::sub_menu_0_2;
+  HMI::NODE HMI::MENU::sub_menu_0_3;
 
-NODE HMI::MENU::menu_1 = { .Name = MENU_1_NAME,
-			   .pNext = &menu_2, &menu_0, NULL, &sub_menu_1_1, .function = NULL};
-    NODE HMI::MENU::sub_menu_1_1 = { .Name = SUB_MENU_1_1_NAME,
-				     .pNext = &sub_menu_1_2, .pPrevious = &sub_menu_1_8, .pParent = &menu_1, .pChild = NULL, .function = NULL};
-    NODE HMI::MENU::sub_menu_1_2 = { .Name = SUB_MENU_1_2_NAME,
-				     .pNext = &sub_menu_1_3, .pPrevious = &sub_menu_1_1, .pParent = &menu_1, .pChild = NULL, .function = &changeBass};
-    NODE HMI::MENU::sub_menu_1_3 = { .Name = SUB_MENU_1_3_NAME,
-				     .pNext = &sub_menu_1_4, .pPrevious = &sub_menu_1_2, .pParent = &menu_1, .pChild = NULL, .function = &changeTreble};
-    NODE HMI::MENU::sub_menu_1_4 = { .Name = SUB_MENU_1_4_NAME,
-				     .pNext = &sub_menu_1_5, .pPrevious = &sub_menu_1_3, .pParent = &menu_1, .pChild = NULL, .function = &changeVolume};
-    NODE HMI::MENU::sub_menu_1_5 = { .Name = SUB_MENU_1_5_NAME,
-				     .pNext = &sub_menu_1_6, .pPrevious = &sub_menu_1_4, .pParent = &menu_1, .pChild = NULL, .function = &changeFader_LF};
-    NODE HMI::MENU::sub_menu_1_6 = { .Name = SUB_MENU_1_6_NAME,
-				      .pNext = &sub_menu_1_7, .pPrevious = &sub_menu_1_5, .pParent = &menu_1, .pChild = NULL, .function = &changeFader_RF};
-    NODE HMI::MENU::sub_menu_1_7 = { .Name = SUB_MENU_1_7_NAME,
-				      .pNext = &sub_menu_1_8, .pPrevious = &sub_menu_1_6, .pParent = &menu_1, .pChild = NULL, .function = &changeFader_RR};
-    NODE HMI::MENU::sub_menu_1_8 = { .Name = SUB_MENU_1_8_NAME,
-				     .pNext = &sub_menu_1_1, .pPrevious = &sub_menu_1_7, .pParent = &menu_1, .pChild = NULL, .function = &changeFader_LF};
+HMI::NODE HMI::MENU::menu_1;
+  HMI::NODE HMI::MENU::sub_menu_1_1;
+  HMI::NODE HMI::MENU::sub_menu_1_2;
+  HMI::NODE HMI::MENU::sub_menu_1_3;
+  HMI::NODE HMI::MENU::sub_menu_1_4;
+  HMI::NODE HMI::MENU::sub_menu_1_5;
+  HMI::NODE HMI::MENU::sub_menu_1_6;
+  HMI::NODE HMI::MENU::sub_menu_1_7;
+  HMI::NODE HMI::MENU::sub_menu_1_8;
 
-NODE HMI::MENU::menu_2 = {.Name = MENU_2_NAME, .pNext = &menu_0, &menu_1, NULL, &sub_menu_2_1, .function = NULL};
-    NODE HMI::MENU::sub_menu_2_1 = { .Name = MENU_2_NAME,
-				     .pNext = &sub_menu_2_2, .pPrevious = &sub_menu_2_2, .pParent = &menu_2, .pChild = NULL, .function = NULL};
-    NODE HMI::MENU::sub_menu_2_2 = { .Name = SUB_MENU_2_1_NAME,
-				     .pNext = &sub_menu_2_1, .pPrevious = &sub_menu_2_1, .pParent = &menu_2, .pChild = NULL, .function = NULL};
+HMI::NODE HMI::MENU::menu_2;
+  HMI::NODE HMI::MENU::sub_menu_2_1;
+  HMI::NODE HMI::MENU::sub_menu_2_2;
 
 /* Private function prototypes ---------------------------------------------------*/
 /*
@@ -81,6 +66,33 @@ NODE HMI::MENU::menu_2 = {.Name = MENU_2_NAME, .pNext = &menu_0, &menu_1, NULL, 
  */
 HMI::MENU::MENU(void)
 {
+  /*
+   * pattern:
+   *   init(char * name,
+   *   	    NODE * next_address, NODE * prev_address, NODE * parent_address, NODE * child_address, void (*function_address)(void));
+   */
+
+  menu_0.init(MENU_0_NAME, &menu_1, &menu_2, NULL, &sub_menu_0_1, NULL);
+  	sub_menu_0_1.init(SUB_MENU_0_1_NAME, &sub_menu_0_2, &sub_menu_0_3, &menu_0, NULL, NULL);
+  	sub_menu_0_2.init(SUB_MENU_0_2_NAME, &sub_menu_0_3, &sub_menu_0_1, &menu_0, NULL, NULL);
+  	sub_menu_0_3.init(SUB_MENU_0_3_NAME, &sub_menu_0_1, &sub_menu_0_2, &menu_0, NULL, NULL);
+
+  menu_1.init(MENU_1_NAME, &menu_2, &menu_0, NULL, &sub_menu_1_1, NULL);
+  	sub_menu_1_1.init(SUB_MENU_1_1_NAME, &sub_menu_1_2, &sub_menu_1_8, &menu_1, NULL, NULL);
+  	sub_menu_1_2.init(SUB_MENU_1_2_NAME, &sub_menu_1_3, &sub_menu_1_1, &menu_1, NULL, NULL);
+  	sub_menu_1_3.init(SUB_MENU_1_3_NAME, &sub_menu_1_4, &sub_menu_1_2, &menu_1, NULL, NULL);
+  	sub_menu_1_4.init(SUB_MENU_1_4_NAME, &sub_menu_1_5, &sub_menu_1_3, &menu_1, NULL, NULL);
+  	sub_menu_1_5.init(SUB_MENU_1_5_NAME, &sub_menu_1_6, &sub_menu_1_4, &menu_1, NULL, NULL);
+  	sub_menu_1_6.init(SUB_MENU_1_6_NAME, &sub_menu_1_7, &sub_menu_1_5, &menu_1, NULL, NULL);
+  	sub_menu_1_7.init(SUB_MENU_1_7_NAME, &sub_menu_1_8, &sub_menu_1_6, &menu_1, NULL, NULL);
+  	sub_menu_1_8.init(SUB_MENU_1_8_NAME, &sub_menu_1_1, &sub_menu_1_7, &menu_1, NULL, NULL);
+
+  menu_2.init(MENU_2_NAME, &menu_0, &menu_1, NULL, &sub_menu_2_1, NULL);
+  	sub_menu_2_1.init(SUB_MENU_2_1_NAME, &sub_menu_2_2, &sub_menu_2_2, &menu_2, NULL, NULL);
+  	sub_menu_2_2.init(SUB_MENU_2_2_NAME, &sub_menu_2_1, &sub_menu_2_1, &menu_2, NULL, NULL);
+
+  create_menu_playlist(pPlayer);
+
   pCurrentNode = &menu_0;
 }
 
@@ -170,5 +182,47 @@ HMI::MENU::exeFunction(void)
   if(pCurrentNode->function == NULL) { return 0; }
   else { return 1; }
 }
+
+/**
+ * @fn int8_t create_menu_playlist(uint8_t cnt)
+ *
+ * @details
+ *
+ * @return
+ */
+
+int8_t
+HMI::MENU::create_menu_playlist(MUSIC_PLAYER * music_player)
+{
+  uint8_t i;
+  NODE * new_submenu;
+  NODE * last_submenu;
+
+  if(music_player->playlist.count > PLAYLIST_CONFIG_MAX_FILES_COUNT) { return 1; }
+
+  for(i = 0; i < music_player->playlist.count; i++)
+    {
+      new_submenu = new(NODE);
+      new_submenu->pName = music_player->playlist.file_name_list[i];
+
+      if(i == 0)
+	{
+	  new_submenu->pNext = new_submenu;
+	  new_submenu->pParent = &menu_0;
+	  menu_0.pChild = new_submenu;
+
+	}
+      else
+	{
+	  last_submenu->pNext = new_submenu;
+	  new_submenu->pPrevious = last_submenu;
+	}
+
+      last_submenu = new_submenu;
+    }
+
+  return 0;
+}
+
 
 /*-------------------------------END OF FILE--------------------------------------*/

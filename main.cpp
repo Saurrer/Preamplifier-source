@@ -49,49 +49,56 @@ extern "C" void SysTick_Handler(void)
   HMI::pLcd->refreshDisplay();
 }
 
+extern "C" void HardFault_Handler(void)
+{
+  for(;;);
+}
 
-
+//__attribute__( (optimize("-O1")) );
 int main(void)
 {
+  FRESULT res;
+  char *fn;
+  FILINFO fno;
+
+  FRESULT fr;
+  DIR dir;
+  FATFS fatfs;
+  FIL file;
+  UINT buf;
+
+  char cwd_name[64] = {0};
+
+  pPlayer = new(MUSIC_PLAYER);
+
+  __DSB();
+  __ISB();
+
+  fr = f_mount(&fatfs, "", 1);			//inicjalizacja warstwy aplikacji
+  status = (SD_CardStatus) disk_initialize(0);	//inicjalizacja warstwy fizycznej
+
+  f_getcwd(cwd_name, sizeof(cwd_name));
+
+  res = f_opendir(&dir, cwd_name);
+
+  if(res == FR_OK) { pPlayer->playlist.init(&dir); }
+  pPlayer->init();
+
   delay_init();
 
   module::init();
 
-  pPlayer = new(MUSIC_PLAYER);
-
-  pPlayer->init();
-
   init_test_io();
-
-  __DSB();
-  __ISB();
 
   const char * tekst_1 = "Hello World\n";
   const char * tekst_2 = "kij w oko\n";
   const char * tekst_3 = "build date: ";
   const char * tekst_4 = "build time: ";
 
-  FRESULT fr;
-  FATFS fatfs;
-  FIL file;
-  UINT buf;
-
-
   uint8_t flag = 0;
   SysTick_Config(CPU_FREQUENCY/8/10);
   SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
 
-/*
-  delay_ms(100);
-
-  SD_disk_write(test_buffer_2, 0, 1);		// w sumie nie wiem na jaki adres wysylam te dane
-
-  delay_ms(100);
-
-  SD_disk_read(test_buffer_1, 0, 1);		//odczyt jest przeprowadzany wysmienicie
-*/
-
-  //__attribute__( (optimize("-O1")) );
   for(;;)/*---------------------------------------- INFINITE LOOP ----------------------------------------------*/
     {
       HMI::scrollMenu();
@@ -162,40 +169,29 @@ int main(void)
 		  f_puts(tekst_4, &file);
 		  f_puts(build_time, &file);
 
-		  /*
-
-		  fr = f_write(&file, tekst_1, sizeof(tekst_1), &buf);
-		  fr = f_write(&file, tekst_2, sizeof(tekst_2), &buf);
-
-		  fr = f_write(&file, tekst_3, sizeof(tekst_3), &buf);
-		  fr = f_write(&file, build_date, sizeof(build_date), &buf);
-
-		  fr = f_write(&file, tekst_4, sizeof(tekst_4), &buf);
-		  fr = f_write(&file, build_time, sizeof(build_time), &buf);
-*/
 	        }
 
 	      fr = f_sync(&file);
 	      fr = f_close(&file);
 
-	    }
+//	    }
 
-	  fr = f_mount(0, "", 1);
+//	  fr = f_mount(0, "", 1);
 
 	  flag = 0;
 	}
 
       if(flag == 15)
 	{
-	  TIM1->CR1 |= TIM_CR1_CEN;
-	  TIM15->CR1 |= TIM_CR1_CEN;
+	  pPlayer->enableMusic();
+	  pPlayer->enableMusic();
 
 	  flag = 0;
 	}
       else if (flag == 16)
 	{
-	  pAudio->resetIndex();
-	  pAudio->setSampleSize();
+	  pPlayer->resetFileIndex();
+	  pPlayer->resetFileSize();
 
 	  __DSB();
 	  __ISB();
@@ -212,6 +208,59 @@ int main(void)
 	  preamp::pSource->changeSource(preamp::INPUT::microSD);
 	  flag = 0;
 	}
+
+      else if (flag == 20)
+	{
+
+	  f_getcwd(buffer, sizeof(buffer));
+
+	  res = f_opendir(&dir, buffer);
+	  if(res == FR_OK)
+	    {
+	      for (;;)
+		{
+		  res = f_readdir(&dir, &fno);
+		  if(res != FR_OK || fno.fname[0] == 0) { break; }
+
+		  if(fno.fname[0] == '.') { continue; }
+
+#if FF_USE_LFN
+		  fn = *fno.altname ? fno.altname : fno.fname;	//kwestia odwolania sie do fname
+#else
+		  fn = fno.fname;
+#endif
+		  if(fno.fattrib & AM_DIR)
+		    {
+		      //katalog
+		    }
+		  else
+		    {
+		      //plik
+		    }
+		}
+	    }
+
+	  flag = 0;
+	}
+/*
+      else if (flag == 21)
+	{
+	  fr = f_open(&file, "sample.wav", FA_READ);
+
+	  if(fr == FR_OK)
+	    {
+	      for(;;)
+		{
+		  f_read(&file, buff, btr, br)
+		}
+	    }
+
+	  fr = f_sync(&file);
+	  fr = f_close(&file);
+
+	  flag = 0;
+	}
+*/
 
 /*
       if(flag == 1)		*< red

@@ -20,7 +20,7 @@
 #define _AUDIO_H_
 
 /* Includes ----------------------------------------------------------------------*/
-
+#include "playlist.h"
 /* Exported define ---------------------------------------------------------------*/
 #define AUDIO_PWM_PORT		GPIOA
 #define AUDIO_PWM_PIN		PA8
@@ -50,6 +50,8 @@ class MUSIC_PLAYER
 {
 
 public:
+
+  PLAYLIST playlist;
 
   void init(void);
 

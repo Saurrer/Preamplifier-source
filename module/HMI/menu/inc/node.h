@@ -20,10 +20,10 @@
 #define _NODE_H_
 
 /* Includes ----------------------------------------------------------------------*/
+#include <stdint.h>
 
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
-typedef struct node_t NODE;
 
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -33,19 +33,34 @@ typedef struct node_t NODE;
 */
 
 /* Exported Object types ---------------------------------------------------------*/
-struct node_t
+
+namespace HMI
 {
+  typedef class node_t NODE;
 
-  const char * Name;		/**< node name */
+  class node_t
+  {
+  public:
+    node_t();
+    void init(char * name, NODE * next_address, NODE * prev_address,
+		      NODE * parent_address, NODE * child_address,
+		      void (*function_address)(void));
 
-  NODE * pNext;
-  NODE * pPrevious;
-  NODE * pParent;
-  NODE * pChild;
+    char * pName;	/**< node name */
 
-  void(*function)(void);
+    NODE * pNext;
+    NODE * pPrevious;
+    NODE * pParent;
+    NODE * pChild;
 
-};
+    void(*function)(void);
+
+  private:
+
+  };
+
+}
+
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/

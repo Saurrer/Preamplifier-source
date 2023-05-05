@@ -35,9 +35,6 @@ const char * build_time = __TIME__;	//widocznosc tych zmiennych to kwestia optym
 const char * build_date = __DATE__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 //__attribute__((section(".rodata.compile_data")))
 
-uint8_t test_buffer_1 [1024];
-uint8_t test_buffer_2 [512];
-
 SD_CardStatus status;
 uint8_t result;
 //__attribute__((section(".rodata.compile_data")))
@@ -49,54 +46,59 @@ extern "C" void SysTick_Handler(void)
   HMI::pLcd->refreshDisplay();
 }
 
+extern "C" void HardFault_Handler(void)
+{
+  for(;;);
+}
 
-
+//__attribute__( (optimize("-O1")) );
 int main(void)
 {
-  delay_init();
-
-  module::init();
-
-  pPlayer = new(MUSIC_PLAYER);
-
-  pPlayer->init();
-
-  init_test_io();
-
-  __DSB();
-  __ISB();
-
-  const char * tekst_1 = "Hello World\n";
-  const char * tekst_2 = "kij w oko\n";
-  const char * tekst_3 = "build date: ";
-  const char * tekst_4 = "build time: ";
+  FRESULT res;
+  char *fn;
+  FILINFO fno;
 
   FRESULT fr;
+  DIR dir;
   FATFS fatfs;
   FIL file;
   UINT buf;
 
+  char cwd_name[64] = {0};
+
+  pPlayer = new(MUSIC_PLAYER);
+
+  __DSB();
+  __ISB();
+
+  fr = f_mount(&fatfs, "", 1);			//inicjalizacja warstwy aplikacji
+  status = (SD_CardStatus) disk_initialize(0);	//inicjalizacja warstwy fizycznej
+
+  f_getcwd(cwd_name, sizeof(cwd_name));
+
+  res = f_opendir(&dir, cwd_name);
+
+  if(res == FR_OK) { pPlayer->playlist.init(&dir); }
+  pPlayer->init();
+
+  delay_init();
+
+  module::init();
+
+  init_test_io();
+
+  const char * tekst_3 = "build date: ";
+  const char * tekst_4 = "build time: ";
 
   uint8_t flag = 0;
   SysTick_Config(CPU_FREQUENCY/8/10);
   SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
 
-/*
-  delay_ms(100);
-
-  SD_disk_write(test_buffer_2, 0, 1);		// w sumie nie wiem na jaki adres wysylam te dane
-
-  delay_ms(100);
-
-  SD_disk_read(test_buffer_1, 0, 1);		//odczyt jest przeprowadzany wysmienicie
-*/
-
-  //__attribute__( (optimize("-O1")) );
   for(;;)/*---------------------------------------- INFINITE LOOP ----------------------------------------------*/
     {
       HMI::scrollMenu();
       HMI::jumpSubMenu();
-      /* ToDo - zrobic jedna funkcje do spi do wysylania i odbierania danych */
+
       if(flag == 2)
 	{
 	  readOCR_reg(pOCR);
@@ -120,82 +122,18 @@ int main(void)
 	  check(pCSD);
 	  flag = 0;
 	}
-      else if(flag == 6)
-	{
-	  status = (SD_CardStatus) disk_initialize(0);
-	  flag = 0;
-	}
-      else if(flag == 7)	//write
-	{
-	  result = SD_disk_write(test_buffer_2, 1, 1);
-	  flag = 0;
-	}
-      else if(flag == 8)	//read
-	{
-	  result = SD_disk_read(test_buffer_1, 1, 1);
-	  flag = 0;
-	}
-      else if(flag == 9)
-	{
-	  fillbuffer(test_buffer_1, 1024, 0xbb);
-	  flag = 0;
-	}
-      else if(flag == 10)
-      	{
-	  fillbuffer(test_buffer_2, 512, 0xaa);
-      	  flag = 0;
-      	}
-      else if(flag == 11)
-	{
-	  fr = f_mount(&fatfs, "", 1);
-	  if(fr == FR_OK)
-	    {
-	      fr = f_open(&file, "plik_testowy_11.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
-
-	      if(fr == FR_OK)
-	        {
-		  f_puts(tekst_1, &file);
-
-		  f_puts(tekst_3, &file);
-		  f_puts(build_date, &file);
-		  f_puts("\n", &file);
-		  f_puts(tekst_4, &file);
-		  f_puts(build_time, &file);
-
-		  /*
-
-		  fr = f_write(&file, tekst_1, sizeof(tekst_1), &buf);
-		  fr = f_write(&file, tekst_2, sizeof(tekst_2), &buf);
-
-		  fr = f_write(&file, tekst_3, sizeof(tekst_3), &buf);
-		  fr = f_write(&file, build_date, sizeof(build_date), &buf);
-
-		  fr = f_write(&file, tekst_4, sizeof(tekst_4), &buf);
-		  fr = f_write(&file, build_time, sizeof(build_time), &buf);
-*/
-	        }
-
-	      fr = f_sync(&file);
-	      fr = f_close(&file);
-
-	    }
-
-	  fr = f_mount(0, "", 1);
-
-	  flag = 0;
-	}
 
       if(flag == 15)
 	{
-	  TIM1->CR1 |= TIM_CR1_CEN;
-	  TIM15->CR1 |= TIM_CR1_CEN;
+	  pPlayer->enableMusic();
+	  pPlayer->enableMusic();
 
 	  flag = 0;
 	}
       else if (flag == 16)
 	{
-	  pAudio->resetIndex();
-	  pAudio->setSampleSize();
+	  pPlayer->resetFileIndex();
+	  pPlayer->resetFileSize();
 
 	  __DSB();
 	  __ISB();
@@ -212,6 +150,26 @@ int main(void)
 	  preamp::pSource->changeSource(preamp::INPUT::microSD);
 	  flag = 0;
 	}
+
+/*
+      else if (flag == 21)
+	{
+	  fr = f_open(&file, "sample.wav", FA_READ);
+
+	  if(fr == FR_OK)
+	    {
+	      for(;;)
+		{
+		  f_read(&file, buff, btr, br)
+		}
+	    }
+
+	  fr = f_sync(&file);
+	  fr = f_close(&file);
+
+	  flag = 0;
+	}
+*/
 
 /*
       if(flag == 1)		*< red

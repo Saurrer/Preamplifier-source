@@ -23,6 +23,7 @@
 #include "../inc/player.h"
 #include <stm32/gpio/inc/gpio.h>
 #include <STM32/timer/inc/timer.h>
+
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define TIM15_IRQHandler playMusic	/**< alias to timer interrupt function */
@@ -45,6 +46,8 @@ MUSIC_PLAYER * pPlayer = new(MUSIC_PLAYER);
 void
 MUSIC_PLAYER::init(void)
 {
+  //playlist.init(dir);		//skad wziac dir
+
   GpioPinConfig(AUDIO_PWM_PORT, AUDIO_PWM_PIN, gpio_AF2_PP_HS);
 
   TIM_setAutoReloadReg(AUDIO_TIMER_2, 6000);		/**< 8kHz - per every 125us change data in PWM compare register */
@@ -73,8 +76,8 @@ MUSIC_PLAYER::init(void)
 
   AUDIO_TIMER_1->BDTR |= TIM_BDTR_MOE;
 
-  TIM_Enable(AUDIO_TIMER_1);
-  TIM_Enable(AUDIO_TIMER_2);
+  //TIM_Enable(AUDIO_TIMER_1);
+  //TIM_Enable(AUDIO_TIMER_2);
 
   /* Global Interrupt */
   //__NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);

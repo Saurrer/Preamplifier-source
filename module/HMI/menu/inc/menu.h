@@ -21,6 +21,7 @@
 
 /* Includes ----------------------------------------------------------------------*/
 #include "node.h"
+#include "../../../Audio/inc/player.h"
 
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
@@ -52,6 +53,9 @@ namespace HMI
 
   private:
 
+    /*
+     * odczytane nazwy plikow sa przypisywane do wezlow
+     */
     static NODE menu_0;
         static NODE sub_menu_0_1;
         static NODE sub_menu_0_2;
@@ -70,6 +74,8 @@ namespace HMI
     static NODE menu_2;
 	static NODE sub_menu_2_1;
         static NODE sub_menu_2_2;
+
+    static int8_t create_menu_playlist(MUSIC_PLAYER * music_player);
 
   };
 

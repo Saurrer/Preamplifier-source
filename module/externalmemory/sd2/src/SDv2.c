@@ -245,7 +245,7 @@ uint8_t SD_init(void)
 
   if(result == 0) {  SD_Status = STA_NODISK; }
 
-  SPI_setBaudRate(SD_INTERFACE, SPI_BAUDRATE_DIV_16);	/**< max 25MHz | przy 48MHz daje 3MHz */
+  SPI_setBaudRate(SD_INTERFACE, SPI_BAUDRATE_DIV_4);	/**< max 25MHz | 12 MHz */
 
   __NOP();
   SD_SPI_CS(1);

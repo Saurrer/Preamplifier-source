@@ -31,6 +31,7 @@
 /* Private functions -------------------------------------------------------------*/
 void module::init()
 {
+
   HMI::init();
   preamp::init();
 }

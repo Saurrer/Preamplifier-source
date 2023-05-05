@@ -68,8 +68,8 @@ void HMI::init(void)
   pCursor->init(0, 2);
 
   pLcd->clearBuffer();
-  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->Name);
-  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->Name);
+  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
+  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
   refreshCursor();
 }
 
@@ -126,8 +126,8 @@ void HMI::jumpSubMenu(void)
 	{
 	  pCursor->set(0);
 	  pLcd->clearBuffer();
-	  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->Name);
-	  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->Name);
+	  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
+	  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
 	  refreshCursor();
 	}
 
@@ -139,8 +139,8 @@ void HMI::jumpSubMenu(void)
 	{
 	  pCursor->set(0);
 	  pLcd->clearBuffer();
-	  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->Name);
-	  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->Name);
+	  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
+	  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
 
 	  refreshCursor();
 	}
@@ -151,14 +151,14 @@ void HMI::jumpSubMenu(void)
 
       if(pMenu->exeFunction())
 	{
-	pMenu->pCurrentNode->function();
+	  pMenu->pCurrentNode->function();
 
-	pCursor->set(0);
-	pLcd->clearBuffer();
-	pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->Name);
-	pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->Name);
+	  pCursor->set(0);
+	  pLcd->clearBuffer();
+	  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
+	  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
 
-	refreshCursor();
+	  refreshCursor();
 	}
       break;
     }
@@ -172,14 +172,14 @@ void HMI::refreshScreen()
   {
     case CURSOR::CURSOR_OVERFLOW:
       pLcd->clearBuffer();
-      pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pPrevious->Name);
-      pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->Name);
+      pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pPrevious->pName);
+      pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pName);
 
       break;
     case CURSOR::CURSOR_UNDERFLOW:
       pLcd->clearBuffer();
-      pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->Name);
-      pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->Name);
+      pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
+      pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
 
       break;
   }

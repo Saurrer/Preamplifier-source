@@ -35,9 +35,6 @@ const char * build_time = __TIME__;	//widocznosc tych zmiennych to kwestia optym
 const char * build_date = __DATE__;	//widocznosc tych zmiennych to kwestia optymalizacji linkera
 //__attribute__((section(".rodata.compile_data")))
 
-uint8_t test_buffer_1 [1024];
-uint8_t test_buffer_2 [512];
-
 SD_CardStatus status;
 uint8_t result;
 //__attribute__((section(".rodata.compile_data")))
@@ -90,8 +87,6 @@ int main(void)
 
   init_test_io();
 
-  const char * tekst_1 = "Hello World\n";
-  const char * tekst_2 = "kij w oko\n";
   const char * tekst_3 = "build date: ";
   const char * tekst_4 = "build time: ";
 
@@ -103,7 +98,7 @@ int main(void)
     {
       HMI::scrollMenu();
       HMI::jumpSubMenu();
-      /* ToDo - zrobic jedna funkcje do spi do wysylania i odbierania danych */
+
       if(flag == 2)
 	{
 	  readOCR_reg(pOCR);
@@ -125,59 +120,6 @@ int main(void)
       else if(flag == 5)
 	{
 	  check(pCSD);
-	  flag = 0;
-	}
-      else if(flag == 6)
-	{
-	  status = (SD_CardStatus) disk_initialize(0);
-	  flag = 0;
-	}
-      else if(flag == 7)	//write
-	{
-	  result = SD_disk_write(test_buffer_2, 1, 1);
-	  flag = 0;
-	}
-      else if(flag == 8)	//read
-	{
-	  result = SD_disk_read(test_buffer_1, 1, 1);
-	  flag = 0;
-	}
-      else if(flag == 9)
-	{
-	  fillbuffer(test_buffer_1, 1024, 0xbb);
-	  flag = 0;
-	}
-      else if(flag == 10)
-      	{
-	  fillbuffer(test_buffer_2, 512, 0xaa);
-      	  flag = 0;
-      	}
-      else if(flag == 11)
-	{
-	  fr = f_mount(&fatfs, "", 1);
-	  if(fr == FR_OK)
-	    {
-	      fr = f_open(&file, "plik_testowy_11.txt", FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
-
-	      if(fr == FR_OK)
-	        {
-		  f_puts(tekst_1, &file);
-
-		  f_puts(tekst_3, &file);
-		  f_puts(build_date, &file);
-		  f_puts("\n", &file);
-		  f_puts(tekst_4, &file);
-		  f_puts(build_time, &file);
-
-	        }
-
-	      fr = f_sync(&file);
-	      fr = f_close(&file);
-
-//	    }
-
-//	  fr = f_mount(0, "", 1);
-
 	  flag = 0;
 	}
 
@@ -209,39 +151,6 @@ int main(void)
 	  flag = 0;
 	}
 
-      else if (flag == 20)
-	{
-
-	  f_getcwd(buffer, sizeof(buffer));
-
-	  res = f_opendir(&dir, buffer);
-	  if(res == FR_OK)
-	    {
-	      for (;;)
-		{
-		  res = f_readdir(&dir, &fno);
-		  if(res != FR_OK || fno.fname[0] == 0) { break; }
-
-		  if(fno.fname[0] == '.') { continue; }
-
-#if FF_USE_LFN
-		  fn = *fno.altname ? fno.altname : fno.fname;	//kwestia odwolania sie do fname
-#else
-		  fn = fno.fname;
-#endif
-		  if(fno.fattrib & AM_DIR)
-		    {
-		      //katalog
-		    }
-		  else
-		    {
-		      //plik
-		    }
-		}
-	    }
-
-	  flag = 0;
-	}
 /*
       else if (flag == 21)
 	{

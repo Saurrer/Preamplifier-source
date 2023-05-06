@@ -26,6 +26,8 @@
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define NULL 				(0U)
+#define MENU_FAIL			(0U)
+#define MENU_OK				(1U)
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
 
@@ -107,11 +109,11 @@ HMI::MENU::MENU(void)
 int8_t
 HMI::MENU::gotoNext(void)
 {
-  if(pCurrentNode->pNext == NULL) { return 0; }
+  if(pCurrentNode->pNext == NULL) { return MENU_FAIL; }
   else
     {
       pCurrentNode = pCurrentNode->pNext;
-      return 1;
+      return MENU_OK;
     }
 }
 
@@ -125,11 +127,11 @@ HMI::MENU::gotoNext(void)
 int8_t
 HMI::MENU::gotoPrevious(void)
 {
-  if(pCurrentNode->pPrevious == NULL) { return 0; }
+  if(pCurrentNode->pPrevious == NULL) { return MENU_FAIL; }
   else
     {
       pCurrentNode = pCurrentNode->pPrevious;
-      return 1;
+      return MENU_OK;
     }
 }
 
@@ -143,11 +145,11 @@ HMI::MENU::gotoPrevious(void)
 int8_t
 HMI::MENU::gotoParent(void)
 {
-  if(pCurrentNode->pParent == NULL) { return 0; }
+  if(pCurrentNode->pParent == NULL) { return MENU_FAIL; }
   else
     {
       pCurrentNode = pCurrentNode->pParent;
-      return 1;
+      return MENU_OK;
     }
 }
 
@@ -161,11 +163,11 @@ HMI::MENU::gotoParent(void)
 int8_t
 HMI::MENU::gotoChild(void)
 {
-  if(pCurrentNode->pChild == NULL) { return 0; }
+  if(pCurrentNode->pChild == NULL) { return MENU_FAIL; }
   else
     {
       pCurrentNode = pCurrentNode->pChild;
-      return 1;
+      return MENU_OK;
     }
 }
 
@@ -179,8 +181,8 @@ HMI::MENU::gotoChild(void)
 int8_t
 HMI::MENU::exeFunction(void)
 {
-  if(pCurrentNode->function == NULL) { return 0; }
-  else { return 1; }
+  if(pCurrentNode->function == NULL) { return MENU_FAIL; }
+  else { return MENU_OK; }
 }
 
 /**
@@ -198,7 +200,7 @@ HMI::MENU::create_menu_playlist(MUSIC_PLAYER * music_player)
   NODE * new_submenu;
   NODE * last_submenu;
 
-  if(music_player->playlist.count > PLAYLIST_CONFIG_MAX_FILES_COUNT) { return 1; }
+  if(music_player->playlist.count > PLAYLIST_CONFIG_MAX_FILES_COUNT) { return MENU_FAIL; }
 
   for(i = 0; i < music_player->playlist.count; i++)
     {
@@ -221,7 +223,7 @@ HMI::MENU::create_menu_playlist(MUSIC_PLAYER * music_player)
       last_submenu = new_submenu;
     }
 
-  return 0;
+  return MENU_OK;
 }
 
 

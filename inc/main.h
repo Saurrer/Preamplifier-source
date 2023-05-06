@@ -27,7 +27,6 @@
 #include <core_cm0.h>
 
 #include "../startup/inc/SystemStartup.h"
-#include "_WAV_DECODER.h"
 
 /* modules */
 #include "../module/module.h"

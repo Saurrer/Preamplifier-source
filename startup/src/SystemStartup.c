@@ -53,7 +53,7 @@ void SystemStartup(void)
   RCC->APB2ENR |= RCC_APB2ENR_TIM1EN 	|
 		  RCC_APB2ENR_TIM15EN	| 	/** audio timers */
 		  RCC_APB2ENR_TIM16EN	|
-		  RCC_APB2ENR_SPI1EN	;	/** sd card */;
+		  RCC_APB2ENR_SPI1EN	;	/** sd card */
 
   //RCC->APB2ENR |= RCC_APB2ENR_DBGMCUEN;	/** enable DEBUG support */
 

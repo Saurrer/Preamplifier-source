@@ -55,7 +55,7 @@ typedef union
 } ByteRate_t;
 
 
-typedef struct WAV_HEADER
+struct wav_header
 {
 
   char ChunkID[4];
@@ -77,8 +77,13 @@ typedef struct WAV_HEADER
   SubchunkSize_t Subchunk2Size;
   uint8_t * Data;
 
-} wav_header_t;
+};
 
+typedef union wav_header_t
+{
+  uint8_t reg[WAV_HEADER_SIZE];
+  struct wav_header wav;
 
+} WAV_H;
 
 #endif /* _PARSER_WAV_H_ */

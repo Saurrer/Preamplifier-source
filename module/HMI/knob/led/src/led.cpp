@@ -23,6 +23,7 @@
 
 #include "../inc/led.h"
 #include <colour/inc/colour.h>
+#include <stm32/timer/inc/timer.h>
 
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
@@ -46,9 +47,16 @@ using namespace colour;
 /* Private functions -------------------------------------------------------------*/
 HMI::LED::LED()
 {
+
   if(init_flag == LED_FIRST_TIME_INIT_INTERFACE)
     {
       LED::interface.Init();
+
+      TIM_setCenterAlignMode(LED_TIMER, TIMER_CENTER_ALIGN_MODE_1);
+      TIM_setPrescaler(LED_TIMER, UINT16_MAX);
+      TIM_setAutoReloadReg(LED_TIMER, 100);
+//      TIM_setCapCompReg(LED_TIMER, TIMER_CHANNEL_1, 255);
+
       init_flag = 1;
     }
 }

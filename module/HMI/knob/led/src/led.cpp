@@ -22,6 +22,8 @@
 #include <stm32f091xc.h>
 
 #include "../inc/led.h"
+#include <colour/inc/colour.h>
+
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define LED_FIRST_TIME_INIT_INTERFACE		(0U)
@@ -29,8 +31,8 @@
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
 int8_t HMI::LED::init_flag {0};			/**< init_flag = 0 - no initialization take place */
-
 WS2812B HMI::LED::interface;			/**< WS2812B communication interface */
+
 /* Private function prototypes ---------------------------------------------------*/
 
 using namespace colour;
@@ -58,17 +60,18 @@ HMI::LED::setColour(LED::color col, RGB_DATATYPE val)
   switch(col)
   {
     case color::red:
-	 rgb.red= val;
-	 break;
+	 rgb.red= val; 	  break;
     case color::green:
-	 rgb.green = val;
-	 break;
+	 rgb.green = val; break;
     case color::blue:
-	 rgb.blue = val;
-	 break;
+	 rgb.blue = val;  break;
   }
 
 }
+
+void
+HMI::LED::setColour(colour::RGB colour_name) { rgb = colour_name; }
+
 
 void
 HMI::LED::reset(LED::color col)
@@ -82,6 +85,10 @@ HMI::LED::reset(LED::color col)
 	    rgb.green = RGB_DEFAULT; break;
     case color::blue:
 	    rgb.blue  = RGB_DEFAULT; break;
+
+    default:
+	    rgb.red = rgb.green = rgb.blue = RGB_DEFAULT;
+
   }
 
 }

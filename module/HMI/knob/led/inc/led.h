@@ -44,12 +44,14 @@ namespace HMI
   public:
 
     enum class color : uint8_t
-    { red = 0, green = 1, blue = 2 };
+    { red = 0, green = 1, blue = 2 , all = 3};
 
     colour::RGB rgb;
 
     LED();
     void setColour(LED::color col, RGB_DATATYPE val);
+    void setColour(colour::RGB colour_name);
+
     void reset(LED::color col);
     void send();
 

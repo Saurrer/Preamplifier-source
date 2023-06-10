@@ -110,6 +110,15 @@ HMI::scrollMenu(void)
 
   }
 
+  __DSB();
+  __ISB();
+
+  if(!pMenu->pCurrentNode->pParent)
+  {
+    pLed->setColour(pMenu->pCurrentNode->color);
+    pLed->send();
+  }
+
 }
 
 

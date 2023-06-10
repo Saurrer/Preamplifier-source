@@ -67,10 +67,47 @@ HMI::LED::setColour(LED::color col, RGB_DATATYPE val)
 	 rgb.blue = val;  break;
   }
 
+
+  hsv = rgb2hsv(&rgb);
 }
 
 void
-HMI::LED::setColour(colour::RGB colour_name) { rgb = colour_name; }
+HMI::LED::setColour(colour::RGB colour_name)
+{
+  rgb = colour_name;
+  hsv = rgb2hsv(&rgb);
+}
+
+
+void
+HMI::LED::setHue(uint16_t data)
+{
+  if(data > HSV_HUE_MAX) { return; }
+
+  hsv.hue = data;
+
+  rgb = hsv2rgb(&hsv);
+}
+
+void
+HMI::LED::setSaturation(uint8_t data)
+{
+  if(data > HSV_SAT_MAX) { return; }
+
+  hsv.saturation = data;
+
+  rgb = hsv2rgb(&hsv);
+}
+
+void
+HMI::LED::setValue(uint8_t data)
+{
+  if(data > HSV_VAL_MAX) { return; }
+
+  hsv.value = data;
+
+  rgb = hsv2rgb(&hsv);
+}
 
 
 void
@@ -99,4 +136,7 @@ HMI::LED::send()
   interface.build(&rgb);
   interface.send();
 }
+
+
+
 /*-------------------------------END OF FILE--------------------------------------*/

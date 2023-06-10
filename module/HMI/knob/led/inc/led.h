@@ -47,10 +47,16 @@ namespace HMI
     { red = 0, green = 1, blue = 2 , all = 3};
 
     colour::RGB rgb;
+    colour::HSV hsv;
 
     LED();
     void setColour(LED::color col, RGB_DATATYPE val);
     void setColour(colour::RGB colour_name);
+
+    //hsv
+    void setHue(uint16_t data);
+    void setSaturation(uint8_t data);
+    void setValue(uint8_t data);
 
     void reset(LED::color col);
     void send();

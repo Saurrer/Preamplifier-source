@@ -80,6 +80,7 @@ HMI::function()
 void
 HMI::changeFader_LR()
 {
+  uint16_t i = 0;
 
   LMC1992_FUNCTION & function = preamp::pSource->fd_left_rear;
 
@@ -87,22 +88,43 @@ HMI::changeFader_LR()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
+  pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
+  pLed->send();
+
+  TIM_setAutoReloadReg(LED_TIMER_2, 100);
+
+  TIM_Enable(LED_TIMER_2);				/**< turn on timers for pulse colour effect */
+  TIM_Enable(LED_TIMER_1);
+
   while(1)
     {
       switch(pKnob->readDirection())
       {
-	    case KNOB::LEFT:
-	      function.operator--();
-	      break;
+	case KNOB::LEFT:
+	  function.operator--();
+	  break;
 
-	    case KNOB::RIGHT:
-	      function.operator++();
-	      break;
+	case KNOB::RIGHT:
+	  function.operator++();
+	  break;
       }
 
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+	{
+	  pLed->setValue(LED_TIMER_2->CNT);
+	  pLed->send();
+	}
+
+      i++;
 
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
+
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);		/**< bring back parent's node color to front panel */
+  pLed->send();
+
+  TIM_Disable(LED_TIMER_2);		/**< turn off timers */
+  TIM_Disable(LED_TIMER_1);
 
   pKnob->button.clearStatus();
 }
@@ -110,6 +132,7 @@ HMI::changeFader_LR()
 void
 HMI::changeFader_RR()
 {
+  uint16_t i = 0;
 
   LMC1992_FUNCTION & function = preamp::pSource->fd_right_rear;
 
@@ -117,22 +140,43 @@ HMI::changeFader_RR()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
+  pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
+  pLed->send();
+
+  TIM_setAutoReloadReg(LED_TIMER_2, 100);
+
+  TIM_Enable(LED_TIMER_2);				/**< turn on timers for pulse colour effect */
+  TIM_Enable(LED_TIMER_1);
+
   while(1)
     {
       switch(pKnob->readDirection())
       {
-	    case KNOB::LEFT:
-	      function.operator--();
-	      break;
+	case KNOB::LEFT:
+	  function.operator--();
+	  break;
 
-	    case KNOB::RIGHT:
-	      function.operator++();
-	      break;
+	case KNOB::RIGHT:
+	  function.operator++();
+	  break;
       }
 
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+	{
+	  pLed->setValue(LED_TIMER_2->CNT);
+	  pLed->send();
+	}
+
+      i++;
 
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
+
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);		/**< bring back parent's node color to front panel */
+  pLed->send();
+
+  TIM_Disable(LED_TIMER_2);		/**< turn off timers */
+  TIM_Disable(LED_TIMER_1);
 
   pKnob->button.clearStatus();
 }
@@ -140,6 +184,7 @@ HMI::changeFader_RR()
 void
 HMI::changeFader_LF()
 {
+  uint16_t i = 0;
 
   LMC1992_FUNCTION & function = preamp::pSource->fd_left_front;
 
@@ -147,22 +192,43 @@ HMI::changeFader_LF()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
+  pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
+  pLed->send();
+
+  TIM_setAutoReloadReg(LED_TIMER_2, 100);
+
+  TIM_Enable(LED_TIMER_2);				/**< turn on timers for pulse colour effect */
+  TIM_Enable(LED_TIMER_1);
+
   while(1)
     {
       switch(pKnob->readDirection())
       {
-	    case KNOB::LEFT:
-	      function.operator--();
-	      break;
+	case KNOB::LEFT:
+	  function.operator--();
+	  break;
 
-	    case KNOB::RIGHT:
-	      function.operator++();
-	      break;
+	case KNOB::RIGHT:
+	  function.operator++();
+	  break;
       }
 
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+	{
+	  pLed->setValue(LED_TIMER_2->CNT);
+	  pLed->send();
+	}
+
+      i++;
 
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
+
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);		/**< bring back parent's node color to front panel */
+  pLed->send();
+
+  TIM_Disable(LED_TIMER_2);		/**< turn off timers */
+  TIM_Disable(LED_TIMER_1);
 
   pKnob->button.clearStatus();
 }
@@ -170,6 +236,7 @@ HMI::changeFader_LF()
 void
 HMI::changeFader_RF()
 {
+  uint16_t i = 0;
 
   LMC1992_FUNCTION & function = preamp::pSource->fd_right_front;
 
@@ -177,22 +244,43 @@ HMI::changeFader_RF()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
+  pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
+  pLed->send();
+
+  TIM_setAutoReloadReg(LED_TIMER_2, 100);
+
+  TIM_Enable(LED_TIMER_2);				/**< turn on timers for pulse colour effect */
+  TIM_Enable(LED_TIMER_1);
+
   while(1)
     {
       switch(pKnob->readDirection())
       {
-	    case KNOB::LEFT:
-	      function.operator--();
-	      break;
+	case KNOB::LEFT:
+	  function.operator--();
+	  break;
 
-	    case KNOB::RIGHT:
-	      function.operator++();
-	      break;
+	case KNOB::RIGHT:
+	  function.operator++();
+	  break;
       }
 
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+	{
+	  pLed->setValue(LED_TIMER_2->CNT);
+	  pLed->send();
+	}
+
+      i++;
 
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
+
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);		/**< bring back parent's node color to front panel */
+  pLed->send();
+
+  TIM_Disable(LED_TIMER_2);		/**< turn off timers */
+  TIM_Disable(LED_TIMER_1);
 
   pKnob->button.clearStatus();
 }
@@ -208,29 +296,81 @@ HMI::changeVolume()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
-  pLed->setColour(colour::Magenta);		//pMenu->pCurrentNode->pParent->color
+  pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
 
   TIM_setAutoReloadReg(LED_TIMER_2, 100);
 
-  TIM_Enable(LED_TIMER_2);
+  TIM_Enable(LED_TIMER_2);				/**< turn on timers for pulse colour effect */
   TIM_Enable(LED_TIMER_1);
-
 
   while(1)
     {
       switch(pKnob->readDirection())
       {
-	    case KNOB::LEFT:
-	      function.operator--();
-	      break;
+	case KNOB::LEFT:
+	  function.operator--();
+	  break;
 
-	    case KNOB::RIGHT:
-	      function.operator++();
-	      break;
+	case KNOB::RIGHT:
+	  function.operator++();
+	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast - needed soft delay
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+	{
+	  pLed->setValue(LED_TIMER_2->CNT);
+	  pLed->send();
+	}
+
+      i++;
+
+      if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; } 	/**< check exit condition */
+    }
+
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);		/**< bring back parent's node color to front panel */
+  pLed->send();
+
+  TIM_Disable(LED_TIMER_2);		/**< turn off timers */
+  TIM_Disable(LED_TIMER_1);
+
+
+  pKnob->button.clearStatus();
+}
+
+void
+HMI::changeTreble()
+{
+  uint16_t i = 0;
+
+  LMC1992_FUNCTION & function = preamp::pSource->treble;
+
+  pLcd->clearBuffer();
+  pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
+  pLcd->locate(1, 0);
+
+  pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
+  pLed->send();
+
+  TIM_setAutoReloadReg(LED_TIMER_2, 100);
+
+  TIM_Enable(LED_TIMER_2);				/**< turn on timers for pulse colour effect */
+  TIM_Enable(LED_TIMER_1);
+
+  while(1)
+    {
+      switch(pKnob->readDirection())
+      {
+	case KNOB::LEFT:
+	  function.operator--();
+	  break;
+
+	case KNOB::RIGHT:
+	  function.operator++();
+	  break;
+      }
+
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
@@ -241,43 +381,12 @@ HMI::changeVolume()
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
 
-  //set front panel colour base on parent node
-  pLed->setColour(pMenu->pCurrentNode->pParent->color);
+
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);		/**< bring back parent's node color to front panel */
   pLed->send();
 
-  TIM_Disable(LED_TIMER_2);
+  TIM_Disable(LED_TIMER_2);		/**< turn off timers */
   TIM_Disable(LED_TIMER_1);
-
-
-  pKnob->button.clearStatus();
-}
-
-void
-HMI::changeTreble()
-{
-
-  LMC1992_FUNCTION & function = preamp::pSource->treble;
-
-  pLcd->clearBuffer();
-  pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
-
-  while(1)
-    {
-      switch(pKnob->readDirection())
-      {
-	    case KNOB::LEFT:
-	      function.operator--();
-	      break;
-
-	    case KNOB::RIGHT:
-	      function.operator++();
-	      break;
-      }
-
-
-      if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
-    }
 
   pKnob->button.clearStatus();
 }
@@ -286,6 +395,7 @@ HMI::changeTreble()
 void
 HMI::changeBass()
 {
+  uint16_t i = 0;
 
   LMC1992_FUNCTION & function = preamp::pSource->bass;
 
@@ -294,31 +404,47 @@ HMI::changeBass()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
+  pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
+  pLed->send();
+
+  TIM_setAutoReloadReg(LED_TIMER_2, 100);
+
+  TIM_Enable(LED_TIMER_2);				/**< turn on timers for pulse colour effect */
+  TIM_Enable(LED_TIMER_1);
+
   while(1)
     {
       switch(pKnob->readDirection())
       {
-	    case KNOB::LEFT:
-	      function.operator--();
-	      break;
+	case KNOB::LEFT:
+	  function.operator--();
+	  break;
 
-	    case KNOB::RIGHT:
-	      function.operator++();
-	      break;
+	case KNOB::RIGHT:
+	  function.operator++();
+	  break;
       }
+
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+	{
+	  pLed->setValue(LED_TIMER_2->CNT);
+	  pLed->send();
+	}
+
+      i++;
 
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
 
+
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);		/**< bring back parent's node color to front panel */
+  pLed->send();
+
+  TIM_Disable(LED_TIMER_2);		/**< turn off timers */
+  TIM_Disable(LED_TIMER_1);
+
   pKnob->button.clearStatus();
 }
-/*void
-printFunctionName(LMC1992_FUNCTION & function)
-{
-  using namespace HMI;
-
-
-}*/
 
 void
 printFunctionValueLine(uint8_t max, uint8_t min, uint8_t val)

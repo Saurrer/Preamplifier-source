@@ -200,6 +200,7 @@ HMI::changeFader_RF()
 void
 HMI::changeVolume()
 {
+  uint16_t i = 0;
 
   LMC1992_FUNCTION & function = preamp::pSource->volume;
 
@@ -207,12 +208,14 @@ HMI::changeVolume()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
-  //set front panel colour base on parent node
   pLed->setColour(colour::Magenta);		//pMenu->pCurrentNode->pParent->color
   pLed->send();
 
-  TIM_setAutoReloadReg(LED_TIMER, 100);
-  TIM_Enable(LED_TIMER);
+  TIM_setAutoReloadReg(LED_TIMER_2, 100);
+
+  TIM_Enable(LED_TIMER_2);
+  TIM_Enable(LED_TIMER_1);
+
 
   while(1)
     {
@@ -227,16 +230,24 @@ HMI::changeVolume()
 	      break;
       }
 
-      pLed->setValue(LED_TIMER->CNT);
-      pLed->send();
+      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast - needed soft delay
+	{
+	  pLed->setValue(LED_TIMER_2->CNT);
+	  pLed->send();
+	}
+
+      i++;
 
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
 
-  pLed->setColour(colour::Magenta);		//pMenu->pCurrentNode->pParent->color
+  //set front panel colour base on parent node
+  pLed->setColour(pMenu->pCurrentNode->pParent->color);
   pLed->send();
 
-  TIM_Disable(LED_TIMER);
+  TIM_Disable(LED_TIMER_2);
+  TIM_Disable(LED_TIMER_1);
+
 
   pKnob->button.clearStatus();
 }

@@ -110,7 +110,7 @@ MUSIC_PLAYER::init(void)
 
   /* Global Interrupt */
   //__NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
-  __NVIC_EnableIRQ(TIM15_IRQn);			/**< playMusic */
+  __NVIC_EnableIRQ(TIM17_IRQn);			/**< playMusic */
 
 }
 
@@ -223,7 +223,7 @@ MUSIC_PLAYER::disableMusic(void)
 }
 
 
-extern "C" void TIM15_IRQHandler(void)
+extern "C" void TIM17_IRQHandler(void)
 {
   if(AUDIO_TIMER_2->SR & TIM_SR_UIF)
     {

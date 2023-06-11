@@ -29,7 +29,7 @@
 #define AUDIO_PWM_PIN			PA8
 
 #define AUDIO_TIMER_1			TIM1
-#define AUDIO_TIMER_2			TIM15
+#define AUDIO_TIMER_2			TIM17
 
 #define MUSIC_PLAYER_BUFFER_SIZE	(2*512U)
 

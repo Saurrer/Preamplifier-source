@@ -47,13 +47,14 @@ void SystemStartup(void)
   RCC->APB1ENR |= RCC_APB1ENR_TIM7EN	|	/** delay */
 		  RCC_APB1ENR_USART2EN	|	/** ws2812b interface */
 		  RCC_APB1ENR_TIM14EN	|	/** lcd brightness output */
-		  RCC_APB1ENR_TIM2EN	;	/** timer used by knob */
+		  RCC_APB1ENR_TIM2EN	|	/** timer used by knob */
+		  RCC_APB1ENR_TIM3EN	;	/* led hw smooth colour change */
 
 
   RCC->APB2ENR |= RCC_APB2ENR_TIM1EN 	|
 		  RCC_APB2ENR_TIM15EN	| 	/** audio timers */
 		  RCC_APB2ENR_TIM16EN	|
-		  RCC_APB2ENR_SPI1EN	;	/** sd card */;
+		  RCC_APB2ENR_SPI1EN	;	/** sd card */
 
   //RCC->APB2ENR |= RCC_APB2ENR_DBGMCUEN;	/** enable DEBUG support */
 

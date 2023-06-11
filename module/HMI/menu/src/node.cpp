@@ -42,7 +42,8 @@ HMI::node_t::node_t()
  pPrevious(NULL),
  pParent(NULL),
  pChild(NULL),
- function(NULL)
+ function(NULL),
+ color()
 {
 
 }
@@ -51,7 +52,8 @@ void
 HMI::node_t::init(char * name,
 		  NODE * next_address, NODE * prev_address,
 		  NODE * parent_address, NODE * child_address,
-		  void (*function_address)(void))
+		  void (*function_address)(void),
+		  colour::RGB menu_color)
 {
   pName = name;
   pNext = next_address;
@@ -59,6 +61,7 @@ HMI::node_t::init(char * name,
   pParent = parent_address;
   pChild = child_address;
   function = function_address;
+  color = menu_color;
 }
 
 

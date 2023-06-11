@@ -51,9 +51,9 @@ namespace HMI
  * @details
  *
  */
-void HMI::init(void)
+void
+HMI::init(void)
 {
-  using namespace HMI;
 
   pKnob = new (KNOB);
   pKnob->init(TIM2);
@@ -71,6 +71,10 @@ void HMI::init(void)
   pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
   pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
   refreshCursor();
+
+  //
+  pLed->setColour(pMenu->pCurrentNode->color);
+  pLed->send();
 }
 
 /**
@@ -79,7 +83,8 @@ void HMI::init(void)
  * @details
  *
  */
-void HMI::scrollMenu(void)
+void
+HMI::scrollMenu(void)
 {
 
   switch(pKnob->readDirection())
@@ -105,6 +110,15 @@ void HMI::scrollMenu(void)
 
   }
 
+  __DSB();
+  __ISB();
+
+  if(!pMenu->pCurrentNode->pParent)
+  {
+    pLed->setColour(pMenu->pCurrentNode->color);
+    pLed->send();
+  }
+
 }
 
 
@@ -114,7 +128,8 @@ void HMI::scrollMenu(void)
  * @details
  *
  */
-void HMI::jumpSubMenu(void)
+void
+HMI::jumpSubMenu(void)
 {
 
   switch(pKnob->button.getStatus())
@@ -165,7 +180,8 @@ void HMI::jumpSubMenu(void)
 }
 
 
-void HMI::refreshScreen()
+void
+HMI::refreshScreen()
 {
 
   switch(pCursor->getFlag())
@@ -186,7 +202,8 @@ void HMI::refreshScreen()
 }
 
 
-void HMI::refreshCursor(void)
+void
+HMI::refreshCursor(void)
 {
   switch (pCursor->get())
   {
@@ -208,7 +225,8 @@ void HMI::refreshCursor(void)
 using namespace HMI;
 
 
-void CURSOR::init(int8_t init_min, int8_t init_max)
+void
+CURSOR::init(int8_t init_min, int8_t init_max)
 {
   min = init_min;
   max = init_max;
@@ -231,7 +249,9 @@ CURSOR& CURSOR::operator++()
 
   return *this;
 }
-CURSOR& CURSOR::operator--()
+
+CURSOR&
+CURSOR::operator--()
 {
   current_position--;
 
@@ -247,8 +267,11 @@ CURSOR& CURSOR::operator--()
   return *this;
 }
 
-int8_t CURSOR::get() { return current_position; }
-int8_t CURSOR::set(int8_t val)
+int8_t
+CURSOR::get() { return current_position; }
+
+int8_t
+CURSOR::set(int8_t val)
 {
   if(val > max || val < min) { return 1; }
   else
@@ -257,6 +280,8 @@ int8_t CURSOR::set(int8_t val)
       return 0;
     }
 }
-int8_t CURSOR::getFlag(void) { return limit_status_flag; }
+
+int8_t
+CURSOR::getFlag(void) { return limit_status_flag; }
 
 /*-------------------------------END OF FILE--------------------------------------*/

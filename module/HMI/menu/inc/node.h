@@ -21,6 +21,7 @@
 
 /* Includes ----------------------------------------------------------------------*/
 #include <stdint.h>
+#include <colour/inc/colour.h>
 
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
@@ -43,8 +44,9 @@ namespace HMI
   public:
     node_t();
     void init(char * name, NODE * next_address, NODE * prev_address,
-		      NODE * parent_address, NODE * child_address,
-		      void (*function_address)(void));
+			   NODE * parent_address, NODE * child_address,
+			   void (*function_address)(void),
+			   colour::RGB menu_color);
 
     char * pName;	/**< node name */
 
@@ -54,6 +56,7 @@ namespace HMI
     NODE * pChild;
 
     void(*function)(void);
+    colour::RGB color;
 
   private:
 

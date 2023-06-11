@@ -19,6 +19,7 @@
 
 #include <cmsis_gcc.h>
 #include <stm32f091xc.h>
+#include <core_cm0.h>
 
 #include "../inc/player.h"
 #include <stm32/gpio/inc/gpio.h>
@@ -26,11 +27,27 @@
 
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
-#define TIM15_IRQHandler playMusic	/**< alias to timer interrupt function */
+#define MUSIC_PLAYER_STATUS_OK		(0)
+#define MUSIC_PLAYER_STATUS_FAIL	(1)
+#define NULL				(0)
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
-/* probka audio */
+extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start[];
+extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end[];
 
+//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_start[];
+//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_end[];
+
+WAV_H MUSIC_PLAYER::header;
+//CIRCULAR_BUFFER * MUSIC_PLAYER::current_buffer;
+
+uint8_t buffer_0[1024];
+uint8_t buffer_1[1024];
+
+CIRCULAR_BUFFER * MUSIC_PLAYER::buff_0;
+CIRCULAR_BUFFER * MUSIC_PLAYER::buff_1;
+
+/* probka audio */
 uint8_t * pAudioSample = _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start;
 //uint16_t * pAudioSample = _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_start;
 
@@ -46,7 +63,19 @@ MUSIC_PLAYER * pPlayer = new(MUSIC_PLAYER);
 void
 MUSIC_PLAYER::init(void)
 {
-  //playlist.init(dir);		//skad wziac dir
+  /*
+   * init player's internal buffers
+   */
+  buff_0 = new(CIRCULAR_BUFFER);
+  buff_1 = new(CIRCULAR_BUFFER);
+
+  buff_0->init(buffer_0, 1024);
+  buff_1->init(buffer_1, 1024);
+
+  /*
+   * assign buff_0 to current pointer
+   */
+  current_buffer = buff_0;
 
   GpioPinConfig(AUDIO_PWM_PORT, AUDIO_PWM_PIN, gpio_AF2_PP_HS);
 
@@ -111,24 +140,6 @@ MUSIC_PLAYER::resetFileIndex()
   file_index = 0;
 }
 
-
-extern "C" void playMusic(void)
-{
-  if(AUDIO_TIMER_2->SR & TIM_SR_UIF)
-    {
-      AUDIO_TIMER_2->SR &= ~TIM_SR_UIF;	/**< reset flag */
-
-      AUDIO_TIMER_1->CCR1 = *(pPlayer->pdata + pPlayer->file_index++);
-      pPlayer->file_size--;
-
-      if(pPlayer->file_size == 0)
-	{
-	  TIM_Disable(AUDIO_TIMER_1);
-	  TIM_Disable(AUDIO_TIMER_2);
-	}
-    }
-}
-
 uint8_t
 MUSIC_PLAYER::setPointer2AudioData(void * pointer2data)
 {
@@ -138,6 +149,63 @@ MUSIC_PLAYER::setPointer2AudioData(void * pointer2data)
       return 0;
     }
   else { return 1; }
+}
+
+/*
+int8_t
+MUSIC_PLAYER::parseHeaderWAV(const uint8_t * pData)
+{
+  int i;
+
+  if(pData == NULL) { return MUSIC_PLAYER_STATUS_FAIL; }
+
+  for(i = 0; i < WAV_HEADER_SIZE; i++)
+    {
+      header.reg[i] = pData[i];
+    }
+
+  return MUSIC_PLAYER_STATUS_OK;
+}
+*/
+
+int8_t
+MUSIC_PLAYER::parseHeaderWAV()
+{
+  int i;
+
+  if(current_buffer == NULL) { return MUSIC_PLAYER_STATUS_FAIL; }
+
+  for(i = 0; i < WAV_HEADER_SIZE; i++)
+    {
+      current_buffer->get(header.reg + i);
+    }
+
+  return MUSIC_PLAYER_STATUS_OK;
+}
+
+void
+MUSIC_PLAYER::changeBuffer(const buffer_index index)
+{
+  static buffer_index prev_index = BUFFER_0;
+
+  /*
+   * if given index is same as previous ignore change
+   */
+  if(index == prev_index) { return; }
+
+  (index == BUFFER_1) ? (current_buffer = buff_1) :
+			(current_buffer = buff_0) ;
+}
+
+void
+MUSIC_PLAYER::playSample()
+{
+  resetFileIndex();
+  pdata = _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start;
+  file_size = (_binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end - _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start)/(sizeof(uint8_t));
+
+  TIM_Enable(AUDIO_TIMER_1);
+  TIM_Enable(AUDIO_TIMER_2);
 }
 
 void
@@ -152,6 +220,23 @@ MUSIC_PLAYER::disableMusic(void)
 {
   TIM_Disable(AUDIO_TIMER_1);
   TIM_Disable(AUDIO_TIMER_2);
+}
+
+
+extern "C" void TIM15_IRQHandler(void)
+{
+  if(AUDIO_TIMER_2->SR & TIM_SR_UIF)
+    {
+      AUDIO_TIMER_2->SR &= ~TIM_SR_UIF;	/**< reset flag */
+
+      AUDIO_TIMER_1->CCR1 = *(pPlayer->pdata + pPlayer->file_index++);
+      pPlayer->file_size--;
+
+      if(pPlayer->file_size == 0)
+	{
+	  pPlayer->disableMusic();
+	}
+    }
 }
 
 /*-------------------------------END OF FILE--------------------------------------*/

@@ -40,7 +40,8 @@
 
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
-extern uint16_t somevariable; /**< Line description of somevariable */
+//extern uint16_t somevariable; /**< Line description of somevariable */
+
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
@@ -77,10 +78,9 @@ public:
   //uint32_t ** wskaznik_do_wskaznika = &tablica_wskaznikow;
   //char file_name_list[64][64];
   static char file_name_list[][64];
-
   uint8_t count;
-private:
 
+private:
 
 };
 

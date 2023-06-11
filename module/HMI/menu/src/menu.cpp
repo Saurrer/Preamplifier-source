@@ -71,27 +71,28 @@ HMI::MENU::MENU(void)
   /*
    * pattern:
    *   init(char * name,
-   *   	    NODE * next_address, NODE * prev_address, NODE * parent_address, NODE * child_address, void (*function_address)(void));
+   *   	    NODE * next_address, NODE * prev_address, NODE * parent_address, NODE * child_address,
+   *   	    void (*function_address)(void));
    */
 
-  menu_0.init(MENU_0_NAME, &menu_1, &menu_2, NULL, &sub_menu_0_1, NULL);
-  	sub_menu_0_1.init(SUB_MENU_0_1_NAME, &sub_menu_0_2, &sub_menu_0_3, &menu_0, NULL, NULL);
-  	sub_menu_0_2.init(SUB_MENU_0_2_NAME, &sub_menu_0_3, &sub_menu_0_1, &menu_0, NULL, NULL);
-  	sub_menu_0_3.init(SUB_MENU_0_3_NAME, &sub_menu_0_1, &sub_menu_0_2, &menu_0, NULL, NULL);
+  menu_0.init(MENU_0_NAME, &menu_1, &menu_2, NULL, &sub_menu_0_1, NULL, colour::colour_name::Red);
+  	sub_menu_0_1.init(SUB_MENU_0_1_NAME, &sub_menu_0_2, &sub_menu_0_3, &menu_0, NULL, NULL, NULL);
+  	sub_menu_0_2.init(SUB_MENU_0_2_NAME, &sub_menu_0_3, &sub_menu_0_1, &menu_0, NULL, NULL, NULL);
+  	sub_menu_0_3.init(SUB_MENU_0_3_NAME, &sub_menu_0_1, &sub_menu_0_2, &menu_0, NULL, NULL, NULL);
 
-  menu_1.init(MENU_1_NAME, &menu_2, &menu_0, NULL, &sub_menu_1_1, NULL);
-  	sub_menu_1_1.init(SUB_MENU_1_1_NAME, &sub_menu_1_2, &sub_menu_1_8, &menu_1, NULL, NULL);
-  	sub_menu_1_2.init(SUB_MENU_1_2_NAME, &sub_menu_1_3, &sub_menu_1_1, &menu_1, NULL, NULL);
-  	sub_menu_1_3.init(SUB_MENU_1_3_NAME, &sub_menu_1_4, &sub_menu_1_2, &menu_1, NULL, NULL);
-  	sub_menu_1_4.init(SUB_MENU_1_4_NAME, &sub_menu_1_5, &sub_menu_1_3, &menu_1, NULL, NULL);
-  	sub_menu_1_5.init(SUB_MENU_1_5_NAME, &sub_menu_1_6, &sub_menu_1_4, &menu_1, NULL, NULL);
-  	sub_menu_1_6.init(SUB_MENU_1_6_NAME, &sub_menu_1_7, &sub_menu_1_5, &menu_1, NULL, NULL);
-  	sub_menu_1_7.init(SUB_MENU_1_7_NAME, &sub_menu_1_8, &sub_menu_1_6, &menu_1, NULL, NULL);
-  	sub_menu_1_8.init(SUB_MENU_1_8_NAME, &sub_menu_1_1, &sub_menu_1_7, &menu_1, NULL, NULL);
+  menu_1.init(MENU_1_NAME, &menu_2, &menu_0, NULL, &sub_menu_1_1, NULL, colour::colour_name::Blue);
+  	sub_menu_1_1.init(SUB_MENU_1_1_NAME, &sub_menu_1_2, &sub_menu_1_8, &menu_1, NULL, NULL, NULL);
+  	sub_menu_1_2.init(SUB_MENU_1_2_NAME, &sub_menu_1_3, &sub_menu_1_1, &menu_1, NULL, NULL, NULL);
+  	sub_menu_1_3.init(SUB_MENU_1_3_NAME, &sub_menu_1_4, &sub_menu_1_2, &menu_1, NULL, NULL, NULL);
+  	sub_menu_1_4.init(SUB_MENU_1_4_NAME, &sub_menu_1_5, &sub_menu_1_3, &menu_1, NULL, &changeVolume, NULL);
+  	sub_menu_1_5.init(SUB_MENU_1_5_NAME, &sub_menu_1_6, &sub_menu_1_4, &menu_1, NULL, NULL, NULL);
+  	sub_menu_1_6.init(SUB_MENU_1_6_NAME, &sub_menu_1_7, &sub_menu_1_5, &menu_1, NULL, NULL, NULL);
+  	sub_menu_1_7.init(SUB_MENU_1_7_NAME, &sub_menu_1_8, &sub_menu_1_6, &menu_1, NULL, NULL, NULL);
+  	sub_menu_1_8.init(SUB_MENU_1_8_NAME, &sub_menu_1_1, &sub_menu_1_7, &menu_1, NULL, NULL, NULL);
 
-  menu_2.init(MENU_2_NAME, &menu_0, &menu_1, NULL, &sub_menu_2_1, NULL);
-  	sub_menu_2_1.init(SUB_MENU_2_1_NAME, &sub_menu_2_2, &sub_menu_2_2, &menu_2, NULL, NULL);
-  	sub_menu_2_2.init(SUB_MENU_2_2_NAME, &sub_menu_2_1, &sub_menu_2_1, &menu_2, NULL, NULL);
+  menu_2.init(MENU_2_NAME, &menu_0, &menu_1, NULL, &sub_menu_2_1, NULL, colour::colour_name::Green);
+  	sub_menu_2_1.init(SUB_MENU_2_1_NAME, &sub_menu_2_2, &sub_menu_2_2, &menu_2, NULL, NULL, NULL);
+  	sub_menu_2_2.init(SUB_MENU_2_2_NAME, &sub_menu_2_1, &sub_menu_2_1, &menu_2, NULL, NULL, NULL);
 
   create_menu_playlist(pPlayer);
 
@@ -182,7 +183,11 @@ int8_t
 HMI::MENU::exeFunction(void)
 {
   if(pCurrentNode->function == NULL) { return MENU_FAIL; }
-  else { return MENU_OK; }
+  else
+    {
+      pCurrentNode->function();
+      return MENU_OK;
+    }
 }
 
 /**

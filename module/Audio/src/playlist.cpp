@@ -18,12 +18,12 @@
 #include "../inc/playlist.h"
 
 #include <string.h>
-
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 #define FILE_NAME_DOT	'.'
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
+
 /* Private function prototypes ---------------------------------------------------*/
 /*
   Function:
@@ -162,4 +162,5 @@ find_wav_files(const void *s, size_t len)
 
   return (char_match == file_extension_len) ? true : false;
 }
+
 /*-------------------------------END OF FILE--------------------------------------*/

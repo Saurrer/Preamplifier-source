@@ -23,6 +23,7 @@
 
 #include "inc/main.h"
 
+/* test utils */
 #include <Utils/test_io/inc/test_io.h>
 
 #include "project_config.h"			/** project configuration */
@@ -37,7 +38,6 @@ const char * build_date = __DATE__;	//widocznosc tych zmiennych to kwestia optym
 
 SD_CardStatus status;
 uint8_t result;
-//__attribute__((section(".rodata.compile_data")))
 
 extern "C" void SysTick_Handler(void)
 {
@@ -51,19 +51,17 @@ extern "C" void HardFault_Handler(void)
   for(;;);
 }
 
-//__attribute__( (optimize("-O1")) );
+
 int main(void)
 {
-  FRESULT res;
-  char *fn;
-  FILINFO fno;
+  uint8_t buffer[8192];
 
-  FRESULT fr;
   DIR dir;
   FATFS fatfs;
   FIL file;
-  UINT buf;
-
+  FILINFO fno;
+  FRESULT res;
+  UINT read_bytes;
   char cwd_name[64] = {0};
 
   pPlayer = new(MUSIC_PLAYER);
@@ -71,7 +69,8 @@ int main(void)
   __DSB();
   __ISB();
 
-  fr = f_mount(&fatfs, "", 1);			//inicjalizacja warstwy aplikacji
+#warning "po co dwa obiekty tego samego typu - res & fr?"
+  res = f_mount(&fatfs, "", 1);			//inicjalizacja warstwy aplikacji
   status = (SD_CardStatus) disk_initialize(0);	//inicjalizacja warstwy fizycznej
 
   f_getcwd(cwd_name, sizeof(cwd_name));
@@ -81,19 +80,18 @@ int main(void)
   if(res == FR_OK) { pPlayer->playlist.init(&dir); }
   pPlayer->init();
 
+  /* utils */
   delay_init();
-
-  module::init();
-
   init_test_io();
 
-  const char * tekst_3 = "build date: ";
-  const char * tekst_4 = "build time: ";
+  /* modules */
+  module::init();
 
   uint8_t flag = 0;
   SysTick_Config(CPU_FREQUENCY/8/10);
   SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
 
+  //size_t rozmiar = sizeof(UINT);	// 4B
   for(;;)/*---------------------------------------- INFINITE LOOP ----------------------------------------------*/
     {
       HMI::scrollMenu();
@@ -122,14 +120,6 @@ int main(void)
 	  check(pCSD);
 	  flag = 0;
 	}
-
-      if(flag == 15)
-	{
-	  pPlayer->enableMusic();
-	  pPlayer->enableMusic();
-
-	  flag = 0;
-	}
       else if (flag == 16)
 	{
 	  pPlayer->resetFileIndex();
@@ -151,25 +141,62 @@ int main(void)
 	  flag = 0;
 	}
 
-/*
+
       else if (flag == 21)
 	{
-	  fr = f_open(&file, "sample.wav", FA_READ);
 
-	  if(fr == FR_OK)
+	  res = f_open(&file, "ShootingStars_sd.wav", FA_READ);
+	  uint8_t i;
+	  if(res == FR_OK)
 	    {
+	      /*
+	       * FRESULT f_read (
+	       * FIL* fp,      [IN] File object
+	       * void* buff,   [OUT] Buffer to store read data
+	       * UINT btr,     [IN] Number of bytes to read
+	       * UINT* br      [OUT] Number of bytes read
+	       * );
+	       *
+	       * typedef unsigned int		UINT;	int must be 16-bit or 32-bit
+	       * typedef unsigned char		BYTE;	 char must be 8-bit
+	       *
+	       */
+	      f_read(&file, file.buf, FF_MAX_SS, &read_bytes);
+
+	      int x;
+	      for(x = 0; x < FF_MAX_SS; x++)
+		{
+		  pPlayer->current_buffer->put(*(file.buf + x));
+		}
+
+	      if(x != (pPlayer->current_buffer->getCount())) { return 1; }	//odczytano
+
+	      pPlayer->parseHeaderWAV();
+	      //pPlayer->parseHeaderWAV(file.buf);
+	      int z;
 	      for(;;)
 		{
-		  f_read(&file, buff, btr, br)
+		  f_read(&file, buffer, sizeof(buffer), &read_bytes);
+		  if (read_bytes == 0) { break; } /* error or eof */
 		}
+
+	      //uint8_t some_char = *(file.buf + WAV_HEADER_SIZE);	/**< beginning of data */
+	      i++;
+
+	      //fr = f_sync(&file);
+	      res = f_close(&file);
 	    }
 
-	  fr = f_sync(&file);
-	  fr = f_close(&file);
 
 	  flag = 0;
 	}
-*/
+      else if(flag == 22)
+	{
+	  pPlayer->playSample();
+
+	  flag = 0;
+	}
+
 
 /*
       if(flag == 1)		*< red

@@ -21,19 +21,19 @@
 
 /* Includes ----------------------------------------------------------------------*/
 #include "playlist.h"
-/* Exported define ---------------------------------------------------------------*/
-#define AUDIO_PWM_PORT		GPIOA
-#define AUDIO_PWM_PIN		PA8
 
-#define AUDIO_TIMER_1		TIM1
-#define AUDIO_TIMER_2		TIM15
+#include "parser_wav.h"
+#include <Utils/circular_buffer/inc/circular_buffer.h>
+/* Exported define ---------------------------------------------------------------*/
+#define AUDIO_PWM_PORT			GPIOA
+#define AUDIO_PWM_PIN			PA8
+
+#define AUDIO_TIMER_1			TIM1
+#define AUDIO_TIMER_2			TIM15
+
+#define MUSIC_PLAYER_BUFFER_SIZE	(2*512U)
 
 /* Exported types ----------------------------------------------------------------*/
-extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_start[];
-extern uint8_t _binary_XAmbassadors_RenegadesIntro_8kHz8PWMu_raw_end[];
-
-//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_start[];
-//extern uint16_t _binary_XAmbassadors_RenegadesIntro_8kHz16PWMu_raw_end[];
 
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -50,8 +50,19 @@ class MUSIC_PLAYER
 {
 
 public:
+  typedef enum : uint8_t
+  {
+    BUFFER_0	= 0,
+    BUFFER_1	= 1,
+
+  } buffer_index;
 
   PLAYLIST playlist;
+  CIRCULAR_BUFFER * current_buffer;	/**< pointer to currently in use buffer */
+
+  volatile uint8_t * pdata;
+  uint32_t file_size;
+  volatile uint32_t file_index;
 
   void init(void);
 
@@ -61,20 +72,25 @@ public:
 
   void setFileIndex(uint32_t val);
   void resetFileIndex();
+  //int8_t openFile(const char * file_name);
+  void changeBuffer(const buffer_index buffer_index);
 
+  void playSample();
   void enableMusic();
   void disableMusic();
 
-  uint8_t * pdata;
-  uint32_t file_size;
-  volatile uint32_t file_index;
+  //int8_t parseHeaderWAV(const uint8_t * pData);
+  int8_t parseHeaderWAV();
 
 private:
+  static WAV_H header;
 
+  static CIRCULAR_BUFFER * buff_0;
+  static CIRCULAR_BUFFER * buff_1;
 };
 
 extern MUSIC_PLAYER * pPlayer;
-
+extern "C" void TIM15_IRQHandler(void);
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/

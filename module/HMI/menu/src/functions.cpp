@@ -22,6 +22,9 @@
 #include "../inc/functions.h"
 #include "../../../preamplifier/inc/preamp.h"
 #include "../../inc/HMI.h"
+
+#include <stm32/timer/inc/timer.h>
+
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
 
@@ -50,6 +53,28 @@ namespace HMI
 //static void printFunctionName(LMC1992_FUNCTION & function);
 //static void printFunctionValueLine(LMC1992_FUNCTION & function, uint16_t val);
 static void printFunctionValueLine(uint8_t max, uint8_t min, uint8_t val);
+
+/*
+ * Template function
+ *
+ *
+void
+HMI::function()
+{
+
+  // some tasks before enter to loop (refresh screen etc.)
+
+  while(1)	//loop
+    {
+      // some tasks
+
+      // exit procedure
+    }
+
+  // some tasks before exit function
+
+}
+ */
 
 /* Private functions -------------------------------------------------------------*/
 void
@@ -182,6 +207,13 @@ HMI::changeVolume()
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
   pLcd->locate(1, 0);
 
+  //set front panel colour base on parent node
+  pLed->setColour(colour::Magenta);		//pMenu->pCurrentNode->pParent->color
+  pLed->send();
+
+  TIM_setAutoReloadReg(LED_TIMER, 100);
+  TIM_Enable(LED_TIMER);
+
   while(1)
     {
       switch(pKnob->readDirection())
@@ -195,9 +227,16 @@ HMI::changeVolume()
 	      break;
       }
 
+      pLed->setValue(LED_TIMER->CNT);
+      pLed->send();
 
       if(pKnob->button.getStatus() == BUTTON::BUTTON_DOUBLE_PRESS )  { break; }
     }
+
+  pLed->setColour(colour::Magenta);		//pMenu->pCurrentNode->pParent->color
+  pLed->send();
+
+  TIM_Disable(LED_TIMER);
 
   pKnob->button.clearStatus();
 }

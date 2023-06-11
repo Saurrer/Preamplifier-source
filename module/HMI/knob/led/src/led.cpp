@@ -52,9 +52,19 @@ HMI::LED::LED()
     {
       LED::interface.Init();
 
-      TIM_setCenterAlignMode(LED_TIMER, TIMER_CENTER_ALIGN_MODE_1);
-      TIM_setPrescaler(LED_TIMER, UINT16_MAX);
-      TIM_setAutoReloadReg(LED_TIMER, 100);
+      // setup for master timer 15
+      TIM_setMasterMode(LED_TIMER_1, TIMER_MASTER_MODE_UPDATE);
+      TIM_setPrescaler(LED_TIMER_1, 48);
+      TIM_setAutoReloadReg(LED_TIMER_1, 1000);
+      LED_TIMER_1->DIER |= TIM_DIER_UIE;
+
+      // setup for slave timer 3
+      TIM_setTriggerInput(LED_TIMER_2, TIMER_TRIGGER_INT_2);
+      TIM_setSlaveMode(LED_TIMER_2, TIMER_SLAVE_MODE_EXT_CLK);
+
+      TIM_setCenterAlignMode(LED_TIMER_2, TIMER_CENTER_ALIGN_MODE_1);
+      TIM_setPrescaler(LED_TIMER_2, 20);
+      TIM_setAutoReloadReg(LED_TIMER_2, 100);
 //      TIM_setCapCompReg(LED_TIMER, TIMER_CHANNEL_1, 255);
 
       init_flag = 1;
@@ -143,6 +153,10 @@ HMI::LED::send()
 {
   interface.build(&rgb);
   interface.send();
+
+  __DSB();
+  __ISB();
+
 }
 
 

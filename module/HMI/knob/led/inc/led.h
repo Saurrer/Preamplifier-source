@@ -25,7 +25,10 @@
 #include "../interface/WS2812B/inc/ws2812b.h"
 /* Exported define ---------------------------------------------------------------*/
 #define LED_COUNT								(6U)
-#define LED_TIMER								TIM3
+#define LED_TIMER_1								TIM15
+#define LED_TIMER_2								TIM3
+#define LED_SOFT_DELAY								(250U)
+
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/

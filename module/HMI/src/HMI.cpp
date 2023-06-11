@@ -86,7 +86,6 @@ HMI::init(void)
 void
 HMI::scrollMenu(void)
 {
-
   switch(pKnob->readDirection())
   {
 
@@ -108,15 +107,6 @@ HMI::scrollMenu(void)
 
       break;
 
-  }
-
-  __DSB();
-  __ISB();
-
-  if(!pMenu->pCurrentNode->pParent)
-  {
-    pLed->setColour(pMenu->pCurrentNode->color);
-    pLed->send();
   }
 
 }
@@ -247,6 +237,12 @@ CURSOR& CURSOR::operator++()
 
   pMenu->gotoNext();
 
+  if(!pMenu->pCurrentNode->pParent)
+    {
+      pLed->setColour(pMenu->pCurrentNode->color);
+      pLed->send();
+    }
+
   return *this;
 }
 
@@ -263,6 +259,13 @@ CURSOR::operator--()
   else { limit_status_flag = CURSOR_IN_SCOPE; }
 
   pMenu->gotoPrevious();
+
+  if(!pMenu->pCurrentNode->pParent)
+    {
+      pLed->setColour(pMenu->pCurrentNode->color);
+      pLed->send();
+    }
+
 
   return *this;
 }

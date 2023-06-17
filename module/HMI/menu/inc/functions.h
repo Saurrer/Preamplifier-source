@@ -31,6 +31,7 @@
 */
 namespace HMI
 {
+  extern void changeInput(void);
   extern void changeFader_LR(void);
   extern void changeFader_RR(void);
   extern void changeFader_LF(void);
@@ -38,6 +39,8 @@ namespace HMI
   extern void changeVolume(void);
   extern void changeTreble(void);
   extern void changeBass(void);
+
+  extern void changeLCDBrightness(void);
 
 }  // namespace HMI
 

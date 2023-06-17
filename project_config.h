@@ -42,7 +42,7 @@
 
 /* MENU 2 names */
 #define MENU_2_NAME				"Setttings"
-#define SUB_MENU_2_1_NAME			"submenu_2_1"
+#define SUB_MENU_2_1_NAME			"Brightness"
 #define SUB_MENU_2_2_NAME			"submenu_2_2"
 
 

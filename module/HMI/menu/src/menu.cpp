@@ -81,7 +81,7 @@ HMI::MENU::MENU(void)
   	sub_menu_0_3.init(SUB_MENU_0_3_NAME, &sub_menu_0_1, &sub_menu_0_2, &menu_0, NULL, NULL, NULL);
 
   menu_1.init(MENU_1_NAME, &menu_2, &menu_0, NULL, &sub_menu_1_1, NULL, colour::colour_name::blue);
-  	sub_menu_1_1.init(SUB_MENU_1_1_NAME, &sub_menu_1_2, &sub_menu_1_8, &menu_1, NULL, NULL, NULL);
+  	sub_menu_1_1.init(SUB_MENU_1_1_NAME, &sub_menu_1_2, &sub_menu_1_8, &menu_1, NULL, &changeInput,    colour::colour_name::navy);
   	sub_menu_1_2.init(SUB_MENU_1_2_NAME, &sub_menu_1_3, &sub_menu_1_1, &menu_1, NULL, &changeBass, 	   colour::colour_name::navy);
   	sub_menu_1_3.init(SUB_MENU_1_3_NAME, &sub_menu_1_4, &sub_menu_1_2, &menu_1, NULL, &changeTreble,   colour::colour_name::navy);
   	sub_menu_1_4.init(SUB_MENU_1_4_NAME, &sub_menu_1_5, &sub_menu_1_3, &menu_1, NULL, &changeVolume,   colour::colour_name::navy);
@@ -91,7 +91,7 @@ HMI::MENU::MENU(void)
   	sub_menu_1_8.init(SUB_MENU_1_8_NAME, &sub_menu_1_1, &sub_menu_1_7, &menu_1, NULL, &changeFader_LR, colour::colour_name::navy);
 
   menu_2.init(MENU_2_NAME, &menu_0, &menu_1, NULL, &sub_menu_2_1, NULL, colour::colour_name::green);
-  	sub_menu_2_1.init(SUB_MENU_2_1_NAME, &sub_menu_2_2, &sub_menu_2_2, &menu_2, NULL, NULL, NULL);
+  	sub_menu_2_1.init(SUB_MENU_2_1_NAME, &sub_menu_2_2, &sub_menu_2_2, &menu_2, NULL, &changeLCDBrightness, colour::colour_name::green_yellow);
   	sub_menu_2_2.init(SUB_MENU_2_2_NAME, &sub_menu_2_1, &sub_menu_2_1, &menu_2, NULL, NULL, NULL);
 
   create_menu_playlist(pPlayer);

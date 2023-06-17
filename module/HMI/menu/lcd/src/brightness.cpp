@@ -45,17 +45,60 @@ void HMI::BRIGHTNESS::init(void)
 //  GpioPinConfig(LCD_BRIGHTNESS_PORT, LCD_BRIGHTNESS_PIN, gpio_output_PP_PU_LS);
 //  LCD_BRIGHTNESS_PORT->BSRR|= GPIO_BSRR_BS_1;
 
+  value = LCD_BRIGHTNESS_RESOLUTION/2;
+
   TIM_setPrescaler(LCD_BRIGHTNESS_TIMER, 3);
 
   TIM_setAutoReloadReg(LCD_BRIGHTNESS_TIMER, LCD_BRIGHTNESS_RESOLUTION);
-  TIM_setCapCompReg(LCD_BRIGHTNESS_TIMER, TIMER_CHANNEL_1, LCD_BRIGHTNESS_RESOLUTION/2);
+  TIM_setCapCompReg(LCD_BRIGHTNESS_TIMER, TIMER_CHANNEL_1, value);
 
-  LCD_BRIGHTNESS_TIMER->CCMR1 |= (6U << TIM_CCMR1_OC1M_Pos)	|	 /**<  */
-				 (1U << TIM_CCMR1_OC1PE_Pos)	;	 /**<  */
-  LCD_BRIGHTNESS_TIMER->CCER |=  (1U << TIM_CCER_CC1E_Pos);
+  LCD_BRIGHTNESS_TIMER->CCMR1 |= (LCD_BRIGHTNESS_ENABLE << TIM_CCMR1_OC1M_Pos)	|	 /**< PWM mode 1 */
+				 (1U << TIM_CCMR1_OC1PE_Pos)	;	 /**< OC1 preload enable */
+  LCD_BRIGHTNESS_TIMER->CCER |=  (1U << TIM_CCER_CC1E_Pos);		 /**< OC1 output enable */
 
-  LCD_BRIGHTNESS_TIMER->BDTR |= TIM_BDTR_MOE;
+  LCD_BRIGHTNESS_TIMER->BDTR |= TIM_BDTR_MOE;				/**< timer output enable */
 
+  TIM_Enable(LCD_BRIGHTNESS_TIMER);
 }
+
+
+void
+HMI::BRIGHTNESS::enable(void)
+{
+  LCD_BRIGHTNESS_TIMER->CCMR1 |= (LCD_BRIGHTNESS_ENABLE << TIM_CCMR1_OC1M_Pos);
+}
+
+void
+HMI::BRIGHTNESS::disable(void)
+{
+  LCD_BRIGHTNESS_TIMER->CCMR1 |= (LCD_BRIGHTNESS_DISABLE << TIM_CCMR1_OC1M_Pos);
+}
+
+HMI::BRIGHTNESS& HMI::BRIGHTNESS::operator++()
+{
+  value += 2;
+
+  if(value >= LCD_BRIGHTNESS_RESOLUTION) { value = LCD_BRIGHTNESS_RESOLUTION; }
+  else
+   {
+     TIM_setCapCompReg(LCD_BRIGHTNESS_TIMER, TIMER_CHANNEL_1, value);
+   }
+
+  return (*this);
+}
+
+HMI::BRIGHTNESS& HMI::BRIGHTNESS::operator--()
+{
+  value -= 2;
+
+  if(value < 0) { value = 0; }
+  else
+   {
+     TIM_setCapCompReg(LCD_BRIGHTNESS_TIMER, TIMER_CHANNEL_1, value);
+   }
+
+  return (*this);
+}
+
 
 /*-------------------------------END OF FILE--------------------------------------*/

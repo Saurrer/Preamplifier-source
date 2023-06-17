@@ -27,6 +27,10 @@
 
 #define LCD_BRIGHTNESS_TIMER				TIM14
 #define LCD_BRIGHTNESS_RESOLUTION			UINT8_MAX
+
+#define LCD_BRIGHTNESS_ENABLE				(6U)	/**< PWM mode 1 */
+#define LCD_BRIGHTNESS_DISABLE				(4U)
+
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -44,14 +48,19 @@ namespace HMI
   {
 
   public:
+
     void init(void);
 
-    void enableBrightness();
-    void disableBrightness();
+    void enable();
+    void disable();
+
+    BRIGHTNESS& operator++();
+    BRIGHTNESS& operator--();
 
     void setBrightness(uint8_t val);
 
   private:
+    int16_t value;
     static uint8_t init_flag;
 
   };

@@ -54,28 +54,26 @@ namespace HMI
   Input Data:
   Action:
 */
-//static void printFunctionName(LMC1992_FUNCTION & function);
-//static void printFunctionValueLine(LMC1992_FUNCTION & function, uint16_t val);
-static void printFunctionValueLine(uint8_t max, uint8_t min, uint8_t val);
+static void printFunctionValueLine(LMC1992_FUNCTION & f);
 
 /*
  * Template function
  *
  *
-void
-HMI::function()
-{
+  void
+  HMI::function()
+  {
 
-  // some tasks before enter to loop (refresh screen etc.)
+    // some tasks before enter to loop (refresh screen etc.)
 
-  while(1)	//loop
-    {
-      // some tasks
+    while(1)	//loop
+      {
+	// some tasks
 
-      // exit procedure
-    }
+	// exit procedure
+      }
 
-  // some tasks before exit function
+    // some tasks before exit function
 
 }
  */
@@ -85,12 +83,13 @@ void
 HMI::changeInput()
 {
   uint16_t i = 0;
+  uint8_t len;
+  uint8_t previous_val = 0;
 
   LMC1992_FUNCTION & function = preamp::pSource->source;
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -113,11 +112,21 @@ HMI::changeInput()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      len = pLcd->print(preamp::FunctionSourceTable[function.getValue()]);
+      len = LCD_COLUMNS - len;
+      while(len--)
+	{
+	  pLcd->print(LCD_SIGN_VOID);
+	}
+
+      previous_val = function.getValue();
 
       i++;
 

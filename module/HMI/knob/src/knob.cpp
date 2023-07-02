@@ -53,7 +53,7 @@ void HMI::KNOB::init(TIM_TypeDef * __restrict__ pu32TIM)
   direction = NO_MOVE;
   flag_context = 0;
 
-  pu32TIM->CR1 |= (1U << TIM_CR1_CKD_Pos); 	/** Clock division. */
+  pu32TIM->CR1 |= (1U << TIM_CR1_CKD_Pos); 		/** Clock division. */
 
   /*
    * CC1 channel is configured as input, IC1 is mapped on TI1.
@@ -76,10 +76,10 @@ void HMI::KNOB::init(TIM_TypeDef * __restrict__ pu32TIM)
    */
   pu32TIM->SMCR |= (2U << TIM_SMCR_SMS_Pos);
 
-  pu32TIM->ARR = UINT16_MAX;			/** auto-reload reg */
-  pu32TIM->CNT = UINT16_MAX / 2;		/** counter */
+  pu32TIM->ARR = UINT16_MAX;				/** auto-reload reg */
+  pu32TIM->CNT = UINT16_MAX / 2;			/** counter */
 
-  pu32TIM->CR1 |= TIM_CR1_CEN;			/** TIM enable */
+  pu32TIM->CR1 |= TIM_CR1_CEN;				/** TIM enable */
 
 }
 

@@ -35,8 +35,15 @@ MICROWIRE LMC1992_FUNCTION::interface;
 */
 
 /* Private functions -------------------------------------------------------------*/
-LMC1992_FUNCTION::LMC1992_FUNCTION
-(uint8_t f_adr, int8_t f_min_val, int8_t f_max_val, int8_t f_init_val)
+
+/**
+ * @fn LMC1992_FUNCTION::LMC1992_FUNCTION (uint8_t f_adr, int8_t f_min_val, int8_t f_max_val, int8_t f_init_val)
+ *
+ * @details
+ *
+ * @return
+ */
+LMC1992_FUNCTION::LMC1992_FUNCTION (uint8_t f_adr, int8_t f_min_val, int8_t f_max_val, int8_t f_init_val)
 :address(f_adr),
  min(f_min_val), max(f_max_val),
  value(f_init_val)
@@ -48,6 +55,13 @@ LMC1992_FUNCTION::LMC1992_FUNCTION
     }
 }
 
+/**
+ * @fn int8_t LMC1992_FUNCTION::setValue(int8_t val)
+ *
+ * @details
+ *
+ * @return
+ */
 int8_t
 LMC1992_FUNCTION::setValue(int8_t val)
 {
@@ -65,9 +79,43 @@ LMC1992_FUNCTION::setValue(int8_t val)
   else { return 1; }
 }
 
+/**
+ * @fn int8_t LMC1992_FUNCTION::setValue(int8_t val)
+ *
+ * @details
+ *
+ * @return
+ */
 int8_t
 LMC1992_FUNCTION::getValue() { return value; }
 
+/**
+ * @fn int8_t LMC1992_FUNCTION::getMax()
+ *
+ * @details
+ *
+ * @return
+ */
+int8_t
+LMC1992_FUNCTION::getMax()   { return max; }
+
+/**
+ * @fn int8_t LMC1992_FUNCTION::getMin()
+ *
+ * @details
+ *
+ * @return
+ */
+int8_t
+LMC1992_FUNCTION::getMin()   { return min; }
+
+/**
+ * @fn LMC1992_FUNCTION& LMC1992_FUNCTION::operator++()
+ *
+ * @details
+ *
+ * @return
+ */
 LMC1992_FUNCTION&
 LMC1992_FUNCTION::operator++()
 {
@@ -84,6 +132,13 @@ LMC1992_FUNCTION::operator++()
   return (*this);
 }
 
+/**
+ * @fn LMC1992_FUNCTION& LMC1992_FUNCTION::operator--()
+ *
+ * @details
+ *
+ * @return
+ */
 LMC1992_FUNCTION&
 LMC1992_FUNCTION::operator--()
 {
@@ -100,6 +155,12 @@ LMC1992_FUNCTION::operator--()
   return (*this);
 }
 
+/**
+ * @fn uint8_t LMC1992_FUNCTION::getAddress()
+ * @details
+ *
+ * @return
+ */
 uint8_t
 LMC1992_FUNCTION::getAddress() { return address; }
 

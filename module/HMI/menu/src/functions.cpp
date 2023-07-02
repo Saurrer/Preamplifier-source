@@ -142,7 +142,6 @@ HMI::changeFader_LR()
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -165,11 +164,14 @@ HMI::changeFader_LR()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      printFunctionValueLine(function);
 
       i++;
 
@@ -194,7 +196,6 @@ HMI::changeFader_RR()
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -217,11 +218,14 @@ HMI::changeFader_RR()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      printFunctionValueLine(function);
 
       i++;
 
@@ -246,7 +250,6 @@ HMI::changeFader_LF()
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -269,11 +272,14 @@ HMI::changeFader_LF()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      printFunctionValueLine(function);
 
       i++;
 
@@ -298,7 +304,6 @@ HMI::changeFader_RF()
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -321,11 +326,14 @@ HMI::changeFader_RF()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      printFunctionValueLine(function);
 
       i++;
 
@@ -350,7 +358,6 @@ HMI::changeVolume()
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -373,11 +380,14 @@ HMI::changeVolume()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      printFunctionValueLine(function);
 
       i++;
 
@@ -403,7 +413,6 @@ HMI::changeTreble()
 
   pLcd->clearBuffer();
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -426,11 +435,14 @@ HMI::changeTreble()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      printFunctionValueLine(function);
 
       i++;
 
@@ -456,9 +468,7 @@ HMI::changeBass()
   LMC1992_FUNCTION & function = preamp::pSource->bass;
 
   pLcd->clearBuffer();
-
   pLcd->locate(0, 5); pLcd->print(preamp::FunctionNameTable[function.getAddress()]);
-  pLcd->locate(1, 0);
 
   pLed->setColour(pMenu->pCurrentNode->color);		/**< set colour of front panel */
   pLed->send();
@@ -481,11 +491,15 @@ HMI::changeBass()
 	  break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
 	}
+
+
+      pLcd->locate(1, 0);		/**< set lcd pointer at the beginning */
+      printFunctionValueLine(function);
 
       i++;
 
@@ -531,7 +545,7 @@ HMI::changeLCDBrightness()
 	  pLcd->bright.operator++(); break;
       }
 
-      if(!(i % LED_SOFT_DELAY))	//this function cannot be execute too fast cause of error on RGB leds - needed soft delay
+      if(!(i % LED_SOFT_DELAY))		/**<this function cannot be executed too fast cause of error on RGB leds - needed soft delay */
 	{
 	  pLed->setValue(LED_TIMER_2->CNT);
 	  pLed->send();
@@ -551,21 +565,22 @@ HMI::changeLCDBrightness()
   pKnob->button.clearStatus();
 }
 
+
 void
-printFunctionValueLine(uint8_t max, uint8_t min, uint8_t val)
+printFunctionValueLine(LMC1992_FUNCTION & f)
 {
   using namespace HMI;
 
   uint8_t i;
   uint16_t temp_val;
-  float segments = (float) val/max;
+  float segments = (float) f.getValue()/f.getMax();
 
-  temp_val = segments / LCD_COLUMNS;
+  temp_val = segments * LCD_COLUMNS;
 
   for(i = 0; i < LCD_COLUMNS; i++)
     {
-      if(i <= temp_val) { pLcd->print(0xff); }
-      else 		{ pLcd->print(0x11); }
+      if(i <= temp_val) { pLcd->print(LCD_SIGN_FILL); }
+      else 		{ pLcd->print(LCD_SIGN_VOID); }
     }
 }
 

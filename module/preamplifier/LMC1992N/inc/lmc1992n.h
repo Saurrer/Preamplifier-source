@@ -76,14 +76,16 @@ public:
 
   int8_t setValue(int8_t val);
   int8_t getValue();
+  int8_t getMax();
+  int8_t getMin();
 
   LMC1992_FUNCTION& operator++();
   LMC1992_FUNCTION& operator--();
 
 private:
   uint8_t address;
-  uint8_t min, max;
-  uint8_t value;
+  int8_t min, max;
+  int8_t value;
 
   static int8_t init_flag;
   static MICROWIRE interface;

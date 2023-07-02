@@ -47,7 +47,8 @@ HD44780 HMI::LCD::interface;				/**< HD44780 communication interface */
  * @details
  *
  */
-void HMI::LCD::init(void)
+void
+HMI::LCD::init(void)
 {
   if(init_flag == LCD_FIRST_TIME_INIT_INTERFACE)
     {
@@ -80,7 +81,8 @@ void HMI::LCD::init(void)
  * @param[in] y operand 2
  *
  */
-void HMI::LCD::locate(uint8_t x, uint8_t y)
+void
+HMI::LCD::locate(uint8_t x, uint8_t y)
 {
   pointer_x = x;
   pointer_y = y;
@@ -92,7 +94,8 @@ void HMI::LCD::locate(uint8_t x, uint8_t y)
  * @details
  *
  */
-void HMI::LCD::clearBuffer(void)
+void
+HMI::LCD::clearBuffer(void)
 {
   uint8_t i, j;
 
@@ -115,28 +118,33 @@ void HMI::LCD::clearBuffer(void)
  * @param[in] x operand 1
  *
  */
-void HMI::LCD::print(const char * s)
+uint8_t
+HMI::LCD::print(const char * s)
 {
+  uint8_t cnt = 0;
+
   while(*s)
     {
       send_char(*s++);
+      cnt++;
     }
+
+  return cnt;
 }
 
 /**
- * @fn void HMI::LCD::print(uint8_t data)
+ * @fn void HMI::LCD::print(char c)
  *
  * @details
  *
  * @param[in] x operand 1
  *
  */
-void HMI::LCD::print(char c)
+uint8_t
+HMI::LCD::print(char c)
 {
-  while(c)
-    {
-      send_char(c);
-    }
+  send_char(c);
+  return 1;	/**< cnt = 1 */
 }
 
 /**
@@ -145,7 +153,8 @@ void HMI::LCD::print(char c)
  * @details
  *
  */
-void HMI::LCD::refreshDisplay(void)
+void
+HMI::LCD::refreshDisplay(void)
 {
   static uint8_t locate_flag = 0;
   uint8_t i, j;
@@ -182,7 +191,8 @@ void HMI::LCD::refreshDisplay(void)
  * @param[in] x operand 1
  *
  */
-void HMI::LCD::send_char(char c)
+void
+HMI::LCD::send_char(char c)
 {
   if((pointer_x < LCD_ROWS) && (pointer_y < LCD_COLUMNS) )
     {

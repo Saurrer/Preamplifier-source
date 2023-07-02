@@ -41,9 +41,12 @@
 #define SUB_MENU_1_8_NAME			"Fader LR"
 
 /* MENU 2 names */
-#define MENU_2_NAME				"Setttings"
+#define MENU_2_NAME				"Settings"
 #define SUB_MENU_2_1_NAME			"Brightness"
 #define SUB_MENU_2_2_NAME			"submenu_2_2"
+
+#define LCD_SIGN_FILL				0xff
+#define LCD_SIGN_VOID				0x11
 
 
 #endif /* _PROJECT_CONFIG_H_ */

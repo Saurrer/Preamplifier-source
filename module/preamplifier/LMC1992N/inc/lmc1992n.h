@@ -25,7 +25,7 @@
 #include "../interface/microwire/inc/microwire.h"
 /* Exported define ---------------------------------------------------------------*/
 
-#define LMC1992N_INPUT_COUNT					(4U)
+#define LMC1992N_INPUT_COUNT					(5U)
 #define LMC1992N_FUNCTION_COUNT					(8U)
 #define LMC1992N_OUTPUT_SPEAKER_COUNT				(4U)
 

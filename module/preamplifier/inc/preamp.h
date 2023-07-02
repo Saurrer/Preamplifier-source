@@ -23,9 +23,9 @@
 #include "../LMC1992N/inc/lmc1992n.h"
 /* Exported define ---------------------------------------------------------------*/
 /* Exported types ----------------------------------------------------------------*/
+
 namespace preamp
 {
-
 
   class INPUT
   {
@@ -68,6 +68,7 @@ namespace preamp
   };
 
   extern char * FunctionNameTable[LMC1992N_FUNCTION_COUNT];
+  extern char * FunctionSourceTable[LMC1992N_INPUT_COUNT];
 
   //extern char* FunctionNameTable[];
   extern void init(void);

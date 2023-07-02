@@ -42,6 +42,15 @@ namespace preamp
       "Fader LR",	//7
   };
 
+  char * FunctionSourceTable[LMC1992N_INPUT_COUNT] =
+  {
+      "INPUT_OPEN",	//0
+      "RCA_1",		//1
+      "RCA_2",		//2
+      "minijack",	//3
+      "microSD",	//4
+  };
+
   //input_t INPUT::source {LMC1992N_INPUT_SELECT_ADDRESS, LMC1992N_INPUT_SELECT_MIN, LMC1992N_INPUT_SELECT_MAX, INPUT_OPEN};
 
   INPUT * pSource;

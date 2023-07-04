@@ -47,7 +47,10 @@
 
 #define LCD_SIGN_FILL				0xff
 #define LCD_SIGN_VOID				0x11
-
+#define LCD_CURSOR_SIGN 			">"
+#define LCD_SPACE_SIGN 				" "
+#define LCD_SIGN_SUBMENU_PRESENT		0x3E
+#define LCD_SIGN_FUNCTION_PRESENT		0xE0
 
 #endif /* _PROJECT_CONFIG_H_ */
 

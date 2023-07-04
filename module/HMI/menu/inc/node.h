@@ -42,11 +42,20 @@ namespace HMI
   class node_t
   {
   public:
+
+    typedef struct node_config_t
+    {
+      uint8_t submenu:		1;
+      uint8_t function:		1;
+
+    } node_config;
+
     node_t();
     void init(char * name, NODE * next_address, NODE * prev_address,
 			   NODE * parent_address, NODE * child_address,
 			   void (*function_address)(void),
-			   colour::RGB menu_color);
+			   colour::RGB menu_color
+			   );
 
     char * pName;	/**< node name */
 
@@ -57,6 +66,9 @@ namespace HMI
 
     void(*function)(void);
     colour::RGB color;
+    node_config getConfig(void);
+
+    node_config cfg_status;
 
   private:
 

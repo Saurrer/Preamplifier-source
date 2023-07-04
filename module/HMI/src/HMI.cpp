@@ -136,9 +136,16 @@ HMI::jumpSubMenu(void)
       if(pMenu->gotoChild())
 	{
 	  pCursor->set(0);
+
 	  pLcd->clearBuffer();
 	  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
 	  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
+
+	  if(pMenu->pCurrentNode->cfg_status.function) 	     { pLcd->locate(0, 15); pLcd->print(LCD_SIGN_FUNCTION_PRESENT); }
+	  if(pMenu->pCurrentNode->pNext->cfg_status.function){ pLcd->locate(1, 15); pLcd->print(LCD_SIGN_FUNCTION_PRESENT); }
+	  if(pMenu->pCurrentNode->cfg_status.submenu) 	     { pLcd->locate(0, 14); pLcd->print(LCD_SIGN_SUBMENU_PRESENT);  }
+	  if(pMenu->pCurrentNode->pNext->cfg_status.submenu) { pLcd->locate(1, 14); pLcd->print(LCD_SIGN_SUBMENU_PRESENT);  }
+
 	  refreshCursor();
 	}
 
@@ -149,9 +156,15 @@ HMI::jumpSubMenu(void)
       if(pMenu->gotoParent())
 	{
 	  pCursor->set(0);
+
 	  pLcd->clearBuffer();
 	  pLcd->locate(0, 1); pLcd->print(pMenu->pCurrentNode->pName);
 	  pLcd->locate(1, 1); pLcd->print(pMenu->pCurrentNode->pNext->pName);
+
+	  if(pMenu->pCurrentNode->cfg_status.function) 	     { pLcd->locate(0, 15); pLcd->print(LCD_SIGN_FUNCTION_PRESENT); }
+	  if(pMenu->pCurrentNode->pNext->cfg_status.function){ pLcd->locate(1, 15); pLcd->print(LCD_SIGN_FUNCTION_PRESENT); }
+	  if(pMenu->pCurrentNode->cfg_status.submenu) 	     { pLcd->locate(0, 14); pLcd->print(LCD_SIGN_SUBMENU_PRESENT);  }
+	  if(pMenu->pCurrentNode->pNext->cfg_status.submenu) { pLcd->locate(1, 14); pLcd->print(LCD_SIGN_SUBMENU_PRESENT);  }
 
 	  refreshCursor();
 	}

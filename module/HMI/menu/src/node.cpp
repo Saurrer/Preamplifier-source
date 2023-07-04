@@ -18,7 +18,7 @@
 #include "../inc/node.h"
 /* Private typedef ---------------------------------------------------------------*/
 /* Private define ----------------------------------------------------------------*/
-#define NULL (0U)
+#define NULL 			(0U)
 #define NODE_INIT_NAME		"NONE"
 #define NODE_NAME_OK		(0)
 #define NODE_OK			(0U)
@@ -43,7 +43,8 @@ HMI::node_t::node_t()
  pParent(NULL),
  pChild(NULL),
  function(NULL),
- color()
+ color(),
+ cfg_status({false, false})
 {
 
 }
@@ -53,16 +54,27 @@ HMI::node_t::init(char * name,
 		  NODE * next_address, NODE * prev_address,
 		  NODE * parent_address, NODE * child_address,
 		  void (*function_address)(void),
-		  colour::RGB menu_color)
+		  colour::RGB menu_color
+		  )
 {
-  pName = name;
-  pNext = next_address;
-  pPrevious = prev_address;
-  pParent = parent_address;
-  pChild = child_address;
-  function = function_address;
-  color = menu_color;
+  pName 	= name;
+  pNext 	= next_address;
+  pPrevious 	= prev_address;
+  pParent	= parent_address;
+  pChild 	= child_address;
+  function 	= function_address;
+  color 	= menu_color;
+
+  if(pChild) 	 { cfg_status.submenu = true;  }
+  else		 { cfg_status.submenu = false; }
+
+  if(function) 	 { cfg_status.function = true;  }
+  else		 { cfg_status.function = false; }
+
 }
+
+HMI::node_t::node_config
+HMI::node_t::getConfig() { return cfg_status; }
 
 
 /*-------------------------------END OF FILE--------------------------------------*/

@@ -69,16 +69,12 @@ int main(void)
   __DSB();
   __ISB();
 
-#warning "po co dwa obiekty tego samego typu - res & fr?"
   res = f_mount(&fatfs, "", 1);			//inicjalizacja warstwy aplikacji
-  status = (SD_CardStatus) disk_initialize(0);	//inicjalizacja warstwy fizycznej
-
   f_getcwd(cwd_name, sizeof(cwd_name));
 
   res = f_opendir(&dir, cwd_name);
 
   if(res == FR_OK) { pPlayer->playlist.init(&dir); }
-  pPlayer->init();
 
   /* utils */
   delay_init();
@@ -91,11 +87,11 @@ int main(void)
   SysTick_Config(CPU_FREQUENCY/8/10);
   SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
 
-  //size_t rozmiar = sizeof(UINT);	// 4B
   for(;;)/*---------------------------------------- INFINITE LOOP ----------------------------------------------*/
     {
       HMI::scrollMenu();
       HMI::jumpSubMenu();
+
 
       if(flag == 2)
 	{
@@ -130,17 +126,6 @@ int main(void)
 
 	  flag = 0;
 	}
-      else if (flag == 17)
-	{
-	  preamp::pSource->changeSource(preamp::INPUT::minijack);
-	  flag = 0;
-	}
-      else if (flag == 18)
-	{
-	  preamp::pSource->changeSource(preamp::INPUT::microSD);
-	  flag = 0;
-	}
-
 
       else if (flag == 21)
 	{
@@ -187,7 +172,6 @@ int main(void)
 	      res = f_close(&file);
 	    }
 
-
 	  flag = 0;
 	}
       else if(flag == 22)
@@ -196,60 +180,6 @@ int main(void)
 
 	  flag = 0;
 	}
-
-
-/*
-      if(flag == 1)		*< red
-	{
-	  HMI::pLed->setColour(HMI::LED::color::red, 128);
-	  flag = 0;
-	}
-      else if(flag == 2)	*< green
-      	{
-	  HMI::pLed->setColour(HMI::LED::color::green, 128);
-	  flag = 0;
-      	}
-      else if(flag == 3)	*< blue
-      	{
-	  HMI::pLed->setColour(HMI::LED::color::blue, 128);
-      	  flag = 0;
-      	}
-      else if(flag == 4)	*< white
-      	{
-	  HMI::pLed->setColour(HMI::LED::color::red, 128);
-	  HMI::pLed->setColour(HMI::LED::color::green, 128);
-	  HMI::pLed->setColour(HMI::LED::color::blue, 128);
-
-	  flag = 0;
-      	}
-      else if(flag == 5)	*< black
-      	{
-	  HMI::pLed->reset(HMI::LED::color::red);
-	  HMI::pLed->reset(HMI::LED::color::green);
-	  HMI::pLed->reset(HMI::LED::color::blue);
-      	  flag = 0;
-      	}
-      else if(flag == 6)	*< send
-	{
-	  HMI::pLed->send();
-	  flag = 0;
-	}
-*/
-
-
-/*
-      else if (flag == 6)	*<
-	{
-	  hsv_1 = colours::rgb2hsv(&rgb_1);
-	  flag = 0;
-	}
-      else if (flag == 7)	*<
-	{
-	  rgb_2 = colours::hsv2rgb(&hsv_2);
-	  flag = 0;
-	}
-*/
-
     }
 }
 

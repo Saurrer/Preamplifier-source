@@ -31,7 +31,7 @@
 /* Private functions -------------------------------------------------------------*/
 void module::init()
 {
-
+  pPlayer->init();
   HMI::init();
   preamp::init();
 }

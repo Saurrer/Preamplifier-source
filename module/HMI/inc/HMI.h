@@ -28,14 +28,15 @@
 #include "../menu/lcd/inc/lcd.h"
 
 /* Exported define ---------------------------------------------------------------*/
-#define HMI_CURSOR_SIGN 		">"
-#define HMI_SPACE_SIGN 			" "
+#define HMI_CURSOR_OK		(0U)
+#define HMI_CURSOR_FAIL		(1U)
+
 /* Exported types ----------------------------------------------------------------*/
 
 namespace HMI
 {
 
-  extern KNOB * pKnob ;
+  extern KNOB * pKnob;
   extern LED * pLed;
 
   extern MENU * pMenu;
@@ -45,20 +46,26 @@ namespace HMI
   {
 
   public:
+
     enum
+    {
+      LCD_ROW_0		= 0,
+      LCD_ROW_1		= 1,
+    };
+
+    typedef enum: int8_t
     {
       CURSOR_UNDERFLOW	= -1,
       CURSOR_IN_SCOPE	= 0,
       CURSOR_OVERFLOW	= 1,
-    };
+    } cursor_status_t;
 
     void init(int8_t min, int8_t max);
 
     int8_t get();
     int8_t set(int8_t val);
 
-    int8_t getFlag();
-    //void resetFlag();
+    int8_t getStatus();
 
     CURSOR& operator++();
     CURSOR& operator--();
@@ -67,16 +74,15 @@ namespace HMI
     int8_t min;
     int8_t max;
     int8_t current_position;
-    int8_t limit_status_flag;
+    cursor_status_t status;
 
   };
+
   extern CURSOR * pCursor;
 
   extern void init();
   extern void scrollMenu(void);
   extern void jumpSubMenu(void);
-  extern void refreshScreen();
-  extern void refreshCursor(void);
 
 } // namespace HMI
 

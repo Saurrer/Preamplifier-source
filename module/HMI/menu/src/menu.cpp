@@ -28,6 +28,7 @@
 #define NULL 				(0U)
 #define MENU_FAIL			(0U)
 #define MENU_OK				(1U)
+
 /* Private macro -----------------------------------------------------------------*/
 /* Private variables -------------------------------------------------------------*/
 
@@ -72,7 +73,9 @@ HMI::MENU::MENU(void)
    * pattern:
    *   init(char * name,
    *   	    NODE * next_address, NODE * prev_address, NODE * parent_address, NODE * child_address,
-   *   	    void (*function_address)(void));
+   *   	    void (*function_address)(void)
+   *   	    //{.submenu=true,  .function=false}
+   *   	    );
    */
 
   menu_0.init(MENU_0_NAME, &menu_1, &menu_2, NULL, &sub_menu_0_1, NULL, colour::colour_name::red);

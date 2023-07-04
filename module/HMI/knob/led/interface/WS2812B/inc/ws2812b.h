@@ -1,35 +1,29 @@
-/** @file module.h
+/** @file ws2812b.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 19, 2023
+* @date		Feb 25, 2023
 * @version 	1.0.0
-* @copyright 	© 2022. All Rights Reserved.
+* @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of module.h.
+* @brief brief description of ws2812b.h.
 *
-* @page module.h
-* @details Detail description of module.h.
+* @page ws2812b.h
+* @details Detail description of ws2812b.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _MODULE_H_
-#define _MODULE_H_
+#ifndef _WS2812B_H_
+#define _WS2812B_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include <stdint.h>
-
-#include <cmsis_gcc.h>
-#include <stm32f091xc.h>
-
-#include "HMI/inc/HMI.h"
-#include "preamplifier/inc/preamp.h"
-#include "Audio/inc/player.h"
-
+#include <colour/inc/colour.h>
 /* Exported define ---------------------------------------------------------------*/
+#define WS2812B_LED_COUNT							(LED_COUNT)
+#define WS2812B_FRAME_LENGTH							(8U)
 /* Exported types ----------------------------------------------------------------*/
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
@@ -37,20 +31,27 @@
 /**
 * @brief Brief description of function
 */
-/* Exported Object types ---------------------------------------------------------*/
 
-namespace module
+/* Exported Object types ---------------------------------------------------------*/
+class WS2812B
 {
 
-  extern void init(void);
-}  // namespace module
+public:
+  void Init();
+  void build(colour::RGB * rgb);
+  void send();
+  void reset();
 
+private:
+  void resetFrameBuffer();
+  void updateFrameBufferWithData(volatile uint8_t (*buffer)[WS2812B_FRAME_LENGTH], uint32_t GRB_data);
+
+};
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/
 
 
-
-#endif /* _MODULE_H_ */
+#endif /* _WS2812B_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

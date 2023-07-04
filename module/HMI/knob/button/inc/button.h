@@ -1,56 +1,81 @@
-/** @file module.h
+/** @file button.h
 *
 * @author 		
 * Mariusz Mikulski	\n
 * Company: 	\n
 * Departament:	\n
-* @date		Feb 19, 2023
+* @date		Feb 22, 2023
 * @version 	1.0.0
-* @copyright 	© 2022. All Rights Reserved.
+* @copyright 	© 2023. All Rights Reserved.
 *
-* @brief brief description of module.h.
+* @brief brief description of button.h.
 *
-* @page module.h
-* @details Detail description of module.h.
+* @page button.h
+* @details Detail description of button.h.
 *
 */
 
 /* Define to prevent recursive inclusion -----------------------------------------*/
-#ifndef _MODULE_H_
-#define _MODULE_H_
+#ifndef _BUTTON_H_
+#define _BUTTON_H_
 
 /* Includes ----------------------------------------------------------------------*/
-#include <stdint.h>
 
-#include <cmsis_gcc.h>
-#include <stm32f091xc.h>
-
-#include "HMI/inc/HMI.h"
-#include "preamplifier/inc/preamp.h"
-#include "Audio/inc/player.h"
+#include <STM32/gpio/inc/gpio.h>
 
 /* Exported define ---------------------------------------------------------------*/
+
+#define BUTTON_PORT		GPIOA
+#define BUTTON_PIN		PA3
 /* Exported types ----------------------------------------------------------------*/
+
+namespace HMI
+{
+
+  class BUTTON
+  {
+
+  public:
+
+    enum : uint8_t
+    {
+      BUTTON_OFF 		= 0,
+      BUTTON_ON			= 1,
+      BUTTON_SINGLE_PRESS 	= 2,
+      BUTTON_DOUBLE_PRESS 	= 3,
+      BUTTON_LONG_PRESS		= 4,
+      BUTTON_NOT_INITIALIZED	= 255,
+    };
+
+    void init(GPIO_TypeDef * button_port, GpioPin button_pin);
+    uint8_t getStatus(void);
+    void clearStatus(void);
+    void read(void);
+
+  private:
+    uint8_t status;		/**< Line description of somevariable */
+    uint8_t keylock {0};	/**< useb by read function */
+
+  };
+
+
+}  // namespace HMI
+
+
 /* Exported constants ------------------------------------------------------------*/
 /* Exported macro ----------------------------------------------------------------*/
 /* Exported functions ----------------------------------------------------------- */
 /**
 * @brief Brief description of function
 */
+
 /* Exported Object types ---------------------------------------------------------*/
-
-namespace module
-{
-
-  extern void init(void);
-}  // namespace module
-
 /* Exported Object constants -----------------------------------------------------*/
 /* Exported Object macro ---------------------------------------------------------*/
 /* Exported Object functions -----------------------------------------------------*/
 
 
 
-#endif /* _MODULE_H_ */
+#endif /* _BUTTON_H_ */
 
 /*-------------------------------END OF FILE--------------------------------------*/

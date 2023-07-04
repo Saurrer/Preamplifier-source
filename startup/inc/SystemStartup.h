@@ -1,4 +1,4 @@
-/** @file SystemStartup.hpp
+/** @file SystemStartup.h
 *
 * @author 		
 * Mariusz Mikulski	\n
@@ -10,14 +10,13 @@
 *
 * @brief brief description of file.
 *
-*
-* @page make_page_for_this_file_in_doxygen
+* @page SystemStartup.h
 *
 * @details Detail description of file.
 *
 */
-#ifndef SOURCE_STARTUP_INC_SYSTEMSTARTUP_H_
-#define SOURCE_STARTUP_INC_SYSTEMSTARTUP_H_
+#ifndef _SYSTEMSTARTUP_H_
+#define _SYSTEMSTARTUP_H_
 
 /*
 #ifdef __cplusplus
@@ -33,4 +32,4 @@ extern void SystemStartup(void);
 #endif
 */
 
-#endif /* SOURCE_STARTUP_INC_SYSTEMSTARTUP_H_ */
+#endif /* _SYSTEMSTARTUP_H_ */
